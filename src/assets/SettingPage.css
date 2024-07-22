@@ -1,0 +1,242 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap');
+
+body {
+    background-color: #f8fafc;
+}
+
+.settingpage-container {
+    display: flex;
+    margin: 50px 10px;
+}
+
+.settingpage-profile {
+    flex: 1;
+    margin-right: 10px;
+    background-color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    border-radius: 15px;
+    height: max-content;
+}
+
+.settingpage-profile-header {
+    display: flex;
+    margin-left: 15px;
+}
+
+.settingpage-profile-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin: 10px;
+}
+
+.settingpage-profile-text-container {
+    line-height: 0.5;
+}
+
+.settingpage-profile-title {
+    font-family: "Poppins", sans-serif;
+    font-size: 20px;
+}
+
+.settingpage-profile-email {
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+}
+
+.settingpage-menu {
+    margin: 0 20px;
+}
+
+.settingpage-menu-link {
+    display: block;
+    text-decoration: none;
+    color: #768499;
+    font-family: "Poppins", sans-serif;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+    transition: background-color 0.1s, color 0.1s;
+}
+
+.settingpage-menu-icon {
+    margin-right: 10px;
+}
+
+.settingpage-menu-link.settingpage-active {
+    color: #fff;
+    background-color: #536dfe;
+}
+
+.settingpage-menu-link:hover:not(.settingpage-active) {
+    background-color: #f1f5f9;
+    color: #1e293b;
+}
+
+.settingpage-account {
+    flex: 2;
+    margin-left: 10px;
+    background-color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    border-radius: 5px;
+    height: max-content;
+}
+
+.settingpage-account-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #768499;
+}
+
+.settingpage-account-title {
+    font-family: "Poppins", sans-serif;
+    font-size: 20px;
+    color: #1e293b;
+    font-weight: 500;
+    margin-left: 10px;
+}
+
+.settingpage-btn-container {
+    margin-right: 5px;
+}
+
+.settingpage-btn-cancel {
+    width: 8em;
+    height: 3em;
+    cursor: pointer;
+    border: 1px solid #768499;
+    border-radius: 2em;
+    color: #1e293b;
+    font-weight: bold;
+    margin-right: 5px;
+    background-color: #fff;
+    transition-duration: 0.3s;
+    box-shadow: rgba(0, 0, 0, 0.1);
+}
+
+.settingpage-btn-cancel:hover {
+    background-color: #f1f5f9;
+}
+
+.settingpage-btn-save {
+    width: 8em;
+    height: 3em;
+    cursor: pointer;
+    border: 1px solid #458ff6;
+    border-radius: 2em;
+    color: #fff;
+    font-weight: bold;
+    margin-left: 5px;
+    background-color: #536dfe;
+    transition-duration: 0.3s;
+    box-shadow: rgba(0, 0, 0, 0.1);
+}
+
+.settingpage-btn-save:hover {
+    background-color: #4053c9;
+}
+
+.settingpage-account-edit {
+    display: flex;
+    justify-content: space-between;
+    margin: 15px 0;
+}
+
+.settingpage-input-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 0 20px;
+}
+
+.settingpage-input-container label {
+    font-family: "Poppins", sans-serif;
+    color: #768499;
+    font-size: 14px;
+}
+
+.settingpage-input-container input {
+    height: 25px;
+    border: 1.5px solid #768499;
+    border-radius: 5px;
+    padding: 5px;
+    color: #768499;
+    font-family: "Poppins", sans-serif;
+}
+
+.settingpage-input-container input:focus {
+    outline: none;
+    border: 1.5px solid #536dfe;
+}
+
+.settingpage-input-container textarea {
+    display: block;
+    width: 100%;
+    height: 100px;
+    padding: 5px;
+    border: 1.5px solid #768499;
+    border-radius: 5px;
+    font-family: "Poppins", sans-serif;
+    color: #768499;
+}
+
+.settingpage-input-container textarea:focus {
+    outline: none;
+    border: 1.5px solid #536dfe;
+}
+
+@media screen and (max-width: 768px) {
+    .settingpage-container {
+        flex-direction: column;
+    }
+
+    .settingpage-profile {
+        margin-bottom: 20px;
+        margin-right: 0;
+    }
+
+    .settingpage-account {
+        margin: 0;
+    }
+}
+
+.settingpage-toggle-container,
+.settingpage-language-container {
+    
+  display: flex;
+  flex-direction: column;
+  margin: 0 20px;
+}
+
+.settingpage-toggle-label,
+.settingpage-language-label {
+  font-family: "Poppins", sans-serif;
+  color: #768499;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.settingpage-toggle,
+.settingpage-language-select {
+  height: 25px;
+  border: 1.5px solid #768499;
+  border-radius: 5px;
+  padding: 5px;
+  color: #768499;
+  font-family: "Poppins", sans-serif;
+}
+
+.settingpage-toggle:checked,
+.settingpage-language-select:focus {
+  outline: none;
+  border: 1.5px solid #536dfe;
+}
+
+.settingpage-logout-message {
+  font-family: "Poppins", sans-serif;
+  color: #768499;
+  font-size: 16px;
+  margin: 20px;
+}
