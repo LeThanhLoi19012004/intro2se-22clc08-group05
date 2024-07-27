@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile Information</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .profile-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .profile-header {
+      margin-bottom: 20px;
+    }
+    .profile-header h1 {
+      margin: 0;
+    }
+    .profile-info {
+      margin-bottom: 20px;
+    }
+    .profile-info p {
+      margin: 5px 0;
+    }
+    .profile-avatar img {
+      border-radius: 50%;
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+    }
+  </style>
+</head>
+<body>
+  <div class="profile-container">
+    <div class="profile-header">
+      <h1>Profile Information</h1>
+    </div>
+    
+    <% if (!profile) { %>
+      <p>Profile not found.</p>
+    <% } else { %>
+      <div class="profile-avatar">
+        <% if (profile.avatar) { %>
+          <img src="/uploads/<%= profile.avatar.filename %>" alt="Avatar">
+        <% } else { %>
+          <p>No avatar available</p>
+        <% } %>
+      </div>
+      
+      <div class="profile-info">
+        <p><strong>Username:</strong> <%= profile.idaccount.username %></p>
+        <p><strong>Full Name:</strong> <%= profile.fullname %></p>
+        <p><strong>Sex:</strong> <%= profile.sex || 'No information' %></p>
+        <p><strong>University:</strong> <%= profile.university || 'No information' %></p>
+        <p><strong>ID Card:</strong> <%= profile.idcard %></p>
+        <p><strong>Phone:</strong> <%= profile.phone %></p>
+        <p><strong>Date of Birth:</strong> <%= profile.dobFormatted %></p>
+        <p><strong>Hometown:</strong> <%= profile.hometown %></p>
+      </div>
+    <% } %>
+  </div>
+</body>
+</html>
