@@ -79,7 +79,6 @@ const RenderProfile = async (req, res) => {
   const { idaccount } = req.body;  
 
   try {
-    // Tìm hồ sơ dựa trên ID tài khoản
     const profile = await ProfileModel.findOne({ idaccount: idaccount })
       .populate('idaccount', 'username') 
       .exec();
