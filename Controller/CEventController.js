@@ -17,6 +17,7 @@ conn.once('open', () => {
 
 const CEvent = async (req, res) => {
   try {
+
     const profileId = req.body['owner'];
     const eventname = req.body['eventname'];
     const eventtype = req.body['eventtype'];
@@ -73,7 +74,7 @@ const CEvent = async (req, res) => {
     const ownerObjectId = new mongoose.Types.ObjectId(profileId);
 
     // Tạo mới sự kiện
-    const newEvent = await CEventModel.create({
+    const newEvent = new CEventModel({
       profile: ownerObjectId,
       logoevent: logoevent,
       eventname: eventname,
@@ -88,6 +89,10 @@ const CEvent = async (req, res) => {
       tickettype: tickettype,
       price: price
     });
+    await newEvent.save();
+
+    newEvent.eventObjectID = newEvent._id;
+    await newEvent.save();
 
     res.sendFile(path.join(__dirname, '../public', 'page.html'));
   } catch (error) {
@@ -97,11 +102,11 @@ const CEvent = async (req, res) => {
 };
 
 const Renderdata = async (req, res) => {
-  const { eventname } = req.body;
+  const { eventid } = req.body['eventid'];
   const ejsFilePath = path.join(__dirname, '..', 'renderdata.ejs');
   try {
-    const regex = new RegExp(eventname, 'i');
-    const findinfor = await CEventModel.find({ eventname: { $regex: regex } })
+    //const regex = new RegExp(eventid_, 'i');
+    const findinfor = await CEventModel.find({ eventID: eventid })
       .populate('profile', 'fullname')
       .exec();
 

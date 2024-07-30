@@ -31,6 +31,10 @@ const Start_Time = new mongoose.Schema({
 
 // Định nghĩa Schema cho sự kiện
 const CEventSchema = new mongoose.Schema({
+  eventID: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'InfoCEvent',
+  },
   profile: { 
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'InfoProfile',

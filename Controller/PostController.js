@@ -60,7 +60,7 @@ const RenderPost = async (req, res) => {
   console.log(eventID_);
   try {
     // Tìm bài đăng dựa trên eventID
-    const posts = await PostModel.find({ eventID: eventID_ })  // Sửa eventID_ thành eventID
+    const posts = await PostModel.find({ eventID: eventID_ })  
       .populate('eventID', 'eventname')  // Sửa eventID_ thành eventID
       .exec();
 
