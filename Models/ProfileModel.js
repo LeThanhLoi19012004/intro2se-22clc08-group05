@@ -16,13 +16,13 @@ const ProfileSchema = new Schema({
     required: true 
   },
   avatar: { type: avtSchema },
-  fullname: { type: String, required: true },
+  fullname: { type: String},
   sex: { type: String },
   university: { type: String },
   phone: { type: String },
-  idcard: { type: String, required: true },
-  dob: { type: Date, required: true }, 
-  hometown: { type: String, required: true }
+  idcard: { type: String},
+  dob: { type: Date }, 
+  hometown: { type: String,}
 });
 
 const ProfileModel = mongoose.model('InfoProfile', ProfileSchema);

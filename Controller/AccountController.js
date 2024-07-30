@@ -3,6 +3,7 @@ import { fileURLToPath } from "url";
 import { dirname } from "path";
 import path from "path";
 import AccountModel from "../Models/AccountModel.js"
+import ProfileModel from '../Models/ProfileModel.js';
 import bcrypt from "bcrypt";
 import sendMail from "../Email/SendEmail.js"
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -38,11 +39,24 @@ const PostSignup = async (req, res) => {
   try {
     const { username, password, email } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
-    await AccountModel.create({
+    const newAccount = await AccountModel.create({
       username,
       password: hashedPassword,
       email,
     });
+    console.log(newAccount._id);
+    await ProfileModel.create({
+      idaccount: newAccount._id,
+      avatar: null,
+      fullname: null,
+      sex: null,
+      university: null,
+      phone: null,
+      idcard: null,
+      dob: null,
+      hometown: null,
+    });
+
 
     res.sendFile(path.join(__dirname, '../public', 'index.html'));
     console.log('Successfully!!!');
