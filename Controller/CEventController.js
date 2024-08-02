@@ -17,7 +17,6 @@ conn.once('open', () => {
 
 const CEvent = async (req, res) => {
   try {
-
     const profileId = req.body['owner'];
     const eventname = req.body['eventname'];
     const eventtype = req.body['eventtype'];
@@ -29,7 +28,6 @@ const CEvent = async (req, res) => {
     const [hourStr, minuteStr] = eventtimeStr.split(':');
     let hour = parseInt(hourStr, 10);
     const minute = parseInt(minuteStr, 10);
-
     // Xử lý AM/PM
     let amPm = '';
     if (hour >= 12) {
@@ -139,9 +137,44 @@ function formatEventTime(eventtime) {
   return `${formattedHour}:${formattedMinute} ${amPm}`;
 }
 
+//add
+const followEvent = async (req, res) => {
+  try {
+    const eventID = req.body['eventID'];
+    const profileID = req.body['profileID'];
+    console.log("eventID: ", eventID);
+    console.log("profileID: ", profileID);
+    if (!mongoose.isValidObjectId(eventID) || !mongoose.isValidObjectId(profileID)) {
+      return res.status(400).send('Invalid event ID or profile ID');
+    }
+
+    const event = await CEventModel.findById(eventID);
+
+    if (!event) {
+      return res.status(404).send('Event not found');
+    }
+
+    const index = event.follows.indexOf(profileID);
+
+    if (index === -1) {
+      event.follows.push(profileID);
+    } else {
+      event.follows.splice(index, 1);
+    }
+
+    await event.save();
+
+    res.status(200).send('Follow status updated successfully');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server error');
+  }
+};
+
 const CEventController = {
   CEvent: CEvent,
   Renderdata: Renderdata,
+  followEvent: followEvent,
 };
 
 export default CEventController;

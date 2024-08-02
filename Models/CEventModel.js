@@ -52,7 +52,12 @@ const CEventSchema = new mongoose.Schema({
   numberoftickets: { type: Number, required: true },
   ticketavailable : { type: Number, required: true },
   tickettype: { type: String, required: true },
-  price: { type: Number, required: true },
+  price: { type: Number, required: true},
+  follows: [{ 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'InfoProfile',
+  }],
+
 });
 
 // Middleware trước khi lưu

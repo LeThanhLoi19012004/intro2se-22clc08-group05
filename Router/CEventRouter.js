@@ -21,7 +21,7 @@ router_.use(bodyParser.urlencoded({ extended: true }));
 router_.use(express.static(join(__dirname, '../public')));
 
 router_.post('/create_event', upload.array("logoevent", 1), CEventController.CEvent);
-
 router_.post('/renderdata', CEventController.Renderdata);
 
+router_.post('/followEvent', CEventController.followEvent);
 export default router_;
