@@ -1,0 +1,162 @@
+.admin-homepage__container{
+    width: 100vw;
+    height: 100%;
+
+  
+    align-content: center;
+    background-color: rgb(45,21,143);
+    
+
+}
+.admin-homepage__container header{
+
+    position: fixed;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 150px;
+    /*Glass effect*/
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    z-index: 999;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    
+
+}
+.admin-homepage__header-img-container{
+    --imgWidth: 50px;
+    width: auto;
+    height: var(--imgHeight);
+    display: inline-block;
+    
+
+}
+.admin-homepage__header-img-container{
+    margin-right: 100px;
+}
+
+.admin-homepage__header-img-container img{
+    width: var(--imgWidth);
+    object-fit: contain;
+}
+.admin-homepage__header-img-container::after{
+    content : "Suki";
+    color:white;
+    position: relative;
+    top:-10px;
+    left:10px;        
+    font-size: 30px;
+    font-weight: 800;
+}
+
+
+.admin-homepage__title{
+    font-size: 30px;
+    color:white;
+    font-weight: 800;
+}
+.admin-homepage__profile-container{
+    --profileSize : 60px;
+    width: var(--profileSize);
+    height: var(--profileSize);
+    background-color: whitesmoke;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.admin-homepage__profile-container::after{
+    position: relative;
+    content: "Administrator";
+    color:white;
+    font-weight: 800;
+    left: 60px;
+}
+
+.admin-homepage__event-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin:auto;
+    width:100%;
+    position: relative;
+    top:100px;
+  }
+  
+  .admin-homepage__event-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /*Glass effect*/
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 0px;
+    padding: 10px 20px;
+    color: white;
+    width: 90%;
+    height:auto;
+  }
+  
+  .admin-homepage__event-card .user-info {
+    display: flex;
+    align-items: center;
+    width: 400px;
+    
+  }
+  
+  .admin-homepage__event-card .user-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: whitesmoke;
+    margin-right: 10px;
+  }
+
+  .admin-homepage__event-card .user-details {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .admin-homepage__event-card .username, 
+  .admin-homepage__event-card .time-ago, 
+  .admin-homepage__event-card .event-name {
+    margin: 0;
+  }
+  .admin-homepage__event-card .event-name{
+    width: auto;
+    font-size:40px;
+    font-weight: 800;
+    margin-right:auto;
+  }
+  .admin-homepage__event-card .event-status {
+    padding: 10px 20px;
+    width: 200px;
+    height: 50px;
+    text-align: center;
+    border: none;
+    border-radius: 0px;;
+    color: white;
+    font-weight: bold;
+    
+  }
+  
+  .admin-homepage__event-card .status-approved {
+    background-color: #ff4c61;
+  }
+  
+  .admin-homepage__event-card .status-rejected {
+    background-color: #7c59cc;
+  }
+  
+  .admin-homepage__event-card .status-pending {
+    background-color: #4d4d4d;
+  }
+
