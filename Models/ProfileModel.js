@@ -10,6 +10,10 @@ const avtSchema = new mongoose.Schema({
 });
 
 const ProfileSchema = new Schema({
+  profileID: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'InfoProfile',
+  },
   idaccount: { 
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'InfoAccount',

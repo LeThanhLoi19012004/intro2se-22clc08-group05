@@ -11,5 +11,6 @@ router_Interaction.use(bodyParser.urlencoded({ extended: true }));
 router_Interaction.use(express.static(join(__dirname, '../public')));
 
 router_Interaction.post('/interaction', InteractionController.savePostInteraction);
+router_Interaction.post('/render_interaction', InteractionController.getPostInteraction);
 
 export default router_Interaction;

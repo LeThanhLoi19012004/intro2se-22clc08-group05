@@ -3,77 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= post.title %></title>
+  <title>Post Interaction</title>
 </head>
 <body>
-  <div id="post-container">
-    <!-- Thông tin bài post -->
-    <h2 id="post-title"><%= post.title %></h2>
-    <div id="post-status">
-      <!-- Trạng thái like -->
-      <span id="like-status"><%= liked ? 'Liked' : 'Not Liked' %></span>
-    </div>
-    <div id="post-comments">
-      <!-- Hiển thị tất cả comment -->
-      <ul id="comment-list">
-        <% comments.forEach(comment => { %>
-          <li>Profile ID: <%= comment.profileID %>, Comment: <%= comment.comment %></li>
-        <% }) %>
-      </ul>
-    </div>
-    <div id="interaction-controls">
-      <!-- Nút like/unlike -->
-      <button id="like-button" onclick="toggleLike()"><%= liked ? 'Unlike' : 'Like' %></button>
-      <!-- Ô nhập comment -->
-      <input type="text" id="comment-input" placeholder="Enter your comment">
-      <button id="comment-button" onclick="addComment()">Comment</button>
-    </div>
+  <h1>Post Interaction</h1>
+  <div>
+    <% comments.forEach(comment => { %>
+      <div>
+        <p><strong>Full Name:</strong> <%= comment.fullname %></p>
+        <p><strong>Comment:</strong> <%= comment.comment %></p>
+        <% if (comment.avatar && comment.avatar.filename) { %>
+          <img src="/uploads/<%= comment.avatar.filename %>" alt="Avatar" style="width:50px;height:50px;">
+        <% } else { %>
+          <p>No Avatar</p>
+        <% } %>
+      </div>
+      <hr>
+    <% }) %>
   </div>
-
-  <script>
-    const postID = '<%= post._id %>';
-    const profileID = '<%= profileID %>';
-
-    async function toggleLike() {
-      try {
-        const response = await fetch(`/post/${postID}/like`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ profileID })
-        });
-
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-
-        window.location.reload();
-      } catch (error) {
-        console.error('Error toggling like:', error);
-      }
-    }
-
-    async function addComment() {
-      const commentInput = document.getElementById('comment-input');
-      const comment = commentInput.value.trim();
-      if (!comment) return;
-
-      try {
-        const response = await fetch(`/post/${postID}/comment`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ profileID, comment })
-        });
-
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-
-        commentInput.value = '';
-        window.location.reload();
-      } catch (error) {
-        console.error('Error adding comment:', error);
-      }
-    }
-  </script>
 </body>
 </html>

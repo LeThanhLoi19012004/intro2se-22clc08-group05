@@ -64,6 +64,9 @@ const UpdateProfile = async (req, res) => {
         avatar
       });
 
+      await newProfile.save();
+      
+      newProfile.profileID = newProfile._id;
       await newProfile.save(); // Lưu hồ sơ mới
       console.log('Profile created successfully');
     }

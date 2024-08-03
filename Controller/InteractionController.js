@@ -63,8 +63,39 @@ const savePostInteraction = async (req, res) => {
   }
 };
 
+const getPostInteraction = async (req, res) => {
+  try {
+    const { postid, userid } = req.body;
+
+    const postObjectId = new mongoose.Types.ObjectId(postid);
+    const userObjectId = new mongoose.Types.ObjectId(userid);
+
+    let interaction = await InteractionModel.findOne({ postID: postObjectId })
+      .populate('comments.profileID', 'fullname avatar')
+      .exec();
+
+    if (!interaction) {
+      return res.status(404).json({ success: false, message: "Interaction not found" });
+    }
+
+    const commentsWithUserInfo = interaction.comments.map(comment => ({
+      comment: comment.comment,
+      profileID: comment.profileID._id,
+      fullname: comment.profileID.fullname,
+      avatar: comment.profileID.avatar
+    }));
+    const ejsFilePath = path.join(__dirname, '..', 'renderInteraction.ejs'); 
+    const html = await ejs.renderFile(ejsFilePath, { comments: commentsWithUserInfo });
+    res.send(html);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
 const InteractionController = {
   savePostInteraction: savePostInteraction,
+  getPostInteraction: getPostInteraction
 };
 
 export default InteractionController;
