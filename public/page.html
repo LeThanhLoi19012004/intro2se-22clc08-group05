@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">   
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style_page.css">
+    <title>Home</title>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-left">
+            <a href="page.html" class="logo"><img src="pic/Suki.svg" alt="Logo"/></a>
+        </div>
+        <div class="navbar-center">
+            <div class="search-box">
+                <input type="text" id="search-input" name="search-input" placeholder="Event">
+                <button id="search-button">Search</button>
+            </div>
+        </div>
+        <div class="navbar-right">
+            <ul>
+                <li><a href="create_event.html"><span>Create Event</span></a></li>
+                <li><a href="render_data.html"><span>Render</span></a></li>
+                <li><a href="Profile_update.html"><span>Update Profile</span></a></li>
+                <li><a href="render_profile.html"><span>Render Profile</span></a></li>
+                <li><a href="order_ticket.html"><span>Order Ticket</span></a></li>
+                <li><a href="upload_post.html"><span>Upload Post</span></a></li>
+                <li><a href="render_post.html"><span>Render Post</span></a></li>
+                <li><a href="interaction.html"><span>Interaction</span></a></li>
+                <li><a href="render_interaction.html"><span>Render Interaction</span></a></li>
+                <li><a href="followEvent.html"><span>followEvent</span></a></li>
+            </ul>
+        </div>
+    </nav>
+    <!------------------------------------------------------------------------->
+    <script src="app.js"></script>
+    <script>
+        let profilemenu = document.getElementById("profilemenu")
+        function toggle(){
+            profilemenu.classList.toggle("open-menu")
+        }
+    </script>
+</body>
+</html>
