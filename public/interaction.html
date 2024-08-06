@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Order Ticket</title>
+  <title>Interaction</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -44,21 +44,28 @@
 <body>
   <div class="container">
     <h1>Order Ticket</h1>
-    <form action="/interaction" method="POST">
+    <form action="/LikeInteraction" method="POST">
       <label for="postid">PostID:</label>
       <input type="text" id="postid" name="postid" required>
 
       <label for="likeid">Profile ID for Like:</label>
-      <input type="text" id="likeid" name="likeid" required>
+      <input type="text" id="likeid" name="likeid">
 
+      <button type="submit">Like</button>
+    </form> <br><br>
+
+    <form action="/CommentInteraction" method="POST">
+      <label for="postid">PostID:</label>
+      <input type="text" id="postid" name="postid" required>
+      
       <label for="commentid">Profile ID for Comment:</label>
-      <input type="text" id="commentid" name="commentid" required>
+      <input type="text" id="commentid" name="commentid">
       
       <label for="comment">Comment:</label><br>
-      <textarea id="comment" name="comment" rows="4" cols="50" required></textarea><br><br>
+      <textarea id="comment" name="comment" rows="4" cols="50"></textarea><br><br>
+      <button type="submit">Comment</button>
+    </form> 
 
-      <button type="submit">Interaction</button>
-    </form>
   </div>
 </body>
 </html>

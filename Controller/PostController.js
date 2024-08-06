@@ -4,6 +4,7 @@ import { dirname } from "path";
 import path from "path";
 import PostModel from "../Models/PostModel.js"
 import mongoose from 'mongoose';
+import fs from 'fs';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const conn = mongoose.connection;
@@ -29,7 +30,8 @@ const UpPost = async (req, res) => {
       filename: file.filename,
       contentType: file.mimetype,
       size: file.size,
-      uploadDate: new Date()
+      uploadDate: new Date(),
+      imageBase64: fs.readFileSync(file.path, 'base64')
     }));
 
     if (!mongoose.isValidObjectId(eventID)) {
@@ -62,6 +64,7 @@ const RenderPost = async (req, res) => {
     // Tìm bài đăng dựa trên eventID
     const posts = await PostModel.find({ eventID: eventID_ })  
       .populate('eventID', 'eventname')  // Sửa eventID_ thành eventID
+      .populate('images')
       .exec();
 
    

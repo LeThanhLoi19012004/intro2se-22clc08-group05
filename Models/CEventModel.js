@@ -5,7 +5,8 @@ const logoeventSchema = new mongoose.Schema({
   filename: String,
   contentType: String,
   size: Number,
-  uploadDate: Date
+  uploadDate: Date,
+  imageBase64: String
 });
 
 // Định nghĩa Schema cho thời gian sự kiện
@@ -40,9 +41,10 @@ const CEventSchema = new mongoose.Schema({
     ref: 'InfoProfile',
     required: true 
   },
-  logoevent: { type: [logoeventSchema] }, 
+  logoevent: { type: logoeventSchema }, 
   eventname: { type: String, required: true },
   eventtype: { type: String, required: true },
+  status: {type: String, required: true}, //add
   descriptionevent: { type: String },
   rulesevent: { type: String, required: true },
   location: { type: String, required: true },
@@ -57,6 +59,7 @@ const CEventSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'InfoProfile',
   }],
+
 
 });
 

@@ -6,7 +6,8 @@ const imagepostSchema = new mongoose.Schema({
   filename: String,
   contentType: String,
   size: Number,
-  uploadDate: Date
+  uploadDate: Date,
+  imageBase64: String
 });
 
 const PostSchema = new Schema({

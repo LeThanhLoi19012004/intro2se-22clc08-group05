@@ -2,8 +2,9 @@ import ejs from "ejs";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import path from "path";
-import CEventModel from "../Models/CEventModel.js"
+import CEventModel from "../Models/CEventModel.js";
 import mongoose from 'mongoose';
+import fs from 'fs';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const conn = mongoose.connection;
@@ -25,6 +26,7 @@ const CEvent = async (req, res) => {
     const location = req.body['location'];
     const eventdate = new Date(req.body['eventdate']);
     const eventtimeStr = req.body['eventtime'];
+    const status = req.body['status']; //add
     const [hourStr, minuteStr] = eventtimeStr.split(':');
     let hour = parseInt(hourStr, 10);
     const minute = parseInt(minuteStr, 10);
@@ -51,18 +53,21 @@ const CEvent = async (req, res) => {
     const numberoftickets = parseInt(req.body['numberoftickets'], 10);
     const tickettype = req.body['tickettype'];
     const price = parseInt(req.body['price'], 10);
-    const files = req.files;
 
-    if (!files || files.length === 0) {
+    const file = req.file; // lấy file từ multer
+    const imageBase64 = fs.readFileSync(file.path, 'base64');
+
+    if (!file) {
       return res.status(400).send('No file uploaded');
     }
 
-    const logoevent = files.map(file => ({
+    const logoevent = {
       filename: file.filename,
       contentType: file.mimetype,
       size: file.size,
-      uploadDate: new Date()
-    }));
+      uploadDate: new Date(),
+      imageBase64: imageBase64
+    };
 
     // Kiểm tra và chuyển đổi ownerId thành ObjectId
     if (!mongoose.isValidObjectId(profileId)) {
@@ -85,11 +90,12 @@ const CEvent = async (req, res) => {
       numberoftickets: numberoftickets,
       ticketavailable: numberoftickets,
       tickettype: tickettype,
-      price: price
+      price: price,
+      status: status, //add
     });
     await newEvent.save();
 
-    newEvent.eventObjectID = newEvent._id;
+    newEvent.eventID = newEvent._id;
     await newEvent.save();
 
     res.sendFile(path.join(__dirname, '../public', 'page.html'));
@@ -106,6 +112,7 @@ const Renderdata = async (req, res) => {
     //const regex = new RegExp(eventid_, 'i');
     const findinfor = await CEventModel.find({ eventID: eventid })
       .populate('profile', 'fullname')
+      .populate('logoevent')
       .exec();
 
     if (findinfor.length === 0) {
@@ -142,8 +149,7 @@ const followEvent = async (req, res) => {
   try {
     const eventID = req.body['eventID'];
     const profileID = req.body['profileID'];
-    console.log("eventID: ", eventID);
-    console.log("profileID: ", profileID);
+
     if (!mongoose.isValidObjectId(eventID) || !mongoose.isValidObjectId(profileID)) {
       return res.status(400).send('Invalid event ID or profile ID');
     }
@@ -171,10 +177,52 @@ const followEvent = async (req, res) => {
   }
 };
 
+const ManageEvent = async (req, res) => {
+  try { 
+    const { eventID, eventname, eventtype, status, descriptionevent, rulesevent, location, eventdate, eventtime, price } = req.body;
+
+    // Kiểm tra xem eventID có hợp lệ không
+    if (!mongoose.isValidObjectId(eventID)) {
+      return res.status(400).send('Invalid eventID');
+    }
+
+    // Tìm sự kiện theo eventID
+    const event = await CEventModel.findById(eventID);
+    if (!event) {
+      return res.status(404).send('Event not found');
+    }
+
+    // Cập nhật thông tin sự kiện
+    if (eventname) event.eventname = eventname;
+    if (eventtype) event.eventtype = eventtype;
+    if (status) event.status = status;
+    if (descriptionevent) event.descriptionevent = descriptionevent;
+    if (rulesevent) event.rulesevent = rulesevent;
+    if (location) event.location = location;
+    if (eventdate) event.eventdate = new Date(eventdate);
+    if (eventtime) {
+      const [hour, minute] = eventtime.split(':');
+      event.eventtime.hour = parseInt(hour);
+      event.eventtime.minute = parseInt(minute);
+      event.eventtime.amPm = hour >= 12 ? 'PM' : 'AM';
+    }
+    if (price !== undefined) event.price = price;
+
+    // Lưu sự kiện đã chỉnh sửa
+    await event.save();
+
+    res.status(200).send('Event updated successfully');
+  } catch (error) {
+    console.error('Error managing event:', error);
+    res.status(500).send('Server error');
+  }
+};
+
 const CEventController = {
   CEvent: CEvent,
   Renderdata: Renderdata,
   followEvent: followEvent,
+  ManageEvent: ManageEvent,
 };
 
 export default CEventController;

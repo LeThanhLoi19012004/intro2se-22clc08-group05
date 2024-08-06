@@ -44,7 +44,7 @@
     <% } else { %>
       <div class="profile-avatar">
         <% if (profile.avatar) { %>
-          <img src="/uploads/<%= profile.avatar.filename %>" alt="Avatar">
+          <img src="data:<%= profile.avatar.contentType %>;base64,<%= profile.avatar.imageBase64 %>" alt="Event Image">
         <% } else { %>
           <p>No avatar available</p>
         <% } %>

@@ -10,7 +10,8 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 router_Interaction.use(bodyParser.urlencoded({ extended: true }));
 router_Interaction.use(express.static(join(__dirname, '../public')));
 
-router_Interaction.post('/interaction', InteractionController.savePostInteraction);
+router_Interaction.post('/CommentInteraction', InteractionController.saveComment);
+router_Interaction.post('/LikeInteraction', InteractionController.saveLike)
 router_Interaction.post('/render_interaction', InteractionController.getPostInteraction);
 
 export default router_Interaction;

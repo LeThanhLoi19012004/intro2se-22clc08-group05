@@ -11,14 +11,14 @@
   <% if (posts.length > 0) { %>
     <% posts.forEach(post => { %>
       <div class="post">
-        <h2>Event ID: <%= post.eventID.eventname  %></h2>
+        <h2>Event ID: <%= post.eventID.eventname %></h2>
         <p>Description: <%= post.descriptionpost %></p>
         <p>Creation Date: <%= new Date(post.postcreationdate).toDateString() %></p>
         <ul>
           <% if (post.images && post.images.length > 0) { %>
             <p><strong>Images:</strong></p>
-            <% post.images.forEach(logo => { %>
-              <img src="/uploads/<%= logo.filename %>" alt="Event Image">
+            <% post.images.forEach(image => { %>
+              <img src="data:<%= image.contentType %>;base64,<%= image.imageBase64 %>" alt="Event Image">
             <% }) %>
           <% } else { %>
             <p>No images available</p>

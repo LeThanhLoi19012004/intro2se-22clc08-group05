@@ -3,7 +3,7 @@ import { fileURLToPath } from "url";
 import { dirname } from "path";
 import path from "path";
 import ProfileModel from "../Models/ProfileModel.js"
-
+import fs from 'fs';
 import mongoose from 'mongoose';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -32,7 +32,8 @@ const UpdateProfile = async (req, res) => {
       filename: req.file.filename,
       contentType: req.file.mimetype,
       size: req.file.size,
-      uploadDate: new Date()
+      uploadDate: new Date(),
+      imageBase64: fs.readFileSync(req.file.path, 'base64')
     } : null;
 
     // Tìm hồ sơ dựa trên account ID
@@ -85,6 +86,7 @@ const RenderProfile = async (req, res) => {
   try {
     const profile = await ProfileModel.findOne({ idaccount: idaccount })
       .populate('idaccount', 'username') 
+      .populate('avatar')
       .exec();
 
     if (!profile) {

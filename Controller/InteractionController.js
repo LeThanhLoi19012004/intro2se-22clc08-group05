@@ -9,7 +9,7 @@ import mongoose from "mongoose";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-const savePostInteraction = async (req, res) => {
+/*const savePostInteraction = async (req, res) => {
   try {
     const { postid, likeid, commentid, comment } = req.body;
 
@@ -61,6 +61,85 @@ const savePostInteraction = async (req, res) => {
     console.error(error);
     res.status(500).send('Internal Server Error');
   }
+};*/
+
+const saveLike = async (req, res) => {
+  try {
+    const { postid, likeid } = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(postid) || !mongoose.Types.ObjectId.isValid(likeid)) {
+      return res.status(400).send('Invalid postID or likeID');
+    }
+
+    const profileExists = await ProfileModel.findById(likeid);
+    if (!profileExists) {
+      return res.status(404).send('Profile ID not found');
+    }
+
+    const post = await InfoPostModel.findById(postid);
+    if (!post) {
+      return res.status(404).send('Post not found');
+    }
+
+    const postObjectId = new mongoose.Types.ObjectId(postid);
+    const likeObjectId = new mongoose.Types.ObjectId(likeid);
+
+    let interaction = await InteractionModel.findOne({ postID: postObjectId });
+
+    if (!interaction) {
+      interaction = new InteractionModel({ postID: postObjectId, profileIDs: [], comments: [] });
+    }
+
+    const likeIndex = interaction.profileIDs.indexOf(likeObjectId);
+    if (likeIndex === -1) {
+      interaction.profileIDs.push(likeObjectId);
+    } else {
+      interaction.profileIDs.splice(likeIndex, 1);
+    }
+
+    await interaction.save();
+    res.sendFile(path.join(__dirname, '../public', 'page.html'));
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
+const saveComment = async (req, res) => {
+  try {
+    const { postid, commentid, comment } = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(postid) || !mongoose.Types.ObjectId.isValid(commentid)) {
+      return res.status(400).send('Invalid postID or commentID');
+    }
+
+    const profileExists = await ProfileModel.findById(commentid);
+    if (!profileExists) {
+      return res.status(404).send('Profile ID not found');
+    }
+
+    const post = await InfoPostModel.findById(postid);
+    if (!post) {
+      return res.status(404).send('Post not found');
+    }
+
+    const postObjectId = new mongoose.Types.ObjectId(postid);
+    const commentObjectId = new mongoose.Types.ObjectId(commentid);
+
+    let interaction = await InteractionModel.findOne({ postID: postObjectId });
+
+    if (!interaction) {
+      interaction = new InteractionModel({ postID: postObjectId, profileIDs: [], comments: [] });
+    }
+
+    interaction.comments.push({ profileID: commentObjectId, comment });
+    await interaction.save();
+
+    res.sendFile(path.join(__dirname, '../public', 'page.html')); 
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
 };
 
 const getPostInteraction = async (req, res) => {
@@ -94,7 +173,8 @@ const getPostInteraction = async (req, res) => {
   }
 };
 const InteractionController = {
-  savePostInteraction: savePostInteraction,
+  saveLike: saveLike,
+  saveComment: saveComment,
   getPostInteraction: getPostInteraction
 };
 

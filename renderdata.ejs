@@ -38,6 +38,7 @@
         <li>
           <p><strong>Name:</strong> <%= event.eventname %></p>
           <p><strong>Type:</strong> <%= event.eventtype %></p>
+          <p><strong>Status</strong> <%= event.status %></p>
           <p><strong>Description:</strong> <%= event.descriptionevent %></p>
           <p><strong>Date:</strong> <%= event.eventdate ? new Date(event.eventdate).toDateString() : 'No date available' %></p>
           <p><strong>Time:</strong> <%= event.eventtime.hour %>:<%= String(event.eventtime.minute).padStart(2, '0') %> <%= event.eventtime.amPm %></p>
@@ -48,11 +49,9 @@
           <p><strong>Rules:</strong> <%= event.rulesevent %></p>
           <p><strong>Location:</strong> <%= event.location ? event.location : 'Unknown' %></p>
           <p><strong>Ticket Type:</strong> <%= event.tickettype %></p>
-          <% if (event.logoevent && event.logoevent.length > 0) { %>
-            <p><strong>Images:</strong></p>
-            <% event.logoevent.forEach(logo => { %>
-              <img src="/uploads/<%= logo.filename %>" alt="Event Image">
-            <% }) %>
+          <% if (event.logoevent) { %>
+            <p><strong>Image:</strong></p>
+            <img src="data:<%= event.logoevent.contentType %>;base64,<%= event.logoevent.imageBase64 %>" alt="Event Image">
           <% } else { %>
             <p>No images available</p>
           <% } %>
@@ -62,7 +61,7 @@
   <% } %>
 
   <script>
-    // You can add JavaScript here if needed
+
   </script>
 </body>
 </html>
