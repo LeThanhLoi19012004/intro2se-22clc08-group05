@@ -1,0 +1,359 @@
+.sign-up__form-container{
+    width:100%;
+    height: 100%;
+    align-content: center;
+    background-color: #2d158f;
+    overflow: hidden;
+}
+.sign-up__form{
+    --formWidth : 400px;
+    --formHeight : 100vh;
+    --borderRad : 20px;
+    --fontSize: 16px;
+    width : var(--formWidth);
+    height: var(--formHeight);
+    margin:auto;
+    /*Glass effect*/
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+
+    border-radius: var(--borderRad);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    scale: 0.9;
+    
+}
+.sign-up__form .logo-container{
+    --containerSize : 100px;
+    width: var(--containerSize);
+    height: var(--containerSize);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0px;
+}
+.sign-up__form .logo-container img{
+    object-fit: contain;
+    width: var(--containerSize);
+    background-size: cover;
+
+}
+.sign-up__form .title{
+    font-weight: bolder;
+    text-align: center;
+    font-size:  40px;
+    height:auto;
+    margin-bottom:20px;
+    padding-top:20px;
+}
+.sign-up__form input[type = "text"], 
+.sign-up__form input[type = "password"],
+.sign-up__form input[type = "date"], 
+.sign-up__form input[type = "email"],
+.sign-up__button{
+
+    padding: 10px 20px;
+    height: 50px;
+    font-size: var(--fontSize);
+    border-radius:var(--borderRad);
+    border: 0;
+    outline: 0;
+    margin: 5px 0px;
+    color:white;
+    /*Glass efffect*/
+    background-color: rgba(105, 102, 102, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    
+    margin-left:auto;
+    margin-right: auto;
+    width:90%;
+    box-sizing: border-box ;
+    
+}
+.sign-up__form input[type = "text"]::placeholder, 
+.sign-up__form input[type = "password"]::placeholder,
+.sign-up__form input[type = "email"]::placeholder
+{
+    color: rgba(255, 255, 255, 0.75);
+}
+.sign-up__button{
+    background-color: rgba(247, 12, 12, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    margin: 20px 0px;
+}
+
+input[type = "checkbox"]{
+    clip:rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+} 
+.signup-page__checkbox{
+    display: inline-block;
+    height:20px;
+    width:20px;
+    background-color: rgba(105, 102, 102, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+
+    margin-right:5px;
+}
+.signup-page__checked--active{
+    background-color: rgb(199, 33, 199);
+}
+
+
+
+.sign-up__already-have-account-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap:10px;
+    padding-bottom:20px;
+    color:white;
+}
+.sign-up__already-have-account-container a{
+    color:white;
+}
+    
+.sign-up__abstract-container .sign-up__abstract-triangle{
+    z-index:0;
+    width:auto;
+    height:auto;
+    /*Margin*/
+    position: fixed;
+    margin-left:100px;
+    --edgeWidth:200px;
+    --edgeHeight:40px;
+    --borderRad:20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    transform-origin: 50% 50%;
+    scale:1.5;
+    animation: clockwise 50s infinite;
+    animation-timing-function: linear;
+}
+
+@keyframes clockwise{
+    0%{
+        transform: rotate(0deg);
+    }
+    100%{
+        transform :rotate(360deg)
+    }
+}
+@keyframes anticlockwise{
+    0%{
+        transform: rotate(0deg);
+    }
+    100%{
+        transform :rotate(-360deg)
+    }
+}
+.sign-up__abstract-container .sign-up__edge1{
+    z-index:0;
+    
+    border-radius: var(--borderRad);
+    width: var(--edgeWidth);
+    height: var(--edgeHeight);
+    position: absolute;
+    transform-origin: center;   
+
+    background:linear-gradient(to bottom, rgb(255 103 121), rgb(179 53 255));
+}
+
+.sign-up__abstract-container .sign-up__edge2{
+   
+    border-radius: var(--borderRad);
+    width: var(--edgeWidth);
+    height: var(--edgeHeight);
+    transform-origin: 10% 50%;
+    rotate:60deg;
+    position: absolute;
+    background:linear-gradient(to bottom, rgb(255 103 121), rgb(179 53 255));
+
+}
+.sign-up__abstract-container .sign-up__edge3{
+   
+    border-radius: var(--borderRad);
+    width: var(--edgeWidth);
+    height: var(--edgeHeight);
+    transform-origin: 90% 50%;
+    rotate:-60deg;
+    position: absolute;
+    overflow: hidden;
+
+    background:linear-gradient(to bottom, rgb(255 103 121), rgb(179 53 255));
+    box-shadow: inset 5px -1px 10px 1px  rgb(179 53 255), 0px -1px 1px -1px rgb(179 53 255);
+}
+
+.sign-up__abstract-container .sign-up__abstract-triangle:nth-child(1){
+    margin-left:800px;
+    margin-top:400px;
+    position: fixed;
+    scale: 2.5;
+    animation: anticlockwise 50s infinite;
+    animation-timing-function: linear;
+}
+.sign-up__abstract-container .sign-up__abstract-triangle:nth-child(2){
+    margin-left:-400px;
+    margin-top:10px;
+    position: fixed;
+    scale: 2.0;
+    animation: clockwise 50s infinite;
+    animation-timing-function: linear;
+
+}
+.sign-up__abstract-container .sign-up__abstract-triangle:nth-child(2) .sign-up__edge1, 
+.sign-up__abstract-container .sign-up__abstract-triangle:nth-child(2) .sign-up__edge2, 
+.sign-up__abstract-container .sign-up__abstract-triangle:nth-child(2) .sign-up__edge3{
+    background:linear-gradient(to bottom, rgb(179 53 255), rgb(80, 13, 247));
+}
+
+.sign-up__abstract-container .sign-up__abstract-polyline {
+    z-index:0;
+    width:auto;
+    height:auto;
+    /*Margin*/
+    margin-top:600px;
+    margin-left: -400px;
+    position: fixed;
+    --edgeWidth:200px;
+    --edgeHeight:40px;
+    --borderRad:20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    rotate:60deg;
+    scale: 2.5;
+}
+.sign-up__abstract-container .sign-up__line1{
+    z-index:0;
+    --edgeWidth:200px;
+    --edgeHeight:40px;
+    --borderRad:20px;
+
+    border-radius: var(--borderRad);
+    width: var(--edgeWidth);
+    height: var(--edgeHeight);
+    position: absolute;
+    background: linear-gradient(to right, rgb(255 103 121), rgb(179 53 255));
+}
+.sign-up__abstract-container .sign-up__line2{
+   
+    border-radius: var(--borderRad);
+    width: var(--edgeWidth);
+    height: var(--edgeHeight);
+    background: linear-gradient(to right, rgb(255 103 121), rgb(179 53 255));
+    transform-origin: 10% 50%;
+    rotate:60deg;
+    position: absolute;
+
+}
+.sign-up__abstract-container .sign-up__line3{
+   
+    border-radius: var(--borderRad);
+    width: var(--edgeWidth);
+    height: var(--edgeHeight);
+    background: linear-gradient(to right, rgb(255 103 121), rgb(179 53 255));
+    transform-origin: 90% 50%;
+    rotate:60deg;
+    position: absolute;
+    overflow: hidden;
+
+}
+
+.sign-up__abstract-container .sign-up__abstract-circle{
+    z-index:0;
+    border-radius:  50%;
+    position: fixed;
+ 
+    overflow: hidden;
+    
+    margin-top:0px;
+    margin-left:500px;
+    --radius : 200px;
+    width:var(--radius);
+    height: var(--radius);
+    rotate:60deg;
+    scale: 1.5;
+    background:linear-gradient(135deg, rgb(255 103 121), rgb(255, 53, 90));
+    animation: expand 8s linear infinite;
+    animation-timing-function: linear;
+}
+.sign-up__abstract-container .sign-up__lighting{
+    z-index: 0;
+    transform: translate(45px, 20px);
+    border-radius: 50%;
+    position: absolute;
+    width: 40%;
+    height:40%;
+    background: radial-gradient(circle at center, white, transparent);
+    filter:blur(20px);
+    
+}
+@keyframes expand{
+    0%{
+        height: calc(var(--radius) * 0.8);
+        width: calc(var(--radius) * 0.8);
+    }
+    50%{
+        
+        height:var(--radius);
+        width:var(--radius);
+    }
+    100%{
+        height: calc(var(--radius) * 0.8);
+        width: calc(var(--radius) * 0.8);
+    }
+}
+
+.sign-up__abstract-container .sign-up__gradient-smudge{
+    z-index: 0;
+    position: fixed;
+    
+    --radialPos: 600px;
+    --gradientColor : rgb(255, 104, 39);
+    height: var(--radialPos);
+    width: var(--radialPos);
+
+    margin-left:-200px;
+    margin-top:400px;
+    --radialRad : var(--circleRad);
+    border-radius:  50%;
+ 
+    filter: blur(50px);
+    background: radial-gradient(circle at center, var(--gradientColor), transparent);
+}
+.sign-up__abstract-container .sign-up__gradient-smudge:nth-last-of-type(1){
+    z-index: 0;
+    position: fixed;
+    
+    --radialPos: 800px;
+
+    height: var(--radialPos);
+    width: var(--radialPos);
+    margin-left:700px;
+    margin-top:-300px;
+    --radialRad : var(--circleRad);
+    border-radius:  50%;
+ 
+    filter: blur(50px);
+     
+    background: radial-gradient(circle at center, var(--gradientColor), transparent);
+}
