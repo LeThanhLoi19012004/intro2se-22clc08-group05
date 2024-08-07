@@ -1,0 +1,26 @@
+{
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "gridfs-stream": "^1.1.1",
+    "mongoose": "^8.5.2",
+    "multer": "^1.4.4-lts.1",
+    "multer-gridfs-storage": "^5.0.2",
+    "nodemailer": "^6.9.13"
+  },
+  "name": "thuan",
+  "version": "1.0.0",
+  "description": "thuan ngu",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "n"
+  ],
+  "author": "",
+  "license": "MIT"
+}
