@@ -5,7 +5,7 @@ import path from "path";
 import AccountModel from "../Models/AccountModel.js"
 import ProfileModel from '../Models/ProfileModel.js';
 import crypto from 'crypto';
-import sendMail from "../Email/SendEmail.js"
+import Email from '../Email/SendEmail.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -33,14 +33,37 @@ const decrypt = (encryptedData, keyHex, ivHex) => {
   return decrypted;
 }
 
+const verifyEmail = async (req, res) => {
+  try{
+    const emailToken = req.params.token;
+    if (!emailToken) {
+      return res.status(400).send('Token is not found');
+    }
+    const account = await AccountModel.findOne({emailToken: emailToken}).exec();
+    if (!account) {
+      return res.status(400).send('Invalid token');
+    }
+    account.isVerified = true;
+    account.emailToken = null;
+    await account.save();
+    res.status(200).send('Email is verified, you can now login');
+  }
+  catch(err){
+    console.error("Error finding user:", err);
+    return res.status(500).send("Internal Server Error");
+  }
+}
+
+
 const PostSignin = async (req, res) => {
   const { username, password } = req.body;
   try {
     const account = await AccountModel.findOne({ username: username }).exec();
-    // if (account.confirmed === false) {
-    //   console.log("Please confirm your email first");
-    //   res.sendFile(path.join(__dirname, '../public', 'index.html'));
-    // }
+    if (account.isVerified === false) {
+      console.log("Please confirm your email first");
+      const html = await ejs.renderFile(path.join(__dirname, '../verify-pass.ejs'), { user: account, verifyLink: '#' });
+      return res.send(html);
+    }
     if (account) {
       const isMatch = password === decrypt(account.password, account.key, account.iv);
       if (isMatch) {
@@ -60,19 +83,21 @@ const PostSignin = async (req, res) => {
   }
 };
 
-
 const PostSignup = async (req, res) => {
   try {
     const { username, password, email } = req.body;
     const { encryptedData, key, iv } = encrypt(password);
+    const token = crypto.randomBytes(64).toString('hex');
+
+    await Email.send(token, email);
     const newAccount = await AccountModel.create({
       username,
       password: encryptedData,
       key,
       iv,
       email,
-      //isVerified: false,
-      //token: crypto.randomBytes(16).toString('hex'),
+      isVerified: false,
+      emailToken: token
     });
     console.log(newAccount._id);
     await ProfileModel.create({
@@ -105,10 +130,9 @@ const PostForget_Pass = async (req, res) => {
       return res.status(400).send('No user with that email');
     } else {
       const password = decrypt(findinfor.password, findinfor.key, findinfor.iv);
-      await sendMail(password, findinfor.email);
+      await Email.sendMail(password, email);
       const html = await ejs.renderFile(path.join(__dirname, '../forgot-password.ejs'), { user: findinfor, resetLink: '#' });
       res.send(html);
-      //res.sendFile(path.join(__dirname, '../public', 'index.html'));
     }
   } catch (err) {
     console.error("Error finding user:", err);
@@ -120,6 +144,7 @@ const AccountController = {
   PostSignin: PostSignin,
   PostSignup: PostSignup,
   PostForget_Pass: PostForget_Pass,
+  verifyEmail: verifyEmail
 };
 
 export default AccountController;

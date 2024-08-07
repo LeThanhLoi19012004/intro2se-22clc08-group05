@@ -11,8 +11,8 @@ const sendMail = async (password, email) => {
     port: 587,
     secure: false, // Use `true` for port 465, `false` for all other ports
     auth: {
-      user: 'suki.eventmanagementplatform@gmail.com', // generated ethereal user
-      pass: 'iqgexrddulcvwpxs', // generated ethereal password
+      user: process.env.EMAIL,
+      pass: process.env.PASSWORD,
     },
   });
 
@@ -26,6 +26,26 @@ const sendMail = async (password, email) => {
   console.log("Message sent: %s", info.messageId);
 };
 
+const send = async (emailToken, email) => {
+  let transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false, // Use `true` for port 465, `false` for all other ports
+    auth: {
+      user: process.env.EMAIL,
+      pass: process.env.PASSWORD,
+    },
+  });
+
+  let info = await transporter.sendMail({
+    from: 'Suki - The Ultimate Event Creation and Promotion Hub', // sender address
+    to: email, // list of receivers
+    subject: "VERIFY EMAIL", // Subject line
+    text: "Please verify your email by clicking the link below", // plain text body
+    html: "<a href='http://localhost:3000/verify-email/" + emailToken + "'>Click here to verify your email</a>", // html
+  });
+  console.log("Message sent: %s", info.messageId);
+};
 
 
 // Function to check SMTP connection
@@ -55,4 +75,9 @@ checkSMTPConnection('smtp.ethereal.email', 587)
     console.error('SMTP connection failed');
   });
 
-export default sendMail;
+const Email = {
+  sendMail,
+  send,
+};
+
+export default Email;

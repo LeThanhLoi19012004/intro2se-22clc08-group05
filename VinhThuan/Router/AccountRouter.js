@@ -16,5 +16,6 @@ router.post('/sign-up', AccountController.PostSignup);
 
 router.post('/forgot-password', AccountController.PostForget_Pass);
 
+router.get('/verify-email/:token', AccountController.verifyEmail);
 
 export default router;
