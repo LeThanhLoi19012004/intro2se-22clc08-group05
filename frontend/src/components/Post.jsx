@@ -193,7 +193,7 @@ function Post(props) {
           <span onClick={() => setShowOverlay(!showOverlay)}> Comment</span>
         </div>
         <div className="post__post-activity-link">
-          <FaRegShareSquare size={27} />
+          <FaRegShareSquare size={30} />
           <span> Share</span>
         </div>
       </div>
