@@ -82,6 +82,9 @@ function SignUpForm() {
   return (
     <div className="sign-up__form-container">
       <AbstractFigures />
+      <Link to="/" className="login-signup__back-to-guest">
+        <span>&#8249;</span>&#8194; BACK
+      </Link>
       <form
         className="sign-up__form"
         onSubmit={handleSubmit}
