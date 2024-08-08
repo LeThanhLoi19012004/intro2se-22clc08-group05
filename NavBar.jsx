@@ -32,11 +32,25 @@ function Navbar() {
     }
       getImg();
   }, [])
-    const [dropdownActive, setDropdownActive] = useState(false);
+  const [dropdownActive, setDropdownActive] = useState(false);
+  const [notificationDropdownActive, setNotificationDropdownActive] = useState(false);
+  const [ticketDropdownActive, setTicketDropdownActive] = useState(false);
+  const toggleDropdown = () => {
+      setDropdownActive(!dropdownActive);
+      setTicketDropdownActive(false);
+      setNotificationDropdownActive(false);
+  };
+  const toggleNotificationDropdown = () => {
+    setNotificationDropdownActive(!notificationDropdownActive);
+    setTicketDropdownActive(false);
+    setDropdownActive(false);
+  };
+  const toggleTicketDropdown = () => {
+    setTicketDropdownActive(!ticketDropdownActive);
+    setNotificationDropdownActive(false);
+    setDropdownActive(false);
 
-    const toggleDropdown = () => {
-        setDropdownActive(!dropdownActive);
-    };
+  };
 
     return (
       <nav className="navbar">
@@ -52,8 +66,112 @@ function Navbar() {
         </div>
         <div className="navbar-right">
           <ul>
-            <li><IoMdNotificationsOutline size={30} style={{ color: 'white' }}/></li>
-            <li><LuTicket size={30}style={{ color: 'white' }} /></li>
+          <li onClick={toggleNotificationDropdown}>
+              <IoMdNotificationsOutline
+                  size={30}
+                  style={{
+                  color: notificationDropdownActive ? '#ff7383' : 'white',
+                  backgroundColor: notificationDropdownActive ? 'white' : 'transparent',
+                  borderRadius: '50%',
+                  padding: '5px'
+                }}
+              />
+              <div className={`notification-dropdown ${notificationDropdownActive ? 'active' : ''}`}>
+                <div className="notification-card">
+                  <div className="nav-bar__card-title">Notifications</div>
+                  <div className="nav-bar__card-list">
+                    <div className="nav-bar__card-list-part">
+                      <div className="nav-bar__card-list-part-pink"></div>
+                      <div className="nav-bar__card-list-part-info">
+                        <div className="nav-bar__card-list-part-info-main">
+                          <strong>EventOrganizer</strong> just replied to your comment.
+                        </div>
+                        <div className="nav-bar__card-list-part-info-time">20 minutes ago</div>
+                      </div>
+                    </div>
+                    <div className="nav-bar__card-list-part">
+                      <div className="nav-bar__card-list-part-pink"></div>
+                      <div className="nav-bar__card-list-part-info">
+                        <div className="nav-bar__card-list-part-info-main">
+                          New update of <strong>FutureEvent</strong>.
+                        </div>
+                        <div className="nav-bar__card-list-part-info-time">3 hours ago</div>
+                      </div>
+                    </div>
+                    <div className="nav-bar__card-list-part">
+                      <div className="nav-bar__card-list-part-white"></div>
+                      <div className="nav-bar__card-list-part-info">
+                        <div className="nav-bar__card-list-part-info-main">
+                          <strong>NewEvent</strong> starts in 2 days.
+                        </div>
+                        <div className="nav-bar__card-list-part-info-time">2 days ago</div>
+                      </div>
+                    </div>
+                    <div className="nav-bar__card-list-part">
+                      <div className="nav-bar__card-list-part-white"></div>
+                      <div className="nav-bar__card-list-part-info">
+                        <div className="nav-bar__card-list-part-info-main">
+                          <strong>UserFriend</strong> just replied to your comment.
+                        </div>
+                        <div className="nav-bar__card-list-part-info-time">10 minutes ago</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li onClick={toggleTicketDropdown}><LuTicket 
+                   size={30}
+                   style={{
+                   color: ticketDropdownActive ? '#ff7383' : 'white',
+                   backgroundColor: ticketDropdownActive ? 'white' : 'transparent',
+                   borderRadius: '50%',
+                   padding: '5px'}}/>
+              <div className={`ticket-dropdown ${ticketDropdownActive ? 'active' : ''}`}>
+                <div className="ticket-card">
+                <div className="nav-bar__card-title">Tickets</div>
+                  <div className="nav-bar__card-list">
+                    <div className="nav-bar__card-list-part">
+                      <div className="nav-bar__card-list-part-pink"></div>
+                      <div className="nav-bar__card-list-part-info">
+                        <div className="nav-bar__card-list-part-info-events">
+                          Event Not Happened Yet With Participation
+                        </div>
+                        <div className="nav-bar__card-list-part-info-participation">Participation</div>
+                      </div>
+                    </div>
+                    <div className="nav-bar__card-list-part">
+                      <div className="nav-bar__card-list-part-pink"></div>
+                      <div className="nav-bar__card-list-part-info">
+                        <div className="nav-bar__card-list-part-info-events">
+                          Event Not Happened Yet With Tickets
+                        </div>
+                        <div className="nav-bar__card-list-part-info-participation">2 Tickets</div>
+                      </div>
+                    </div>
+                    <div className="nav-bar__card-list-part">
+                      <div className="nav-bar__card-list-part-white"></div>
+                      <div className="nav-bar__card-list-part-info">
+                        <div className="nav-bar__card-list-part-info-events">
+                          Event Happened With Participation
+                        </div>
+                        <div className="nav-bar__card-list-part-info-participation">Participation</div>
+                      </div>
+                    </div>
+                    <div className="nav-bar__card-list-part">
+                      <div className="nav-bar__card-list-part-white"></div>
+                      <div className="nav-bar__card-list-part-info">
+                        <div className="nav-bar__card-list-part-info-events">
+                          Event Happened With Tickets
+                        </div>
+                        <div className="nav-bar__card-list-part-info-participation">1 Ticket</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+
           </ul>
           <div className="profile_img" onClick={toggleDropdown}>
             <img src={url} alt="profile-img" />
