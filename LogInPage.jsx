@@ -54,17 +54,21 @@ const AbstractFigures = () => (
   </div>
 );
 
-// Component: Forgot Password
 const ForgotPassword = ({ onBack }) => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const navigate = useNavigate(); // Initialize navigate
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     const response = await forgotPassword({ email });
-    setMessage(response.success
-      ? "Password reset link has been sent to your email."
-      : "Failed to send reset link. Please try again.");
+
+    if (response.success) {
+      setMessage("Password reset link has been sent to your email.");
+      // Navigate to OTPVerification after sending the reset link
+    } else {
+      setMessage("Failed to send reset link. Please try again.");
+    }
   };
 
   return (
@@ -126,6 +130,9 @@ const Login = () => {
   return (
     <div className="login-page__login__container">
       <AbstractFigures />
+      <Link to="/" className="login-signup__back-to-guest">
+        <span>&#8249;</span>&#8194; BACK
+      </Link>
       {showForgotPassword ? (
         <ForgotPassword onBack={() => setShowForgotPassword(false)} />
       ) : (
