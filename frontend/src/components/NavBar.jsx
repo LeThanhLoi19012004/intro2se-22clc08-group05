@@ -10,47 +10,48 @@ import Suki from '../assets/SukiWhite.svg';
 import { renderProfile } from '../API';
 
 function Navbar() {
-    const navigate = useNavigate();
-    const user_id = localStorage.getItem("UserID");
-    const [url, setUrl] = useState( "https://cdn-icons-png.flaticon.com/512/3682/3682281.png")
-    const [name, setName] = useState("Guest")
-    const handleLogout = () => {
-      localStorage.clear();
-      navigate('/');
-    };
-    const handleSetting = () => {
-      navigate('/setting')
-    };
-    useEffect(() => {
-      const getImg = async () => {
-        const response = await renderProfile({user_id});
-        if (response.success){
-          setUrl(response.data.avatar);
-          setName(response.data.idaccount.username)
-        }
-      
+  const navigate = useNavigate();
+  const user_id = localStorage.getItem("UserID");
+  const [url, setUrl] = useState( "https://cdn-icons-png.flaticon.com/512/3682/3682281.png")
+  const [name, setName] = useState("Guest")
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate('/');
+  };
+  const handleSetting = () => {
+    navigate('/setting')
+  };
+  useEffect(() => {
+    const getImg = async () => {
+      const response = await renderProfile({user_id});
+      if (response.success){
+        setUrl(response.data.avatar);
+        setName(response.data.idaccount.username)
       }
-        getImg();
-    }, [])
-    const [dropdownActive, setDropdownActive] = useState(false);
-    const [notificationDropdownActive, setNotificationDropdownActive] = useState(false);
-    const [ticketDropdownActive, setTicketDropdownActive] = useState(false);
-    const toggleDropdown = () => {
-        setDropdownActive(!dropdownActive);
-        setTicketDropdownActive(false);
-        setNotificationDropdownActive(false);
-    };
-    const toggleNotificationDropdown = () => {
-      setNotificationDropdownActive(!notificationDropdownActive);
+    
+    }
+      getImg();
+  }, [])
+  const [dropdownActive, setDropdownActive] = useState(false);
+  const [notificationDropdownActive, setNotificationDropdownActive] = useState(false);
+  const [ticketDropdownActive, setTicketDropdownActive] = useState(false);
+  const toggleDropdown = () => {
+      setDropdownActive(!dropdownActive);
       setTicketDropdownActive(false);
-      setDropdownActive(false);
-    };
-    const toggleTicketDropdown = () => {
-      setTicketDropdownActive(!ticketDropdownActive);
       setNotificationDropdownActive(false);
-      setDropdownActive(false);
+  };
+  const toggleNotificationDropdown = () => {
+    setNotificationDropdownActive(!notificationDropdownActive);
+    setTicketDropdownActive(false);
+    setDropdownActive(false);
+  };
+  const toggleTicketDropdown = () => {
+    setTicketDropdownActive(!ticketDropdownActive);
+    setNotificationDropdownActive(false);
+    setDropdownActive(false);
 
-    };
+  };
+
     return (
       <nav className="navbar">
         <div className="navbar-left">
@@ -65,7 +66,7 @@ function Navbar() {
         </div>
         <div className="navbar-right">
           <ul>
-            <li onClick={toggleNotificationDropdown}>
+          <li onClick={toggleNotificationDropdown}>
               <IoMdNotificationsOutline
                   size={30}
                   style={{
@@ -104,12 +105,13 @@ function Navbar() {
                 </div>
               </div>
             </li>
+
           </ul>
           <div className="profile_img" onClick={toggleDropdown}>
             <img src={url} alt="profile-img" />
             <div className={`dropdown-menu ${dropdownActive ? 'active' : ''}`}>
               <div className="profile-section">
-                <img src={url} alt="profile-img" />
+                <img src={url} alt="profile-img"/>
                 <div className="profile-info">
                   <p>{name}</p>
                 </div>

@@ -1,9 +1,9 @@
 /* Make sure the navbar is properly styled */
+
 .navbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 6px 6%;
     position: fixed;
     top: 0;
     z-index: 100;
@@ -12,25 +12,38 @@
     box-sizing: border-box;
     background: linear-gradient(150deg, #2d158f, #ff7383);
     height: 80px;
+    padding: 0 20px 0 30px;
+    gap: 20px;
 }
-.navbar-left {
-    display: flex;
-    color:white;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    font-size: 20px;
-}
-.navbar-left .logo {
-    width:50px;
-    max-height: 50px;
 
-    top: 0;
+.navbar-left {
+    width: 26%;
+    color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+}
+
+.navbar-left .logo {
+    width: 50px;
+}
+
+.navbar-left span {
+    color: white;
+    font-weight: 800;
+    font-weight: bold;
+    font-size: 20px;
+    margin-left: 10px;
+    flex: 1;
+    display: flex;
 }
 
 .navbar-right {
     display: flex;
     align-items: center;
+    justify-content: right;
+    width: 25.4%;
 }
 
 .navbar-right ul {
@@ -62,15 +75,19 @@
     position: relative;
 }
 
-.navbar-center .search-box {
-    width: 500px;
-    box-sizing: border-box;
+.navbar-center {
+    flex: 1;
     display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
+.navbar-center .search-box {
+    width: 90%;
+    display: flex;
     align-items: center;
     padding: 5px 20px;
 
-    /* background: rgb(214, 199, 199); */
     /*Glass effect*/
     background: rgba(255, 255, 255, 0.115 );
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
@@ -92,14 +109,12 @@
     color:white;
 }
 /*Right section*/
-.navbar-right ul li{
-    cursor: pointer;
-}
 .navbar-right .profile_img {
     position: relative;
 }
+/*Notification and Ticket dropdown*/
 /*Notification dropdown*/
-.notification-dropdown {
+.navbar-right .notification-dropdown {
     display: none;
     position: absolute;
     top: 80px;
@@ -112,12 +127,12 @@
     z-index: 1000;
 }
   
-.notification-dropdown.active {
+.navbar-right .notification-dropdown.active {
     display: block;
     position: absolute;
     
 }
-.notification-card {
+.navbar-right .notification-card {
     padding: 10px;
     border-bottom: 1px solid #eee;
     width:400px;
@@ -127,28 +142,28 @@
     overflow-y: auto;
 }
   
-.notification-card p {
+.navbar-right .notification-card p {
     margin: 0;
 }
-.notification-card::-webkit-scrollbar {
+.navbar-right .notification-card::-webkit-scrollbar {
     width: 5px; /* Width of the scrollbar */
 }
-.notification-card::-webkit-scrollbar-thumb {
+.navbar-right .notification-card::-webkit-scrollbar-thumb {
     background: linear-gradient(150deg, #2d158f, #ff7383);
     border-radius: 4px; /* Rounded corners for the scrollbar thumb */
 }
   
-.notification-card::-webkit-scrollbar-thumb:hover {
+.navbar-right .notification-card::-webkit-scrollbar-thumb:hover {
     background: grey; /* Color when hovering over the scrollbar thumb */
 }
   
-.notification-card::-webkit-scrollbar-track {
+.navbar-right .notification-card::-webkit-scrollbar-track {
     background: #f1f1f1; /* Background of the scrollbar track */
     border-radius: 4px; /* Rounded corners for the scrollbar track */
 }
 /*================*/
 /*Ticket dropdown*/
-.ticket-dropdown {
+.navbar-right .ticket-dropdown {
     display: none;
     position: absolute;
     top: 80px;
@@ -161,12 +176,12 @@
     z-index: 1000;
 }
   
-.ticket-dropdown.active {
+.navbar-right .ticket-dropdown.active {
     display: block;
     position: absolute;
     
 }
-.ticket-card {
+.navbar-right .ticket-card {
     padding: 10px;
     border-bottom: 1px solid #eee;
     width:400px;
@@ -176,35 +191,35 @@
     overflow-y: auto;
 }
   
-.ticket-card p {
+.navbar-right .ticket-card p {
     margin: 0;
 }
-.ticket-card::-webkit-scrollbar {
+.navbar-right .ticket-card::-webkit-scrollbar {
     width: 5px; /* Width of the scrollbar */
 }
-.ticket-card::-webkit-scrollbar-thumb {
+.navbar-right .ticket-card::-webkit-scrollbar-thumb {
     background: linear-gradient(150deg, #2d158f, #ff7383);
     border-radius: 4px; /* Rounded corners for the scrollbar thumb */
 }
   
-.ticket-card::-webkit-scrollbar-thumb:hover {
+.navbar-right .ticket-card::-webkit-scrollbar-thumb:hover {
     background: grey; /* Color when hovering over the scrollbar thumb */
 }
   
-.ticket-card::-webkit-scrollbar-track {
+.navbar-right .ticket-card::-webkit-scrollbar-track {
     background: #f1f1f1; /* Background of the scrollbar track */
     border-radius: 4px; /* Rounded corners for the scrollbar track */
 }
-/*=========================*/
+
 .dropdown-menu {
     display: none; /* Hidden by default */
     position: absolute;
     top: 60px; /* Adjust based on your navbar height */
     right: 0;
-    background:linear-gradient(150deg,hsl(252, 74%, 32%,0.8),hsl(252, 74%, 32%,0.8) ); /* Adjust background color */
+    background-color: #333; /* Adjust background color */
     color: white; /* Adjust text color */
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-
+    border-radius: 8px;
     overflow: hidden;
     z-index: 200;
     width: 250px; /* Adjust width */
@@ -250,41 +265,9 @@
 }
 
 .dropdown-menu .menu-item:hover {
-    background-color: #ff7383; /* Hover effect */
-    transition: 0.7s ease-in-out;
+    background-color: #444; /* Hover effect */
 }
 
 .dropdown-menu .menu-item .icon {
     margin-right: 10px;
-}
-
-
-/* Responsive styling for smaller screens */
-@media (max-width: 768px) {
-    .navbar {
-        flex-direction: row;
-        justify-content: center;
-    
-        align-items: center;
-        padding: 10px;
-        height: auto;
-    }
-    .navbar-left span{
-        display: none; /* Hide the "Suki" text */
-    }
-    .navbar-center{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .navbar-center .search-box {
-        width: 100%;
-        margin: 10px 0;
-        display: flex;
-        justify-content: center;
-    }
-
-    .navbar-center .search-box input {
-        width: 100%;
-    }
 }
