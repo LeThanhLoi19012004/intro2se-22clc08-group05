@@ -1,18 +1,21 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap');
 
-body {
+/* body {
     background-color: #f8fafc;
-}
+    height:100% ;
+    
+} */
 
 .settingpage-container {
     overflow: hidden;
     display: flex;
-    margin: 50px 120px;
+    justify-content: center;
+    align-items: top;
+    margin: 0px 120px;
     gap:40px;
-   
-
+    height:100vh;
+    
 }
-
 
 .settingpage-profile {
     flex: 1;
@@ -21,6 +24,9 @@ body {
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
     border-radius: 15px;
     height: max-content;
+    margin:auto;
+    height:80%;
+    margin-top:115px;
 }
 
 .settingpage-profile-header {
@@ -28,19 +34,6 @@ body {
     align-items: center; /* Đảm bảo rằng các phần tử bên trong được căn giữa theo chiều dọc */
     margin-left: 15px;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .settingpage-profile-img {
     width: 60px;
@@ -164,13 +157,11 @@ body {
 }
 
 .settingpage-profile-title {
-    font-family: "Poppins", sans-serif;
     font-size: 20px;
     margin: 0; /* Xóa margin để đảm bảo không có khoảng cách dư thừa */
 }
 
 .settingpage-profile-email {
-    font-family: "Poppins", sans-serif;
     font-size: 14px;
     margin: 0; /* Xóa margin để đảm bảo không có khoảng cách dư thừa */
 }
@@ -182,9 +173,8 @@ body {
 
 .settingpage-menu-link {
   display: block;
-  text-decoration: none;
-  color: #768499;
-  font-family: "Poppins", sans-serif;
+  color: #4c535d;
+  font-weight:600;
   padding: 10px;
   margin: 10px;
   border-radius: 10px;
@@ -234,6 +224,10 @@ body {
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
     border-radius: 5px;
     height: max-content;
+    margin:auto;
+    height:80%;
+    margin-top:115px;
+    
 }
 
 .settingpage-account-header {
@@ -245,11 +239,11 @@ body {
 }
 
 .settingpage-account-title {
-    font-family: "Poppins", sans-serif;
-    font-size: 20px;
+    font-size: 25px;
     color: #1e293b;
-    font-weight: 500;
+    font-weight: 600;
     margin-left: 10px;
+    padding: 10px 0;
 }
 
 .settingpage-btn-container {
@@ -326,7 +320,6 @@ body {
 }
 
 .settingpage-input-container label {
-    font-family: "Poppins", sans-serif;
     color: #768499;
     font-size: 14px;
 }
@@ -337,7 +330,6 @@ body {
     border-radius: 5px;
     padding: 5px;
     color: #768499;
-    font-family: "Poppins", sans-serif;
 }
 
 .settingpage-input-container input:focus{
@@ -354,7 +346,6 @@ body {
     padding: 5px;
     border: 1.5px solid #768499;
     border-radius: 5px;
-    font-family: "Poppins", sans-serif;
     color: #768499;
     resize:none;
 }
@@ -378,15 +369,16 @@ body {
         margin: 0;
     }
 }
+
 .settingpage-logout-content {
     padding: 20px;
     text-align: center;
 }
+
 .settingpage-account-question {
-    font-family: "Poppins", sans-serif;
     font-size: 18px;
     color: #475569;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .settingpage-account-button {
@@ -399,7 +391,7 @@ body {
   color: #fff;
   font-weight: bold;
   margin-left: 5px;
-  background-color: #2d158f; /* Base background color */
+  background-color: #ff7383; /* Base background color */
   overflow: hidden; /* Ensure the overlay stays within the button */
   transition: color 0.3s ease-in-out; /* Smooth transition for text color */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow for depth effect */
@@ -438,7 +430,6 @@ body {
   }
   
   .settingpage-setting-label {
-    font-family: "Poppins", sans-serif;
     font-size: 16px;
     color: #475569;
   }
@@ -492,7 +483,7 @@ body {
     color: white;
     font-weight: bold;
     margin-left: 5px;
-    background-color: rgb(232, 112, 47); /* Base background color */
+    background-color: #ff7383; /* Base background color */
     overflow: hidden; /* Ensure the overlay stays within the button */
     transition: color 0.3s ease-in-out; /* Smooth transition for text color */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow for depth effect */
@@ -567,7 +558,6 @@ body {
   }
   
   .settingpage-notification-section-title {
-    font-family: "Poppins", sans-serif;
     font-size: 18px;
     color: #475569;
     margin-bottom: 10px;
@@ -575,24 +565,58 @@ body {
   
   .settingpage-notification-item {
     display: flex;
-    justify-content: space-between;
+    justify-content: left;
     align-items: center;
     margin-bottom: 10px;
     padding: 10px 0;
     border-bottom: 1px solid #e2e8f0;
   }
   
-  .settingpage-notification-item label {
-    font-family: "Poppins", sans-serif;
+  .settingpage-notification-item p {
     font-size: 16px;
     color: #475569;
-    flex: 1;
   }
   
-  .settingpage-notification-item input[type="checkbox"] {
+  /* .settingpage-notification-item input[type="checkbox"] {
     margin-left: 10px;
   }
   input[type="checkbox"] {
     width: 20px;
     height: 20px;
+  } */
+/* .settingpage-notification-item label{
+  width: 0px;
+} */
+.settingpage-notification-item input[type = "checkbox"]{
+    clip:rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+  } 
+.settingpage-notification-item .settingpage__checkbox{
+    display: inline-block;
+    height:20px;
+    width: 20px;
+    border:1px solid grey;
+    background-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+  
+    margin-right:10px;;
+    margin-top:5px;
+    cursor: pointer;
+  
+  
+  }
+.settingpage-notification-item .settingpage__checked--active{
+    background-color: rgb(199, 33, 199);
+  
+  }
+  
+.settingpage-notification-item input[type="checkbox"] {
+    margin-right: 20px; /* Thêm khoảng cách giữa checkbox và label */
   }
