@@ -64,10 +64,10 @@ const ForgotPassword = ({ onBack }) => {
     const response = await forgotPassword({ email });
 
     if (response.success) {
-      setMessage("Password reset link has been sent to your email.");
+      setMessage("Password has been sent to your email.");
       // Navigate to OTPVerification after sending the reset link
     } else {
-      setMessage("Failed to send reset link. Please try again.");
+      setMessage("Failed to send. Please try again.");
     }
   };
 
@@ -82,7 +82,7 @@ const ForgotPassword = ({ onBack }) => {
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-        <button type="submit" className="forgot-password__blue-button">Send Reset Link</button>
+        <button type="submit" className="forgot-password__blue-button">Send Password</button>
         {message && <p className="forgot-password__message">{message}</p>}
         <button type="button" className="forgot-password__pink-button" onClick={onBack}>Back to Login</button>
       </form>
