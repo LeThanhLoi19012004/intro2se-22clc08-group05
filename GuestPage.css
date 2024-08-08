@@ -695,6 +695,7 @@
   z-index: 4;
   left: -300px;
   top: -300px;
+  animation: pulse-big 5s linear infinite;
 }
 
 .new-guest-page__second-section-middle-gradient {
@@ -707,6 +708,7 @@
   z-index: 1;
   right: -300px;
   top: 600px;
+  animation: pulse-big 5s linear infinite;
 }
 
 .new-guest-page__second-section-bottom-left-gradient {
@@ -719,6 +721,7 @@
   z-index: 1;
   left: -300px;
   bottom: -300px;
+  animation: pulse-big 5s linear infinite;
 }
 
 
@@ -771,6 +774,18 @@
   }
   50% {
     transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse-big {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.4);
   }
   100% {
     transform: scale(1);
