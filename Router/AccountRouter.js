@@ -11,5 +11,6 @@ router.post('/sign-up', AccountController.PostSignup);
 
 router.post('/forgot-password', AccountController.PostForget_Pass);
 
+router.post('/delete-account', AccountController.DeleteAccount);
 
 export default router;

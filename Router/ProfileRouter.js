@@ -10,7 +10,7 @@ if (!fs.existsSync(uploadsDir)) {
     fs.mkdirSync(uploadsDir);
 }
 
-const upload = multer({ dest: uploadsDir });
+const upload = multer({ dest: uploadsDir , limits: { fileSize: 10 * 1024 * 1024 } });
 
 const router_Pfile = express.Router();
 

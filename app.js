@@ -18,10 +18,11 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // Cấu hình CORS
 app.use(cors({
-  origin: 'http://localhost:5173', // Cho phép yêu cầu từ nguồn này
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Các phương thức HTTP được phép
+  origin: 'http://192.168.1.180:5173', // Địa chỉ của trang Vite trên iPad
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true // Cho phép cookie và các thông tin xác thực khác
 }));
+
 
 app.use(express.json());
 app.set('views', join(__dirname, 'views'));
@@ -37,6 +38,8 @@ app.use('/', router_Post);
 app.use('/', router_Interac);
 
 const PORT = 3000;
-app.listen(PORT, () => {
-  console.log("Listening on port 3000");
+const HOST = 'localhost'; // Lắng nghe trên localhost
+
+app.listen(PORT, HOST, () => {
+  console.log(`Listening on http://${HOST}:${PORT}`);
 });

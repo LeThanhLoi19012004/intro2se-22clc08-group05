@@ -6,7 +6,8 @@ const avtSchema = new mongoose.Schema({
   filename: String,
   contentType: String,
   size: Number,
-  uploadDate: Date
+  uploadDate: Date,
+  imageBase64: String
 });
 
 const ProfileSchema = new Schema({

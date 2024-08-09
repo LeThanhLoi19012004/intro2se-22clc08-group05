@@ -12,7 +12,8 @@ conn.once('open', () => {
 
 const UpPost = async (req, res) => {
   try {
-    const { eventID, description } = req.body;
+    const eventID = req.body['eventid'];
+    const descriptionpost = req.body['descriptionpost'];   
     const files = req.files;
 
 
@@ -20,7 +21,8 @@ const UpPost = async (req, res) => {
       filename: file.filename,
       contentType: file.mimetype,
       size: file.size,
-      uploadDate: new Date()
+      uploadDate: new Date(),
+      imageBase64: fs.readFileSync(file.path, 'base64')
     }));
 
     const eventObjectId = new mongoose.Types.ObjectId(eventID);
@@ -28,7 +30,7 @@ const UpPost = async (req, res) => {
     // Tạo mới bài viết
     const newPost = new PostModel({
       eventID: eventObjectId,
-      descriptionpost: description,
+      descriptionpost: descriptionpost,
       images: images
     });
     await newPost.save();
@@ -45,19 +47,16 @@ const RenderPost = async (req, res) => {
   const {event_id} = req.body;
 
   try {
-    const posts = await PostModel.find({ eventID: event_id }).populate('eventID', 'logoevent eventname descriptionevent').exec();
+    const posts = await PostModel.find({ eventID: event_id })  
+    .populate('eventID', 'eventname')  // Sửa eventID_ thành eventID
+    .populate('images')
+    .exec();
     if (posts.length === 0) {
-      return res.status(400).json({success: false, message: 'No posts found for this event ID'});
+      return res.status(400).json({success: true, data: [], message: 'No posts found for this event ID'});
     } else {
-      const baseUrl = 'http://localhost:3000/uploads';
-      const postsData = posts.map(post => {
-        const postObj = post.toObject();
-        const logoeventFilename = post.eventID.logoevent[0].filename;
-        postObj.logoeventUrl = `${baseUrl}/${logoeventFilename}`;
-        postObj.imagesUrls = post.images.map(image => `${baseUrl}/${image.filename}`);
-        return postObj;
-      });
-      
+      const postsData = posts.map(post => ({
+        ...post.toObject()
+      }));
       res.json({success: true, data: postsData})
     }
   } catch (error) {
@@ -73,15 +72,11 @@ const RenderMPPost = async (req, res) => {
     if (posts.length === 0) {
       return res.json({ success: true, data: [] });
     } else {
-      const baseUrl = 'http://localhost:3000/uploads'; // Change to your server's base URL
-      const postsData = posts.map(post => {
-        const postObj = post.toObject();
-        const logoeventFilename = post.eventID.logoevent[0].filename;
-        postObj.logoeventUrl = `${baseUrl}/${logoeventFilename}`;
-        postObj.imagesUrls = post.images.map(image => `${baseUrl}/${image.filename}`);
-        return postObj;
-      });
+      const postsData = posts.map(post => ({
+        ...post.toObject()
+      }));
       console.log("Send post data successfully!");
+      
       res.json({ success: true, data: postsData });
     }
   } catch (error) {
