@@ -89,7 +89,7 @@ const PostSignup = async (req, res) => {
     const { encryptedData, key, iv } = encrypt(password);
     const token = crypto.randomBytes(64).toString('hex');
 
-    await Email.send(token, email);
+    await Email.sendVerificationEmail(token, email, req);
     const newAccount = await AccountModel.create({
       username,
       password: encryptedData,

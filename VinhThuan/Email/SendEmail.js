@@ -4,51 +4,52 @@ dotenv.config();
 import nodemailer from 'nodemailer';
 import net from 'net';
 
-// sendMail function
+// Tạo một transporter duy nhất
+const transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false, // Use `true` for port 465, `false` for all other ports
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.PASSWORD,
+  },
+});
+
+// Gửi email khôi phục mật khẩu
 const sendMail = async (password, email) => {
-  let transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false, // Use `true` for port 465, `false` for all other ports
-    auth: {
-      user: process.env.EMAIL,
-      pass: process.env.PASSWORD,
-    },
-  });
-
-  let info = await transporter.sendMail({
-    from: 'Suki - The Ultimate Event Creation and Promotion Hub', // sender address
-    to: email, // list of receivers
-    subject: "FORGOT PASSWORD", // Subject line
-    text: "Your password is: " + password, // plain text body
-    html: "<b>Your password is: " + password + "</b>", // html body
-  });
-  console.log("Message sent: %s", info.messageId);
+  try {
+    let info = await transporter.sendMail({
+      from: 'Suki - The Ultimate Event Creation and Promotion Hub',
+      to: email,
+      subject: "FORGOT PASSWORD",
+      text: `Your password is: ${password}`,
+      html: `<b>Your password is: ${password}</b>`,
+    });
+    console.log("Message sent: %s", info.messageId);
+  } catch (error) {
+    console.error("Error sending mail:", error);
+  }
 };
 
-const send = async (emailToken, email) => {
-  let transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false, // Use `true` for port 465, `false` for all other ports
-    auth: {
-      user: process.env.EMAIL,
-      pass: process.env.PASSWORD,
-    },
-  });
-
-  let info = await transporter.sendMail({
-    from: 'Suki - The Ultimate Event Creation and Promotion Hub', // sender address
-    to: email, // list of receivers
-    subject: "VERIFY EMAIL", // Subject line
-    text: "Please verify your email by clicking the link below", // plain text body
-    html: "<a href='http://localhost:3000/verify-email/" + emailToken + "'>Click here to verify your email</a>", // html
-  });
-  console.log("Message sent: %s", info.messageId);
+// Gửi email xác nhận
+const sendVerificationEmail = async (emailToken, email, req) => {
+  try {
+    const url = `${req.protocol}://${req.get('host')}/verify-email/${emailToken}`;
+    console.log(url);
+    let info = await transporter.sendMail({
+      from: 'Suki - The Ultimate Event Creation and Promotion Hub',
+      to: email,
+      subject: "VERIFY EMAIL",
+      text: "Please verify your email by clicking the link below",
+      html: `<a href='${url}'>Click here to verify your email</a>`,
+    });
+    console.log("Message sent: %s", info.messageId);
+  } catch (error) {
+    console.error("Error sending verification email:", error);
+  }
 };
 
-
-// Function to check SMTP connection
+// Kiểm tra kết nối SMTP
 const checkSMTPConnection = (host, port) => {
   return new Promise((resolve, reject) => {
     const socket = net.createConnection(port, host, () => {
@@ -64,8 +65,8 @@ const checkSMTPConnection = (host, port) => {
   });
 };
 
-// Example of using checkSMTPConnection
-checkSMTPConnection('smtp.ethereal.email', 587)
+// Ví dụ kiểm tra kết nối SMTP
+checkSMTPConnection('smtp.gmail.com', 587)
   .then((result) => {
     if (result) {
       console.log('SMTP connection successful');
@@ -77,7 +78,7 @@ checkSMTPConnection('smtp.ethereal.email', 587)
 
 const Email = {
   sendMail,
-  send,
+  sendVerificationEmail,
 };
 
 export default Email;
