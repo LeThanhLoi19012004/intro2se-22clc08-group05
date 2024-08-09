@@ -255,7 +255,7 @@ function ParticipantEventPage() {
               )} */}
             </nav>
             <div className="participant-event-page__container-post">
-              <MyPostWidget />
+              {/* <MyPostWidget /> */}
               {posts.map((post, index) => (
           <Post
             key={index}
