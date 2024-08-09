@@ -1,0 +1,497 @@
+.organizer-ticket-event-page__name-container {
+    position: relative;
+    display: inline-block;
+}
+
+.organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container {
+  display: flex;
+  justify-content: center;
+  align-items: top;
+  width: 100%;
+  gap: 50px;
+}
+
+.organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__left__col {
+  text-align: center;
+  position: relative;
+  --varLeftColHeight: auto;
+  height: var(--varLeftColHeight);
+  width: 500px;
+}
+
+.organizer-ticket-event-page__layer{
+  height: calc(var(--varLeftColHeight) * 0.6); /* Set height to 60% of the left col height */
+  top: 0px;
+  position: sticky;
+  position:-webkit-sticky;
+}
+
+.organizer-ticket-event-page__upper-part {
+  padding: 0 50px;
+}
+
+.temp{
+  height: 4000px;
+  width: 100%;
+  background-color: yellow;
+}
+
+.suki-end{
+  margin-top:100px;
+}
+
+.organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__left__col .organizer-ticket-event-page__img__container {
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  transform: translatex(-50%);
+}
+
+.organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__left__col .organizer-ticket-event-page__img__container .organizer-ticket-event-page__round img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+  box-shadow: 1px 3px 12px rgba(0, 0, 0, 0.organizer-ticket-event-page__18);
+}
+
+.organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__left__col .organizer-ticket-event-page__img__container .organizer-ticket-event-page__round {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 7px solid rgba(255, 255, 255, 0.organizer-ticket-event-page__7); /* Dùng rgba thay cho opacity */
+  box-shadow: 5px 7px 25px white;
+}
+
+.organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__left__col .organizer-ticket-event-page__img__container span {
+  position: absolute;
+  background: #2afa6a;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  bottom: 3px;
+  right: 11px;
+  border: 2px solid #fff;
+}
+
+.organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__left__col h2 {
+  margin-top: 80px;
+  font-weight: 600;
+  font-size: 30px;
+  color:#ff7378;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__left__col p {
+  font-size: 0.organizer-ticket-event-page__9rem;
+  color: black;
+  margin-bottom: 20px;
+}
+
+.organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__left__col .organizer-ticket-event-page__about {
+  display: flex;
+  flex-wrap: wrap;
+  width:100%;
+  position: relative;
+  margin: 35px 0;
+  font-size:20px;
+}
+  
+.organizer-ticket-event-page__information-container ul{
+  display: block;
+}
+
+.organizer-ticket-event-page__information-container {
+  font-size: 20px;
+}
+
+.organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__left__col .organizer-ticket-event-page__follow {
+  justify-content: space-between;
+  position: relative;
+}
+
+.organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__left__col .organizer-ticket-event-page__follow button {
+  background: #ff7378;
+  color: #fff;
+  border: none;
+  width: 200px;
+  padding: 15px 20px;
+  cursor: pointer;
+  width: 100%;
+  font-weight: 700;
+  font-size: 25px;
+  transition: background 0.3s;
+}
+
+.organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__left__col .organizer-ticket-event-page__follow button:hover {
+  background: #2d158f;
+}
+
+.organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__left__col .organizer-ticket-event-page__follow button:active {
+  background: #ff7378;
+}
+
+.organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__left__col .organizer-ticket-event-page__about li {
+  flex: 1 1 50%; /* This makes each item take 50% of the container's width */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: black;
+  font-size: 0.organizer-ticket-event-page__9rem;
+}
+
+.organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__left__col .organizer-ticket-event-page__about li:nth-child(3) {
+  flex-basis: 100%;
+  margin-top: 20px;
+}
+
+.organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__left__col .organizer-ticket-event-page__about li div{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__left__col .organizer-ticket-event-page__about li div div:nth-child(1){
+  color: #ff7378;
+  font-weight: 700;
+  font-size: 40px;
+  text-align: center;
+}
+
+.organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__left__col .organizer-ticket-event-page__remain-info{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Aligns items to the start of the container (left for column direction) */
+  margin: 40px 0px;
+  gap: 10px;
+  font-size: 20px;
+}
+
+.organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__left__col .organizer-ticket-event-page__remain-info li span{
+  color: #ff7378;
+  font-weight: 700;
+  font-size: 20px;
+  margin-right: 5px;
+}
+
+.organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__left__col .organizer-ticket-event-page__rule-container{
+  background-color: #ff7378;
+  position: relative;
+  height: auto;
+  padding: 30px 50px;
+  box-sizing: border-box;
+}
+
+.organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__left__col .organizer-ticket-event-page__rule-container p{
+  color:white;
+  font-weight: 700;
+  font-size: 28px;
+}
+
+.organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__left__col .organizer-ticket-event-page__rule-container ul{
+  color:white;
+  font-size: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: space-between;
+}
+
+/* Custom scrollbar styling */
+
+.organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__left__col .organizer-ticket-event-page__rule-container ul::-webkit-scrollbar {
+  width: 5px; /* Width of the scrollbar */
+}
+
+.organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__left__col .organizer-ticket-event-page__rule-container ul::-webkit-scrollbar-thumb {
+  background: grey;
+  border-radius: 4px; /* Rounded corners for the scrollbar thumb */
+}
+
+.organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__left__col .organizer-ticket-event-page__rule-container ul::-webkit-scrollbar-thumb:hover {
+  background: grey; /* Color when hovering over the scrollbar thumb */
+}
+
+.organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__left__col .organizer-ticket-event-page__rule-container ul::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Background of the scrollbar track */
+  border-radius: 4px; /* Rounded corners for the scrollbar track */
+}
+
+.organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__left__col .organizer-ticket-event-page__rule-container ul li{
+  margin: 10px 0px;
+  text-align: left;
+}
+
+.organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__content p {
+  font-size: 1rem;
+  color: #1d1d1d;
+  line-height: 1.organizer-ticket-event-page__8em;
+}
+
+.organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__content ul {
+  gap: 30px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 25px;
+}
+
+.organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__content ul li {
+  display: flex;
+}
+
+.organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__content ul i {
+  font-size: 1.organizer-ticket-event-page__3rem;
+}
+
+.organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__right__col{
+  flex: 1;
+  margin-right: 50px;
+}
+
+.organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__right__col nav {
+  display: flex;
+  align-items: center;
+  padding: 30px 0;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__right__col nav ul {
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+}
+
+.organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__right__col nav ul li a {
+  text-transform: uppercase;
+  font-size: 25px;
+}
+
+.organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__right__col nav ul li:nth-child(1) a {
+  color: #ff7378;
+  font-weight: 700;
+}
+
+.organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__right__col nav .booking-button {
+  background: #ff7378;
+  color: #fff;
+  width: 40%;
+  border: none;
+  font-size: 1.5rem;
+  font-weight: 600;
+  padding: 10px 25px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__right__col nav button:hover {
+  opacity: 0.organizer-ticket-event-page__8;
+}
+
+.organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__right__col .organizer-ticket-event-page__photos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 20px;
+}
+
+.organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__right__col .organizer-ticket-event-page__photos img {
+  max-width: 100%;
+  display: block;
+  height: 100%;
+  object-fit: cover;
+}
+
+.organizer-ticket-event-page__container-post {
+  background-color: #f0f2f5;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+  /* Responsiveness */
+  
+  /* @media (min-width: 868px) {
+  .organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container {
+    max-width: 100%;
+    margin: 0 auto;
+    width: 90%;
+    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 50px;
+  }
+  .organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__left__col {
+    padding: 25px 0px;
+  }
+  .organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__right__col nav ul {
+    flex-direction: row;
+    gap: 30px;
+  }
+  .organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__right__col .organizer-ticket-event-page__photos {
+    height: 365px;
+    overflow: auto;
+    padding: 0 0 30px;
+  }
+  } */
+  
+@media (min-width: 1017px) {
+  .organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__left__col {
+    margin: 0;
+    margin-right: auto;
+  }
+
+  .organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__right__col nav {
+    flex-direction: row;
+  }
+
+  .organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__right__col nav button {
+    margin-top: 0;
+  }
+}
+
+.organizer-ticket-event-page__dropdown-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5); /* Thêm hiệu ứng mờ cho background */
+  z-index: 1000; /* Đảm bảo dropdown hiển thị trên cùng */
+}
+
+.organizer-ticket-event-page__dropdown-content {
+  width: 40%;
+  max-width: 500px; /* Giới hạn chiều rộng tối đa */
+  padding: 20px; /* Thêm padding cho nội dung */
+  border-radius: 10px;
+  background: linear-gradient(150deg, hsl(252, 74%, 32%, 0.8), hsl(353, 100%, 73%, 0.8));
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Thêm shadow để tạo chiều sâu */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+  
+.organizer-ticket-event-page__dropdown-input-wrapper {
+  width: 100%; /* Đặt chiều rộng 100% để phù hợp với container */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px; /* Thêm khoảng cách giữa các input */
+}
+  
+  .organizer-ticket-event-page__dropdown-label {
+  margin-right: 10px; 
+  font-size: 14px; /* Kích thước font chữ */
+  color: white; /* Màu chữ tối hơn cho dễ đọc */
+  
+  }
+  
+.organizer-ticket-event-page__dropdown-input {
+  flex-grow: 1; /* Để input chiếm hết không gian còn lại */
+  padding: 10px; /* Thêm padding để input không bị chật */
+  border: 1px solid #ccc; /* Thêm viền để input dễ nhìn hơn */
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  outline : 0;
+  color:white;
+  border-radius: 20px;
+}
+
+.organizer-ticket-event-page__dropdown-input:focus{
+  outline:0;
+}
+
+.organizer-ticket-event-page__dropdown-input::placeholder{
+  color:white;
+}
+
+.organizer-ticket-event-page__dropdown-agreement {
+  display: flex;
+  align-items: top;
+  width:100%;
+  margin-bottom: 15px; /* Thêm khoảng cách dưới */
+  font-size: 14px; /* Giảm kích thước font chữ */
+  color: white; /* Màu chữ tối hơn cho dễ đọc */
+}
+
+.organizer-ticket-event-page__dropdown-agreement input[type = "checkbox"]{
+  clip:rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+}
+
+.organizer-ticket-event-page__dropdown-agreement .organizer-ticket-event-page__checkbox{
+  display: inline-block;
+  height:20px;
+  width: 20px;
+  background-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  margin-right:10px;
+  margin-top:5px;
+  cursor: pointer;
+}
+
+.organizer-ticket-event-page__dropdown-agreement .organizer-ticket-event-page__checked--active{
+  background-color: rgb(199, 33, 199);
+}
+
+.organizer-ticket-event-page__dropdown-agreement input[type="checkbox"] {
+  margin-right: 20px; /* Thêm khoảng cách giữa checkbox và label */
+}
+
+.organizer-ticket-event-page__dropdown-timer {
+  margin-bottom: 15px; /* Thêm khoảng cách dưới */
+  font-size: 16px; /* Kích thước font chữ trung bình */
+  color: white; /* Màu chữ tối hơn cho dễ đọc */
+}
+
+.organizer-ticket-event-page__dropdown-buy-button {
+  padding: 10px 20px; 
+  width: 100%;
+  font-size:1.5rem;
+  background-color: #ff7378;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s; 
+}
+
+.organizer-ticket-event-page__dropdown-buy-button:disabled {
+  cursor: not-allowed;
+  background-color: #ff7378; /* Màu nền cho button khi bị vô hiệu hóa */
+}
+
+@media (max-width: 768px) {
+  .organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__left__col,
+  .organizer-ticket-event-page__header__wrapper .organizer-ticket-event-page__cols__container .organizer-ticket-event-page__right__col {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+}
