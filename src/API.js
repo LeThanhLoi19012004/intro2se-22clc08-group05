@@ -99,18 +99,6 @@ export async function updateProfile(data){
         return {success: false, message: "An error occurred"};
     }
 }
-export async function createEvent(data) {
-    try {
-        const response = await fetch("http://localhost:3000/create_event", {
-            method: "POST",
-            body: data
-        });
-        return await response.json();
-    } catch (error){
-        console.log("Error:", error);
-        return {success: false, message: "An error occured"};
-    }
-}
 
 export async function renderEvent(data){
     // data {username: eventname}
@@ -199,6 +187,34 @@ export async function likePost(data){
             },
             body: JSON.stringify(data)
         })
+        return await response.json();
+    } catch (error) {
+        console.error("Error:", error);
+        return {success: false, message: "An error occurred"};
+    }
+}
+
+export async function createEvent(data){
+    try {
+        const response = await fetch("http://localhost:3000/create_event", {
+            method: "POST",
+            body: data 
+        });
+        return await response.json();
+    } catch (error) {
+        console.error("Error:", error);
+        return { success: false, message: "An error occurred" };
+    }
+}
+
+export async function searchEvent(){
+    try {
+        const response = await fetch("http://localhost:3000/searchevent", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        });
         return await response.json();
     } catch (error) {
         console.error("Error:", error);

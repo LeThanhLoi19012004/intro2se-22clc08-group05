@@ -124,25 +124,34 @@ function CreateEvent(){
 
     const handleForm = (event) => {
         event.preventDefault();
-
+    
         let form = event.target;
         let formData = new FormData(form);
         let formDataObj = Object.fromEntries(formData.entries());
+    
         if (eventImage) {
             formData.append('eventImage', eventImage);
         }
-
+    
         if (profileImage) {
             formData.append('profileImage', profileImage);
         }
-
+    
+        // Extract the selected text of the event-type (category)
+        const categorySelect = form.querySelector('select[name="event-type"]');
+        const selectedCategoryText = categorySelect.options[categorySelect.selectedIndex].text;
+    
+        // Append the category text value to the form data
+        formData.append('categoryText', selectedCategoryText);
+    
         // Example form data logging
         formData.forEach((value, key) => {
             console.log(key, value);
         });
-
     
+        // Proceed with form submission (e.g., send formData via an API)
     };
+    
 
 
     return(
@@ -231,7 +240,7 @@ function CreateEvent(){
             
             <div className = "create-event__participant-container"> 
                 <label htmlFor = "participant">Participants </label>
-                <input  required name = "participant" type = "number" id = "participant" className = "create-event__participant" placeholder='Capacity'min = {0}
+                <input name = "participant" type = "number" id = "participant" className = "create-event__participant" placeholder='Capacity'min = {0}
                         readOnly = {category === '3' || category === '4'}
                         style={{ opacity: (category === '3' || category === '4') ? '0.5' : '' }}
 
