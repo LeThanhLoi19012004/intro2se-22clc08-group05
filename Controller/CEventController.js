@@ -19,17 +19,17 @@ conn.once('open', () => {
 const CEvent = async (req, res) => {
   try {
     const profileId = req.body['owner'];
-    const eventname = req.body['event-name'];
-    const eventtype = req.body['event-type'];
-    const descriptionevent = req.body['description'];
-    const rulesevent = req.body['rules'];
+    const eventname = req.body['eventname'];
+    const eventtype = req.body['eventtype'];
+    const descriptionevent = req.body['descriptionevent'];
+    const rulesevent = req.body['rulesevent'];
     const location = req.body['location'];
-    const eventdate = new Date(req.body['event-date']);
-    const eventtimeStr = req.body['event-time'];
+    const eventdate = new Date(req.body['eventdate']);
+    const eventtimeStr = req.body['eventtime'];
     const [hourStr, minuteStr] = eventtimeStr.split(':');
     let hour = parseInt(hourStr, 10);
     const minute = parseInt(minuteStr, 10);
-    const type = ["Charity", "Meeting", "Team Building", "Music", "Festival"]
+
     // Xử lý AM/PM
     let amPm = '';
     if (hour >= 12) {
@@ -98,23 +98,25 @@ const CEvent = async (req, res) => {
 };
 
 const Renderdata = async (req, res) => {
-  const { eventid } = req.body['eventid'];
+  const { eventname } = req.body;
   
   try {
-    const findinfor = await CEventModel.findOne({ eventID: eventid })
+    const regex = new RegExp(eventname, 'i');
+    const findinfor = await CEventModel.find({ eventname: { $regex: regex } })
+      .populate('profile', 'fullname')
       .exec();
-    if (findinfor) {
-      return res.status(400).json({success: false, message: 'Wrong event ID'});
+    if (findinfor.length === 0) {
+      return res.status(400).json({success: false, message: 'No event with that name'});
     } else {
-      const eventsData = findinfor => ({
+      const eventsData = findinfor.map(event => ({
         ...event.toObject(),
         eventtimeFormatted: formatEventTime(event.eventtime)
-      });
-      res.status(200).json({sucess: true, data: eventsData});
+      }));
+      res.json({})
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({success: false, message: 'Server error'});
+    res.status(500).send('Server error');
   }
 };
 
@@ -133,14 +135,16 @@ function formatEventTime(eventtime) {
 const RenderEvent = async (req, res) => {
   const { event_id } = req.body;
   try {
-    const findEvent = await CEventModel.findOne({ eventID: event_id})
+    const findEvent = await CEventModel.find({ _id: event_id})
       .populate('profile', 'fullname')
       .exec();
-    if (findEvent) {
-      return res.status(400).json({success: false, message: 'Invalid event id!'});
+    if (findEvent.length === 0) {
+      return res.status(400).json({success: false, message: 'No event with that name'});
     } else {
-      const eventData = findEvent;
+      const eventData = findEvent[0].toObject();
       eventData.eventtimeFormatted = formatEventTime(eventData.eventtime)
+      const baseUrl = 'http://localhost:3000/uploads'; 
+      eventData.logoUrl = `${baseUrl}/${eventData.logoevent[0].filename}`;
       res.json({success: true, data: eventData})
     }
   } catch (error) {
