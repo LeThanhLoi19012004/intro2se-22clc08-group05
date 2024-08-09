@@ -301,7 +301,7 @@ function TicketEventPage() {
               )}
             </nav>
             <div className="ticket-event-page__container-post">
-              <MyPostWidget />
+              {/* <MyPostWidget /> */}
               {posts.map((post, index) => (
                 <Post
                   key={index}
