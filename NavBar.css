@@ -17,7 +17,7 @@
 }
 
 .navbar-left {
-    width: 26%;
+    width: 25%;
     color: white;
     display: flex;
     flex-direction: row;
@@ -43,7 +43,7 @@
     display: flex;
     align-items: center;
     justify-content: right;
-    width: 25.4%;
+    width: 25.75%;
 }
 
 .navbar-right ul {
