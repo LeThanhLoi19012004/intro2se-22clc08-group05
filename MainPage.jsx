@@ -6,7 +6,7 @@ import { MdOutlineTheaterComedy, MdPeople } from "react-icons/md";
 import { GiVideoConference } from "react-icons/gi";
 import { MdOutlineFestival } from "react-icons/md";
 import { AiOutlineTeam } from "react-icons/ai";
-import SukiColor from "../assets/Logo/SukiColor.svg";
+import SukiGreen from "../assets/Logo/SukiColor.svg";
 import { FaSort } from "react-icons/fa";
 import { FaSortDown } from "react-icons/fa";
 import { FaSortUp } from "react-icons/fa";
@@ -18,91 +18,108 @@ import {Link, useLocation} from "react-router-dom";
 import Post from '../components/Post.jsx'
 import { renderMainPage } from "../API.js";
 
+function Loading() {
+  return (
+<div className="loading__typing-indicator">
+    <div className="loading__typing-circle"></div>
+    <div className="loading__typing-circle"></div>
+    <div className="loading__typing-circle"></div>
+    <div className="loading__typing-shadow"></div>
+    <div className="loading__typing-shadow"></div>
+    <div className="loading__typing-shadow"></div>
+</div>
+  );
+}
+
 function LeftSideBar() {
+  const [prev, setRefresh] = useState(false);
   const [isHomeClicked, setIsHomeClicked] = useState(false);
   const [isExploreClicked, setIsExploreClicked] = useState(false);
   const [isFavoritesClicked, setIsFavoritesClicked] = useState(false);
   const [isSettingsClicked, setIsSettingsClicked] = useState(false);
   const [isCreateEventClicked, setIsCreateEventClicked] = useState(false);
-
-  const handleClick = (setter) => () => {
-    setter(true);
-    window.scrollTo(0, 0);
-    window.location.reload();
+  const renderLinks = (items) => {
+    return items.map((item, index) => (
+      <a key={index} href="#">
+        <img src="#" alt="" />
+        {item}
+      </a>
+    ));
   };
 
+
+  const handleClickMain = () => {
+    setIsHomeClicked(true);
+    window.scrollTo(0, 0); // Cuộn về đầu trang
+    window.location.reload();
+  };
+  const handleClickExplore = () =>{
+    setIsExploreClicked(true);
+  }
+  const handleClickFavorites = () =>{
+    setIsFavoritesClicked(true);
+  }
+  const handleClickSettings = () =>{
+    setIsSettingsClicked(true);
+  }
+  const handleClickCreateEvent = () =>{
+    setIsCreateEventClicked(true);
+  }
   return (
     <div className="main-page__left-side">
       <div
         className="main-page__menu-item"
-        onClick={handleClick(setIsHomeClicked)}
+        onClick={handleClickMain}
         style={{ cursor: "pointer" }}
       >
-        <span className="main-page__icon">
-          <FaHome className="icon" style={{ color: isHomeClicked ? '#ff7383' : '#2d158f' }} />
-        </span>
-        <span className="main-page__text" style={{ color: isHomeClicked ? '#ff7383' : '#2d158f' }}>
-          Home
-        </span>
+        <span className="main-page__icon"><FaHome className = "icon" style = {{color: isHomeClicked ? '#ff7383' :'#ff7383'}}/></span>
+        <span className="main-page__text" style = {{color: isHomeClicked ? '#ff7383' :'#ff7383'}}>Home</span>
       </div>
-      <div
+      <Link to="/search"
         className="main-page__menu-item"
-        onClick={handleClick(setIsExploreClicked)}
+        onClick={handleClickExplore}
         style={{ cursor: "pointer" }}
       >
-        <span className="main-page__icon">
-          <FaCompass className="icon" style={{ color: isExploreClicked ? '#ff7383' : '#2d158f' }} />
-        </span>
-        <span className="main-page__text" style={{ color: isExploreClicked ? '#ff7383' : '#2d158f' }}>
-          Explore
-        </span>
-      </div>
-      <div
-        className="main-page__menu-item"
-        onClick={handleClick(setIsFavoritesClicked)}
-        style={{ cursor: "pointer" }}
-      >
-        <span className="main-page__icon">
-          <FaHeart className="icon" style={{ color: isFavoritesClicked ? '#ff7383' : '#2d158f' }} />
-        </span>
-        <span className="main-page__text" style={{ color: isFavoritesClicked ? '#ff7383' : '#2d158f' }}>
-          Favorites
-        </span>
-      </div>
-      <div
-        className="main-page__menu-item"
-        onClick={handleClick(setIsSettingsClicked)}
-        style={{ cursor: "pointer" }}
-      >
-        <span className="main-page__icon">
-          <FaCog className="icon" style={{ color: isSettingsClicked ? '#ff7383' : '#2d158f' }} />
-        </span>
-        <span className="main-page__text" style={{ color: isSettingsClicked ? '#ff7383' : '#2d158f' }}>
-          Settings
-        </span>
-      </div>
-      <div className="main-page__menu-gap"></div>
-      <Link to="/createvent"
-        className="main-page__menu-item-create"
-      >
-        <div style={{ display: 'flex' }}>
-          <span className="main-page__icon">
-            <FaRegCalendarAlt className="icon"/>
-          </span>
-          <span className="main-page__text">
-            Create Event
-          </span>
-        </div>
+        <span className="main-page__icon"><FaCompass className = "icon" style = {{color: isExploreClicked ? '#ff7383' :'#2d158f'}}/></span>
+        <span className="main-page__text" style = {{color: isExploreClicked ? '#ff7383' :'#2d158f'}}>Explore</span>
       </Link>
-    </div>
+      <div 
+        className="main-page__menu-item"
+        onClick={handleClickFavorites}
+        style={{ cursor: "pointer" }}>
+        <span className="main-page__icon"><FaHeart className = "icon" style = {{color: isFavoritesClicked ? '#ff7383' :'#2d158f'}}/></span>
+        <span className="main-page__text" style = {{color: isFavoritesClicked ? '#ff7383' :'#2d158f'}}>Favorites</span>
+      </div>
+      <div 
+        className="main-page__menu-item"
+        onClick={handleClickSettings}
+        style={{ cursor: "pointer" }}
+      >
+        
+        <span className="main-page__icon"><FaCog className = "icon" style = {{color: isSettingsClicked ? '#ff7383' :'#2d158f'}}/></span>
+        <span className="main-page__text" style = {{color: isSettingsClicked ? '#ff7383' :'#2d158f'}}>Settings</span>
+      </div>
+      {/* <div className="main-page__menu-item">
+        <span className="main-page__icon">📈</span>
+        <span className="main-page__text">Bảng </span>
+      </div> */}
+      <div className="main-page__menu-gap"></div>
+        <Link to="/createvent" className="main-page__menu-item-create"
+          onClick={handleClickCreateEvent}
+          style={{ cursor: "pointer" }}
+        >
+          <span className="main-page__icon"><FaRegCalendarAlt className ="icon"/></span>
+          <span className="main-page__text">Create Event</span>
+        </Link>
+      </div>
   );
 }
 
-function RightSidebar() {
-  // const newsItems = Array(8).fill({
-  //   title: "Bla bla bla bla bla bla",
-  //   description: "bla bla bla bla bla bla bla",
-  // });
+function RightSidebar(){
+  const newsItems = Array(8).fill({
+    title: "Bla bla bla bla bla bla",
+    description: "bla bla bla bla bla bla bla",
+  });
 
   return (
     <div className="main-page__right-side">
@@ -173,7 +190,7 @@ function RightSidebar() {
   );
 }
 
-function CenterSide() {
+const CenterSide = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [sortType, setSortType] = useState('none');
   const [posts, setPosts] = useState([]);
@@ -183,7 +200,7 @@ function CenterSide() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await renderMainPage();
+        const response = await renderMainPage(); // Assuming renderMainPage is defined elsewhere
         setPosts(response.data);
       } catch (err) {
         setError(err);
@@ -196,28 +213,38 @@ function CenterSide() {
   }, []);
 
   const events = [
-    { name: 'Music', icon: <FaMusic style={{ color: 'white' }} /> },
-    { name: 'Charity', icon: <GiHeartPlus style={{ color: 'white' }} /> },
-    { name: 'Teambuilding', icon: <FaUsers style={{ color: 'white' }} /> },
-    { name: 'Meeting', icon: <GiVideoConference style={{ color: 'white' }} /> },
-    { name: 'Festival', icon: <FaStar style={{ color: 'white' }} /> },
+    { name: 'Music', icon: <FaMusic style={{ color: 'white' }}/> },
+    { name: 'Charity', icon: <GiHeartPlus style={{ color: 'white' }}/> },
+    { name: 'Team Building', icon: <FaUsers style={{ color: 'white' }}/> },
+    { name: 'Meeting', icon: <GiVideoConference style={{ color: 'white' }}/> },
+    { name: 'Festival', icon: <FaStar style={{ color: 'white' }}/> },
   ];
 
   const handleEventClick = (index) => {
     setSelectedEvent(index);
   };
 
+
   const handleClickSort = () => {
-    setSortType((prev) => (prev === 'none' ? 'top' : prev === 'top' ? 'down' : 'none'));
+    if (sortType === 'none') {
+      setSortType('top');
+    } else if (sortType === 'top') {
+      setSortType('down');
+    } else {
+      setSortType('none');
+    }
   };
 
   const sortedPosts = [...posts].sort((a, b) => {
     const dateA = new Date(a.postcreationdate);
     const dateB = new Date(b.postcreationdate);
 
-    if (sortType === 'top') return dateB - dateA;
-    if (sortType === 'down') return dateA - dateB;
-    return 0;
+    if (sortType === 'top') {
+      return dateB - dateA; // Descending order
+    } else if (sortType === 'down') {
+      return dateA - dateB; // Ascending order
+    }
+    return 0; // No sorting
   });
 
   return (
@@ -248,7 +275,7 @@ function CenterSide() {
 
       {loading ? (
         <div className="main-page__loader">
-          <p>Loading posts...</p>
+          <Loading />
         </div>
       ) : error ? (
         <div className="main-page__error-message">
@@ -261,29 +288,31 @@ function CenterSide() {
             date={post.postcreationdate}
             userName={post.eventID.eventname}
             content={post.descriptionpost}
-            postImg={post.imagesUrls}
-            comments={[]}
-            authorImg={post.logoeventUrl}
-            eventID={post.eventID._id}
+            postImg={post.images}
+            authorImg={post.eventID.logoevent}
+            eventID = {post.eventID._id}
+            postID = {post._id}
           />
         ))
       )}
     </div>
   );
-}
+};
 
 function MainPage() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <div className="main-page__main-container">
-      <NavBar authorImg={SukiColor} />
+      <NavBar authorImg={SukiGreen} />
       <div className="main-page__container">
         <LeftSideBar />
-        <CenterSide />
         <RightSidebar />
+        <CenterSide />
       </div>
     </div>
   );
 }
-
 
 export default MainPage;
