@@ -74,9 +74,9 @@
 }
 
 .searchpage__sidebar {
-  background-color: #f4f4f4;
+  background-color: white;
   padding: 20px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
   height: 100%;
 }
 
@@ -156,13 +156,26 @@
   font-size: 15px;
 }
 
+.searchpage__input:focus {
+  outline: none;
+}
+
 .searchpage__clear-button {
-  padding: 8px 15px;
+  padding: 9px 15px;
   border: 0;
   background-color: #2d158f;
   height: 100%;
   color: white;
   font-size: 15px;
+  transition: background-color 0.3s;
+}
+
+.searchpage__clear-button:hover {
+  background-color: #ff7383;
+}
+
+.searchpage__clear-button:active {
+  background-color: #f7586b;
 }
 
 .searchpage__datepicker-icon {
