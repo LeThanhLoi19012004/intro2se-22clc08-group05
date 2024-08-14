@@ -13,11 +13,16 @@ function Comment(props) {
   return (
     <div className="post__comment">
       <div className="post__comment-author-img">
-        <img src={`data:${props.profileImg.contentType};base64,${props.profileImg.imageBase64}`} alt="Profile img" />
+        <img src={
+  props.profileImg
+    ? `data:${props.profileImg.contentType};base64,${props.profileImg.imageBase64}`
+    : "https://cdn-icons-png.flaticon.com/512/3682/3682281.png"
+}
+ alt="Profile img" />
       </div>
       <div className="post__comment_content">
-        <h3>{props.authorName}</h3>
-        <p>{props.commentText}</p>
+        <div class="post__comment_content-user-name">{props.authorName == "" ? `User:${localStorage.getItem("UserID")}` : props.authorName}</div>
+        <div class="post__comment_content-user-idea">{props.commentText}</div>
       </div>
     </div>
   );
@@ -63,10 +68,9 @@ function Overlay(props) {
           <div className="post__overlay-content">
             <h1>{props.eventName}'s Post</h1>
             <button className="post__close-button" onClick={props.onClose}>
-              X
+              x
             </button>
           </div>
-          <hr />
           <div className="post__comment-section">
             {props.comments.map((comment, index) => (
               <Comment
@@ -89,7 +93,7 @@ function Overlay(props) {
               onClick={handleSendComment}
               disabled={!commentText.trim()}
             >
-              <FaPaperPlane />
+            <FaPaperPlane />
             </button>
           </div>
         </div>
