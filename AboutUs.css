@@ -51,7 +51,7 @@
     justify-content: space-between;
     align-items: center;
     margin: 40px 0 80px 0;
-    gap: 50px;
+    gap: 100px;
 }
 
 /* Logo Container */
@@ -60,7 +60,6 @@
     width: var(--logoSize);
     height: var(--logoSize);
     background: transparent;
-    margin-right: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -94,20 +93,11 @@
 
 /* Team Image Container */
 .about-us__team-img-container {
-    --teamImgSize: 300px;
-    width: var(--teamImgSize);
-    height: var(--teamImgSize);
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+    object-position: center;
     border-radius: 50%;
-    background-color: whitesmoke;
-    margin-left: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.about-us__team-img-container img {
-    width: var(--teamImgSize);
-    object-fit: contain;
 }
 
 /* Header and Footer is the same as New Guest Page.css*/
@@ -125,7 +115,6 @@
       transform: scale(1);
     }
 }
-
 
 @keyframes rotate {
     0% {
