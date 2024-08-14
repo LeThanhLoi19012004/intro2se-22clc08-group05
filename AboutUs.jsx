@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import logo from '../assets/Logo/SukiWhite.svg';
+import TeamImage from '../assets/About Us.jpg';
 import '../assets/AboutUs.css';
 
 import Ring1 from '../assets/Abstract Objects/Ellipse 9.svg';
@@ -41,7 +42,7 @@ function AboutUs() {
                 </div>
                 <div className="new-guest-page__header-right-section">
                     <ul className="new-guest-page__header-navigation-bar">
-                        <Link to="/search" className="new-guest-page__header-navigation-bar-button">SEARCH</Link>
+                        <Link to="/guestsearch" className="new-guest-page__header-navigation-bar-button">SEARCH</Link>
                         <Link to="/" className="new-guest-page__header-navigation-bar-button">HOME</Link>
                         <Link className="new-guest-page__header-navigation-bar-button-here">ABOUT</Link>
                         <Link to="/login" className="new-guest-page__header-navigation-bar-button">LOGIN</Link>
@@ -87,9 +88,7 @@ function AboutUs() {
                                 to perfect this product for all of you.
                             </p>
                         </div>
-                        <div className="about-us__team-img-container">
-                            <img src="" alt="Team" />
-                        </div>
+                        <img src={TeamImage} alt="Team" className="about-us__team-img-container"/>
                     </div>
                 </div>
             </div>
