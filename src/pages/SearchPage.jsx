@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import "../assets/SearchPage.css";
 import NavBar from "../components/NavBar.jsx";
+import "../assets/SearchPage.css";
 import SukiGreen from "../assets/Logo/SukiColor.svg";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { searchEvent } from "../API.js";
+import { FaHome, FaCompass, FaHeart, FaCog,FaRegCalendarAlt  } from "react-icons/fa";
 
 function Loading() {
     return (
@@ -20,9 +21,88 @@ function Loading() {
     );
 }
 
+function LeftSideBar() {
+    const [isHomeClicked, setIsHomeClicked] = useState(false);
+    const [isExploreClicked, setIsExploreClicked] = useState(false);
+    const [isFavoritesClicked, setIsFavoritesClicked] = useState(false);
+    const [isSettingsClicked, setIsSettingsClicked] = useState(false);
+    const [isCreateEventClicked, setIsCreateEventClicked] = useState(false);
+    const userIDExists = localStorage.getItem('UserID') !== null;
+    const handleClickMain = () => {
+      setIsHomeClicked(true);
+      window.scrollTo(0, 0); // Cuộn về đầu trang
+    };
+    const handleClickExplore = () =>{
+      setIsExploreClicked(true);
+    }
+    const handleClickFavorites = () =>{
+      setIsFavoritesClicked(true);
+    }
+    const handleClickSettings = () =>{
+      setIsSettingsClicked(true);
+    }
+    const handleClickCreateEvent = () =>{
+      setIsCreateEventClicked(true);
+    }
+    return ( 
+      <div className="searchpage__left-side">
+        <Link to="/mainpage"
+          className="searchpage__menu-item"
+          onClick={handleClickMain}
+          style={{ cursor: "pointer" }}
+        >
+          <span className="searchpage__icon"><FaHome className = "icon" style = {{color: isHomeClicked ? '#ff7383' :'#2d158f'}}/></span>
+          <span className="searchpage__text" style = {{color: isHomeClicked ? '#ff7383' :'#2d158f'}}>Home</span>
+        </Link>
+        <Link to="/search" 
+          className="searchpage__menu-item"
+          onClick={handleClickExplore}
+          style={{ cursor: "pointer" }}
+        >
+          <span className="searchpage__icon"><FaCompass className = "icon" style = {{color: isExploreClicked ? '#ff7383' :'#ff7383'}}/></span>
+          <span className="searchpage__text" style = {{color: isExploreClicked ? '#ff7383' :'#ff7383'}}>Explore</span>
+        </Link>
+        <div 
+          className="searchpage__menu-item"
+          onClick={handleClickFavorites}
+          style={{ cursor: "pointer" }}>
+          <span className="searchpage__icon"><FaHeart className = "icon" style = {{color: isFavoritesClicked ? '#ff7383' :'#2d158f'}}/></span>
+          <span className="searchpage__text" style = {{color: isFavoritesClicked ? '#ff7383' :'#2d158f'}}>Favorites</span>
+        </div>
+        { userIDExists && <>
+      <Link to="/setting" 
+        className="main-page__menu-item"
+        onClick={handleClickSettings}
+        style={{ cursor: "pointer" }}
+      >
+        
+        <span className="main-page__icon"><FaCog className = "icon" style = {{color: isSettingsClicked ? '#ff7383' :'#2d158f'}}/></span>
+        <span className="main-page__text" style = {{color: isSettingsClicked ? '#ff7383' :'#2d158f'}}>Settings</span>
+      </Link>
+      <div className="main-page__menu-gap"></div>
+        <Link to="/createvent" className="main-page__menu-item-create"
+          onClick={handleClickCreateEvent}
+          style={{ cursor: "pointer" }}
+        >
+          <span className="main-page__icon"><FaRegCalendarAlt className ="icon"/></span>
+          <span className="main-page__text">Create Event</span>
+        </Link> </>}
+        </div>
+    );
+}
+
 function Result(props) {
+    const navigate = useNavigate();
+    const userIDExists = localStorage.getItem('UserID') !== null;
+    const movetoEvent = () => {
+        if (userIDExists) {
+            localStorage.setItem("eventid", props.id);
+            window.scrollTo(0, 0); // Scroll to top
+            navigate(`/event?id=${props.id}`);
+        }
+      };
     return (
-        <div className="searchpage__result">
+        <div className="searchpage__result" onClick={movetoEvent}>
             <div className="searchpage__result-author-img">
                 <img src={`data:${props.profileImg.contentType};base64,${props.profileImg.imageBase64}`} alt="Profile img" />
             </div>
@@ -37,7 +117,7 @@ function Result(props) {
 function NoResults() {
     return (
         <div className="searchpage__no-results">
-            <h2>No Results Found</h2>
+            <h2>No Results Found!</h2>
             <p>Sorry, but we couldn't find any events matching your search criteria.</p>
         </div>
     );
@@ -86,7 +166,7 @@ function SearchPage() {
     const categories = [
         'Music',
         'Charity',
-        'Teambuilding',
+        'Team Building',
         'Festival',
         'Meeting'
     ];
@@ -117,36 +197,17 @@ function SearchPage() {
         <div className="searchpage__main-container">
             <NavBar authorImg={SukiGreen} />
             <div className="searchpage__container">
-                <div className="searchpage__leftbar">
-                    <div className="searchpage__menu-item" onClick={() => { window.scrollTo(0, 0); window.location.reload(); }} style={{ cursor: "pointer" }}>
-                        <span className="searchpage__icon">🏠</span>
-                        <span className="searchpage__text">Trang chủ</span>
-                    </div>
-                    <div className="searchpage__menu-item">
-                        <span className="searchpage__icon">❤️</span>
-                        <span className="searchpage__text">Yêu thích</span>
-                    </div>
-                    <div className="searchpage__space"></div>
-                    <div className="searchpage__menu-item create-event">
-                        <Link to="/createvent">
-                            <span className="searchpage__icon">🗓️</span>
-                            <span className="searchpage__text">Tạo event</span>
-                        </Link>
-                    </div>
-                    <div className="searchpage__menu-item">
-                        <span className="searchpage__icon">⚙️</span>
-                        <span className="searchpage__text">Cài đặt</span>
-                    </div>
-                </div>
+                <LeftSideBar/>
                 <div className="searchpage__centerbar">
                     {loading ? (
                         <Loading />
                     ) : filteredEvents.length === 0 ? (
-                        <NoResults />
+                            <NoResults />
                     ) : (
                         filteredEvents.map((event) => (
                             <Result
                                 key={event._id} // Add a unique key for each result
+                                id={event._id}
                                 profileImg={event.logoevent}
                                 authorName={event.eventname}
                                 content={event.descriptionevent}
@@ -179,7 +240,7 @@ function SearchPage() {
                             </div>
                             <div className="searchpage__date">
                                 <h4 className="searchpage__subtitle">Date</h4>
-                                <label htmlFor="searchpage__start-date" className="searchpage__label">Start: </label>
+                                <label htmlFor="searchpage__start-date" className="searchpage__label">Start Date </label>
                                 <div className="searchpage__datepicker-container">
                                     <DatePicker
                                         id="start-date"
@@ -190,7 +251,7 @@ function SearchPage() {
                                     />
                                     <button type="button" className="searchpage__clear-button" onClick={clearStartDate}>Clear</button>
                                 </div>
-                                <label htmlFor="searchpage__end-date" className="searchpage__label">End: </label>
+                                <label htmlFor="searchpage__end-date" className="searchpage__label">End Date</label>
                                 <div className="searchpage__datepicker-container">
                                     <DatePicker
                                         id="end-date"

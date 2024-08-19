@@ -1,7 +1,7 @@
 import express from "express";
 import cors from 'cors'; // Thêm import cors
 import connectDatabase from './Services/ConnectDBService.js';
-import bodyParser from 'body-parser';
+// import bodyParser from 'body-parser';
 import { fileURLToPath } from 'url';
 import path from "path";
 import { dirname, join } from 'path';
@@ -16,20 +16,21 @@ connectDatabase();
 const app = express();
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-// Cấu hình CORS
 app.use(cors({
-  origin: 'http://192.168.1.180:5173', // Địa chỉ của trang Vite trên iPad
+  origin: '*', // Change this to the specific origin of your Vite app
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true // Cho phép cookie và các thông tin xác thực khác
+  credentials: true
 }));
 
+
+app.options('*', cors()); // Enable pre-flight across the board
 
 app.use(express.json());
 app.set('views', join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/', router);
 app.use('/', router_);
 app.use('/', router_Pfile);

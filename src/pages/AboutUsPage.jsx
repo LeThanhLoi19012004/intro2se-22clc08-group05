@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import logo from '../assets/Logo/SukiWhite.svg';
 import '../assets/AboutUsPage.css';
+import TeamImage from '../assets/About Us.jpg';
 
 import Ring1 from '../assets/Abstract Objects/Ellipse 9.svg';
 import Polygon1 from '../assets/Abstract Objects/Polygon 1-1.svg';
@@ -90,9 +91,7 @@ function AboutUsPage() {
                                 to perfect this product for all of you.
                             </p>
                         </div>
-                        <div className="about-us__team-img-container">
-                            <img src="" alt="Team" />
-                        </div>
+                        <img src={TeamImage} alt="Team" className="about-us__team-img-container"/>
                     </div>
                 </div>
             </div>

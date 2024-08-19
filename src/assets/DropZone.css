@@ -4,7 +4,9 @@
   margin: 5px 0 15px;
   border-radius: 10px;
   background-color: #fff;
-  max-width: 600px;
+  width: 100%;
+  box-sizing: border-box;
+  padding-bottom: 20px;
 }
 
 .dropzone__header {
@@ -22,13 +24,18 @@
 
 .dropzone__description-input {
   flex: 1;
-  border: 1px solid #ccc;
+  border: 1.5px solid grey;
   border-radius: 10px;
   padding: 10px;
   font-size: 16px;
   margin-right: 15px;
+  resize: none;
+  max-height: 200px;
 }
 
+.dropzone__description-input:focus {
+  outline:0;
+}
 .dropzone__image-section {
   margin-top: 20px;
 }
@@ -82,14 +89,15 @@
 .dropzone__submit-button {
   display: block;
   width: 100%;
-  background-color: #007bff;
+  background: linear-gradient(150deg, #2d158f, #ff7383);
   color: #fff;
   border: none;
   border-radius: 10px;
   padding: 10px;
-  font-size: 16px;
+  font-size: 20px;
   cursor: pointer;
   margin-top: 20px;
+  font-weight: 700;
 }
 
 .dropzone__submit-button:disabled {

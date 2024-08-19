@@ -1,23 +1,18 @@
-import React, { useState, useEffect, useTransition } from "react";
+import React, { useState, useEffect } from "react";
 import NavBar from "../components/NavBar.jsx";
 import "../assets/MainPage.css";
 import { FaMusic } from "react-icons/fa";
-import { MdOutlineTheaterComedy, MdPeople } from "react-icons/md";
 import { GiVideoConference } from "react-icons/gi";
-import { MdOutlineFestival } from "react-icons/md";
-import { AiOutlineTeam } from "react-icons/ai";
 import SukiGreen from "../assets/Logo/SukiColor.svg";
 import { FaSort } from "react-icons/fa";
 import { FaSortDown } from "react-icons/fa";
 import { FaSortUp } from "react-icons/fa";
 import { FaHome, FaCompass, FaHeart, FaCog,FaRegCalendarAlt  } from "react-icons/fa";
-import { MdMusicNote, MdEvent} from 'react-icons/md';
-import { GiHeartPlus,GiPodium } from 'react-icons/gi';
-
-import {FaStar,FaHandsHelping, FaUsers, FaChalkboardTeacher } from 'react-icons/fa';
-import {Link, useLocation} from "react-router-dom";
+import { GiHeartPlus} from 'react-icons/gi';
+import {FaStar, FaUsers } from 'react-icons/fa';
+import {Link, useNavigate} from "react-router-dom";
 import Post from '../components/Post.jsx'
-import { renderMainPage } from "../API.js";
+import { renderMainPage, RenderEventMP } from "../API.js";
 
 function Loading() {
   return (
@@ -33,21 +28,12 @@ function Loading() {
 }
 
 function LeftSideBar() {
-  const [prev, setRefresh] = useState(false);
   const [isHomeClicked, setIsHomeClicked] = useState(false);
   const [isExploreClicked, setIsExploreClicked] = useState(false);
   const [isFavoritesClicked, setIsFavoritesClicked] = useState(false);
   const [isSettingsClicked, setIsSettingsClicked] = useState(false);
   const [isCreateEventClicked, setIsCreateEventClicked] = useState(false);
-  const renderLinks = (items) => {
-    return items.map((item, index) => (
-      <a key={index} href="#">
-        <img src="#" alt="" />
-        {item}
-      </a>
-    ));
-  };
-
+  const userIDExists = localStorage.getItem('UserID') !== null;
 
   const handleClickMain = () => {
     setIsHomeClicked(true);
@@ -73,17 +59,17 @@ function LeftSideBar() {
         onClick={handleClickMain}
         style={{ cursor: "pointer" }}
       >
-        <span className="main-page__icon"><FaHome className = "icon" style = {{color: isHomeClicked ? '#ff7383' :'#2d158f'}}/></span>
-        <span className="main-page__text" style = {{color: isHomeClicked ? '#ff7383' :'#2d158f'}}>Home</span>
+        <span className="main-page__icon"><FaHome className = "icon" style = {{color: isHomeClicked ? '#ff7383' :'#ff7383'}}/></span>
+        <span className="main-page__text" style = {{color: isHomeClicked ? '#ff7383' :'#ff7383'}}>Home</span>
       </div>
-      <div 
+      <Link to="/search"
         className="main-page__menu-item"
         onClick={handleClickExplore}
         style={{ cursor: "pointer" }}
       >
         <span className="main-page__icon"><FaCompass className = "icon" style = {{color: isExploreClicked ? '#ff7383' :'#2d158f'}}/></span>
         <span className="main-page__text" style = {{color: isExploreClicked ? '#ff7383' :'#2d158f'}}>Explore</span>
-      </div>
+      </Link>
       <div 
         className="main-page__menu-item"
         onClick={handleClickFavorites}
@@ -91,7 +77,8 @@ function LeftSideBar() {
         <span className="main-page__icon"><FaHeart className = "icon" style = {{color: isFavoritesClicked ? '#ff7383' :'#2d158f'}}/></span>
         <span className="main-page__text" style = {{color: isFavoritesClicked ? '#ff7383' :'#2d158f'}}>Favorites</span>
       </div>
-      <div 
+      { userIDExists && <>
+      <Link to="/setting" 
         className="main-page__menu-item"
         onClick={handleClickSettings}
         style={{ cursor: "pointer" }}
@@ -99,74 +86,101 @@ function LeftSideBar() {
         
         <span className="main-page__icon"><FaCog className = "icon" style = {{color: isSettingsClicked ? '#ff7383' :'#2d158f'}}/></span>
         <span className="main-page__text" style = {{color: isSettingsClicked ? '#ff7383' :'#2d158f'}}>Settings</span>
+      </Link>
+      <div className="main-page__menu-gap"></div>
+        <Link to="/createvent" className="main-page__menu-item-create"
+          onClick={handleClickCreateEvent}
+          style={{ cursor: "pointer" }}
+        >
+          <span className="main-page__icon"><FaRegCalendarAlt className ="icon"/></span>
+          <span className="main-page__text">Create Event</span>
+        </Link> </>}
       </div>
-      {/* <div className="main-page__menu-item">
-        <span className="main-page__icon">📈</span>
-        <span className="main-page__text">Bảng </span>
-      </div> */}
-      <div className="main-page__space"></div>
-      <div className="main-page__menu-item create-event"
-        onClick={handleClickCreateEvent}
-        style={{ cursor: "pointer" }}
-
-      >
-        <Link to="/createvent"  style={{ display: 'flex'}}>
-        <span className="main-page__icon"><FaRegCalendarAlt className ="icon" style = {{color: isCreateEventClicked ? '#ff7383' :'#2d158f'}}/></span>
-        <span className="main-page__text" style = {{color: isCreateEventClicked ? '#ff7383' :'#2d158f'}}>Create Event</span>
-        </Link>
-      </div>
-      
-    </div>
   );
 }
 
 function RightSidebar(){
-  const newsItems = Array(8).fill({
-    title: "Bla bla bla bla bla bla",
-    description: "bla bla bla bla bla bla bla",
-  });
+  const navigate = useNavigate();
+  const [eventFollow, setEventFollow] = useState([]);
+  const [loading, setLoading] = useState(true); 
+  const [eventOwner, setEventOwner] = useState([]);
+  const profile = localStorage.getItem('ProfileID');
+  const movetoEvent = (eventID) => {
+    localStorage.setItem("eventid", eventID);
+    window.scrollTo(0, 0); // Scroll to top
+    navigate(`/event?id=${eventID}`);
+  };
 
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await RenderEventMP({profile}); // Assuming RenderEventMP is defined elsewhere
+        setEventFollow(response.event_follow);
+        setEventOwner(response.event_orga);
+        setLoading(false); // Kết thúc loading
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchEvents();
+  }, []);
   return (
     <div className="main-page__right-side">
-      <div className="main-page__sidebar-news">
-        {/* <img src="#" alt="info" className="main-page__info-icon" /> */}
-        <h1>Recent</h1>
-        {newsItems.map((item, index) => (
-          <div key={index}>
-            <a href="#">{item.title}</a>
-            <span>{item.description}</span>
+      {loading ? (
+        <div/>
+      ) : (
+        <>
+          <div className="main-page__sidebar-news-scroll">
+            <h1>Followed</h1>
+            <div className="main-page__event_list-right">
+              {eventFollow.length !== 0 ? (
+                eventFollow.map((event, index) => (
+                  <div key={event._id || index} className="main-page__event-info">
+                    <div className="main-page__event-avatar">
+                      <img
+                        className="main-page__event-avatar"
+                        onClick={() => movetoEvent(event._id)}
+                        src={`data:${event.logoevent.contentType};base64,${event.logoevent.imageBase64}`}
+                      />
+                    </div>
+                    <div className="main-page__event-details">
+                      <p className="main-page__event-name">{event.eventname}</p>
+                      <p className="main-page__event-category">{event.eventtype}</p>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p>No event followed</p>
+              )}
+            </div>
           </div>
-        ))}
-        {/* <a href="#" className="main-page__read-more-link">
-          Read more
-        </a> */}
-      </div>
-      <div className="main-page__sidebar-news">
-        {/* <img src="#" alt="info" className="main-page__info-icon" /> */}
-        <h1>Recent</h1>
-        {newsItems.map((item, index) => (
-          <div key={index}>
-            <a href="#">{item.title}</a>
-            <span>{item.description}</span>
+          <div className="main-page__sidebar-news">
+            <h1>Organize</h1>
+            <div className="main-page__event_list-right">
+              {eventOwner.length !== 0 ? (
+                eventOwner.map((event, index) => (
+                  <div key={event._id || index} className="main-page__event-info">
+                    <div className="main-page__event-avatar">
+                      <img
+                        className="main-page__event-avatar"
+                        onClick={() => movetoEvent(event._id)}
+                        src={`data:${event.logoevent.contentType};base64,${event.logoevent.imageBase64}`}
+                      />
+                    </div>
+                    <div className="main-page__event-details">
+                      <p className="main-page__event-name">{event.eventname}</p>
+                      <p className="main-page__event-category">{event.eventtype}</p>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p>No event organize</p>
+              )}
+            </div>
           </div>
-        ))}
-        {/* <a href="#" className="main-page__read-more-link">
-          Read more
-        </a> */}
-      </div>
-      {/* <div className="main-page__sidebar-ad">
-        <small>Sponsored</small>
-        <p>Iphone 16 is coming...</p>
-        <div>
-          <img src="#" alt="" />
-          <img src="#" alt="" />
-        </div>
-        <b>Brand and Demand in Apple</b>
-        <a href="https://www.apple.com/apple-news/" className="main-page__ad-link">
-          Learn more
-        </a>
-      </div> */}
-
+        </>
+      )}
       <div className="main-page__sidebar-useful-link">
         <div className="main-page__copy-right-msg">
           <img src="#" alt="" />
@@ -175,7 +189,7 @@ function RightSidebar(){
       </div>
     </div>
   );
-};
+}
 
 const CenterSide = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -208,7 +222,10 @@ const CenterSide = () => {
   ];
 
   const handleEventClick = (index) => {
-    setSelectedEvent(index);
+    if (selectedEvent == index)
+      setSelectedEvent(null);
+    else
+      setSelectedEvent(index);
   };
 
 
@@ -220,9 +237,12 @@ const CenterSide = () => {
     } else {
       setSortType('none');
     }
+    
   };
 
-  const sortedPosts = [...posts].sort((a, b) => {
+  const filteredPosts = selectedEvent === null ? posts : posts.filter(post => post.eventID.eventtype === events[selectedEvent].name);
+
+  const sortedPosts = [...filteredPosts].sort((a, b) => {
     const dateA = new Date(a.postcreationdate);
     const dateB = new Date(b.postcreationdate);
 
@@ -269,9 +289,9 @@ const CenterSide = () => {
           <p>An error has occurred: {error.message}</p>
         </div>
       ) : (
-        sortedPosts.map((post, index) => (
+        sortedPosts.map((post) => (
           <Post
-            key={index}
+            key={post._id}
             date={post.postcreationdate}
             userName={post.eventID.eventname}
             content={post.descriptionpost}
@@ -303,3 +323,4 @@ function MainPage() {
 }
 
 export default MainPage;
+

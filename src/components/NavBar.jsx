@@ -1,37 +1,43 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import '../assets/NavBar.css';
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import "../assets/NavBar.css";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { LuTicket } from "react-icons/lu";
 import { IoSearchOutline } from "react-icons/io5";
 import { FaCog } from "react-icons/fa";
-import { LuLogOut } from "react-icons/lu";
-import Suki from '../assets/Logo/SukiWhite.svg';
-import { renderProfile } from '../API';
+import { LuLogOut, LuLogIn } from "react-icons/lu";
+import Suki from "../assets/Logo/SukiWhite.svg";
+import { renderProfile } from "../API";
 
 function Navbar() {
   const navigate = useNavigate();
   const idaccount = localStorage.getItem("UserID");
-  const [url, setUrl] = useState("https://cdn-icons-png.flaticon.com/512/3682/3682281.png");
+  const [url, setUrl] = useState(
+    "https://cdn-icons-png.flaticon.com/512/3682/3682281.png"
+  );
   const [name, setName] = useState("Guest");
   const [searchQuery, setSearchQuery] = useState(""); // State for search query
   const [dropdownActive, setDropdownActive] = useState(false);
-  const [notificationDropdownActive, setNotificationDropdownActive] = useState(false);
+  const [notificationDropdownActive, setNotificationDropdownActive] =
+    useState(false);
   const [ticketDropdownActive, setTicketDropdownActive] = useState(false);
 
   const handleLogout = () => {
     localStorage.clear();
-    navigate('/');
+    navigate("/");
   };
 
   const handleSetting = () => {
-    navigate('/setting');
+    navigate("/setting");
+  };
+
+  const handleLogin = () => {
+    navigate("/login");
   };
 
   const handleSearch = (e) => {
     e.preventDefault(); // Prevent the default form submission behavior
-      navigate(`/search?q=${encodeURIComponent(searchQuery)}`); // Navigate with query parameter
-
+    navigate(`/search?q=${encodeURIComponent(searchQuery)}`); // Navigate with query parameter
   };
 
   useEffect(() => {
@@ -39,7 +45,10 @@ function Navbar() {
       const response = await renderProfile({ idaccount });
       if (response.success) {
         localStorage.setItem("ProfileID", response.data._id);
-        setUrl(`data:${response.data.avatar.contentType};base64,${response.data.avatar.imageBase64}`);
+        if (response.data.avatar != null)
+          setUrl(
+            `data:${response.data.avatar.contentType};base64,${response.data.avatar.imageBase64}`
+          );
         setName(response.data.idaccount.username);
       }
     };
@@ -67,19 +76,26 @@ function Navbar() {
   return (
     <nav className="navbar">
       <div className="navbar-left">
-        <Link to="/mainpage" className="logo"><img src={Suki} alt="Logo" /></Link>
+        <Link to="/mainpage" className="logo">
+          <img src={Suki} alt="Logo" />
+        </Link>
         <span>SUKI</span>
       </div>
       <div className="navbar-center">
         <form className="search-box" onSubmit={handleSearch}>
-          <IoSearchOutline style={{ color: 'white', cursor: 'pointer' }} onClick={handleSearch}/>
+          <IoSearchOutline
+            style={{ color: "white", cursor: "pointer" }}
+            onClick={handleSearch}
+          />
           <input
             type="text"
             placeholder="Event"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-          <button type="submit" style={{ display: 'none' }}>Search</button>
+          <button type="submit" style={{ display: "none" }}>
+            Search
+          </button>
         </form>
       </div>
       <div className="navbar-right">
@@ -88,18 +104,69 @@ function Navbar() {
             <IoMdNotificationsOutline
               size={30}
               style={{
-                color: notificationDropdownActive ? 'black' : 'white',
-                backgroundColor: notificationDropdownActive ? 'white' : 'transparent',
-                borderRadius: '50%',
-                padding: '5px'
+                color: notificationDropdownActive ? "#ff7383" : "white",
+                backgroundColor: notificationDropdownActive
+                  ? "white"
+                  : "transparent",
+                borderRadius: "50%",
+                padding: "5px",
               }}
             />
-            <div className={`notification-dropdown ${notificationDropdownActive ? 'active' : ''}`}>
+            <div
+              className={`notification-dropdown ${
+                notificationDropdownActive ? "active" : ""
+              }`}
+            >
               <div className="notification-card">
-                <p>
-                  DATA will show here<br />
-                  {/* Add actual notification data here */}
-                </p>
+                <div className="nav-bar__card-title">Notifications</div>
+                <div className="nav-bar__card-list">
+                  <div className="nav-bar__card-list-part">
+                    <div className="nav-bar__card-list-part-pink"></div>
+                    <div className="nav-bar__card-list-part-info">
+                      <div className="nav-bar__card-list-part-info-main">
+                        <strong>EventOrganizer</strong> just replied to your
+                        comment.
+                      </div>
+                      <div className="nav-bar__card-list-part-info-time">
+                        20 minutes ago
+                      </div>
+                    </div>
+                  </div>
+                  <div className="nav-bar__card-list-part">
+                    <div className="nav-bar__card-list-part-pink"></div>
+                    <div className="nav-bar__card-list-part-info">
+                      <div className="nav-bar__card-list-part-info-main">
+                        New update of <strong>FutureEvent</strong>.
+                      </div>
+                      <div className="nav-bar__card-list-part-info-time">
+                        3 hours ago
+                      </div>
+                    </div>
+                  </div>
+                  <div className="nav-bar__card-list-part">
+                    <div className="nav-bar__card-list-part-white"></div>
+                    <div className="nav-bar__card-list-part-info">
+                      <div className="nav-bar__card-list-part-info-main">
+                        <strong>NewEvent</strong> starts in 2 days.
+                      </div>
+                      <div className="nav-bar__card-list-part-info-time">
+                        2 days ago
+                      </div>
+                    </div>
+                  </div>
+                  <div className="nav-bar__card-list-part">
+                    <div className="nav-bar__card-list-part-white"></div>
+                    <div className="nav-bar__card-list-part-info">
+                      <div className="nav-bar__card-list-part-info-main">
+                        <strong>UserFriend</strong> just replied to your
+                        comment.
+                      </div>
+                      <div className="nav-bar__card-list-part-info-time">
+                        10 minutes ago
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </li>
@@ -107,39 +174,95 @@ function Navbar() {
             <LuTicket
               size={30}
               style={{
-                color: ticketDropdownActive ? 'black' : 'white',
-                backgroundColor: ticketDropdownActive ? 'white' : 'transparent',
-                borderRadius: '50%',
-                padding: '5px'
+                color: ticketDropdownActive ? "#ff7383" : "white",
+                backgroundColor: ticketDropdownActive ? "white" : "transparent",
+                borderRadius: "50%",
+                padding: "5px",
               }}
             />
-            <div className={`ticket-dropdown ${ticketDropdownActive ? 'active' : ''}`}>
+            <div
+              className={`ticket-dropdown ${
+                ticketDropdownActive ? "active" : ""
+              }`}
+            >
               <div className="ticket-card">
-                <p>
-                  DATA will show here<br />
-                  {/* Add actual ticket data here */}
-                </p>
+                <div className="nav-bar__card-title">Tickets</div>
+                <div className="nav-bar__card-list">
+                  <div className="nav-bar__card-list-part">
+                    <div className="nav-bar__card-list-part-pink"></div>
+                    <div className="nav-bar__card-list-part-info">
+                      <div className="nav-bar__card-list-part-info-events">
+                        Event Not Happened Yet With Participation
+                      </div>
+                      <div className="nav-bar__card-list-part-info-participation">
+                        Participation
+                      </div>
+                    </div>
+                  </div>
+                  <div className="nav-bar__card-list-part">
+                    <div className="nav-bar__card-list-part-pink"></div>
+                    <div className="nav-bar__card-list-part-info">
+                      <div className="nav-bar__card-list-part-info-events">
+                        Event Not Happened Yet With Tickets
+                      </div>
+                      <div className="nav-bar__card-list-part-info-participation">
+                        2 Tickets
+                      </div>
+                    </div>
+                  </div>
+                  <div className="nav-bar__card-list-part">
+                    <div className="nav-bar__card-list-part-white"></div>
+                    <div className="nav-bar__card-list-part-info">
+                      <div className="nav-bar__card-list-part-info-events">
+                        Event Happened With Participation
+                      </div>
+                      <div className="nav-bar__card-list-part-info-participation">
+                        Participation
+                      </div>
+                    </div>
+                  </div>
+                  <div className="nav-bar__card-list-part">
+                    <div className="nav-bar__card-list-part-white"></div>
+                    <div className="nav-bar__card-list-part-info">
+                      <div className="nav-bar__card-list-part-info-events">
+                        Event Happened With Tickets
+                      </div>
+                      <div className="nav-bar__card-list-part-info-participation">
+                        1 Ticket
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </li>
         </ul>
         <div className="profile_img" onClick={toggleDropdown}>
           <img src={url} alt="profile-img" />
-          <div className={`dropdown-menu ${dropdownActive ? 'active' : ''}`}>
+          <div className={`dropdown-menu ${dropdownActive ? "active" : ""}`}>
             <div className="profile-section">
               <img src={url} alt="profile-img" />
               <div className="profile-info">
                 <p>{name}</p>
               </div>
             </div>
-            <div className="menu-item" onClick={handleSetting}>
-              <FaCog className="icon" />
-              <span>Settings</span>
-            </div>
-            <div className="menu-item" onClick={handleLogout}>
-              <LuLogOut className="icon" />
-              <span>Log out</span>
-            </div>
+            {name === "Guest" ? (
+              <div className="menu-item" onClick={handleLogin}>
+                <LuLogIn  className="icon" />
+                <span>Login</span>
+              </div>
+            ) : (
+              <>
+                <div className="menu-item" onClick={handleSetting}>
+                  <FaCog className="icon" />
+                  <span>Settings</span>
+                </div>
+                <div className="menu-item" onClick={handleLogout}>
+                  <LuLogOut className="icon" />
+                  <span>Log out</span>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>

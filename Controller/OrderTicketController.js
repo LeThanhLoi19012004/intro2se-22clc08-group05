@@ -1,25 +1,22 @@
-import ejs from "ejs";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import path from "path";
-import orderTIcketModel from "../Models/OrderTicketModel.js"
+import OrderTicketModel from "../Models/OrderTicketModel.js"
 import CEventModel from "../Models/CEventModel.js";
 import mongoose from "mongoose";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-const OTicket = async (req, res) => {
+const OrderTicket = async (req, res) => {
   try {
-    const { profileID, eventID, ticketorder } = req.body;
+    const { profile, eventID, amount } = req.body;
 
-
-    const profileObjectId = new mongoose.Types.ObjectId(profileID);
+    const profileObjectId = new mongoose.Types.ObjectId(profile);
     const eventObjectId = new mongoose.Types.ObjectId(eventID);
 
-
-    const newOrder = new orderTIcketModel({
+    const newOrder = new OrderTicketModel({
       profileID: profileObjectId,
       eventID: eventObjectId,
-      ticketorder: ticketorder
+      ticketorder: amount
     });
 
     await newOrder.save();
@@ -29,27 +26,61 @@ const OTicket = async (req, res) => {
 
     const event = await CEventModel.findById(eventObjectId);
     if (event) {
-      event.ticketavailable -= ticketorder;
+      event.ticketavailable -= amount;
       await event.save();
       console.log('Event updated successfully');
     } else {
       console.error('Event not found');
-      return res.status(404).send('Event not found');
+      return res.status(404).json({success: false, message: 'Event not found'});
     }
 
-    // Render trang thành công với EJS
-    const ejsFilePath = path.join(__dirname, '..', 'renderOrder.ejs');
-    const html = await ejs.renderFile(ejsFilePath, { order: newOrder });
-    res.send(html);
+    res.json({success: true});
 
   } catch (error) {
     console.error('Error creating order:', error);
-    res.status(500).send('Internal Server Error');
+    res.status(500).json({success: false, message: 'Internal Server Error'});
+  }
+};
+
+const CancelTicket = async (req, res) => {
+  try {
+    const { profile, eventID} = req.body;
+
+    const order_ticket = await OrderTicketModel.findOneAndDelete({ profileID: profile, eventID: eventID });
+    if (!order_ticket)
+      res.status(400).json({success: false, message: "Can not cancel"})
+    else{
+      const event = await CEventModel.findById(eventID);
+      event.ticketavailable += order_ticket.ticketorder;
+      await event.save();
+    res.json({success: true, num_of_ticket: order_ticket.ticketorder});
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({success: false, message: 'Internal Server Error'});
+  }
+};
+
+const StatusOrder = async (req, res) => {
+  try {
+    const { profile, eventID} = req.body;
+
+    const order_ticket = await OrderTicketModel.findOne({ profileID: profile, eventID: eventID });
+    if (!order_ticket)
+      res.json({success: true, status: false})
+    else{
+    res.json({success: true, status: true});
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({success: false, message: 'Internal Server Error'});
   }
 };
 
 const ProfileController = {
-  OTicket: OTicket
+  OrderTicket: OrderTicket,
+  CancelTicket: CancelTicket,
+  StatusOrder: StatusOrder
 };
 
 export default ProfileController;

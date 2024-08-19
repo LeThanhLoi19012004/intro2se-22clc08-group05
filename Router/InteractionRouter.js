@@ -12,4 +12,5 @@ router_Interaction.post('/like', InteractionController.likePost);
 
 router_Interaction.post('/get-interaction', InteractionController.getPostInteraction);
 
+router_Interaction.get('/admin-list-comment', InteractionController.AdminListComment);
 export default router_Interaction;

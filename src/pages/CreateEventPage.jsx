@@ -1,8 +1,8 @@
 import React, {useState,useRef, useEffect} from "react";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate  } from 'react-router-dom';
 import "../assets/CreateEventPage.css";
 import SukiWhite from '../assets/Logo/SukiWhite.svg';
-
+import { renderProfile, createEvent } from '../API';
 import Ring1 from '../assets/Abstract Objects/Ellipse 9-1.svg';
 import Ellipse1 from '../assets/Abstract Objects/Ellipse 7-3.svg';
 import Polyline1 from '../assets/Abstract Objects/Vector 8.svg';
@@ -24,41 +24,44 @@ function AbstractFigures(){
 }
 
 function CreateEvent(){
-    useEffect(() => {
-        window.scrollTo(0, 0);
-      }, []);
+  const navigate = useNavigate();
+    const [url, setUrl] = useState("https://cdn-icons-png.flaticon.com/512/3682/3682281.png");
     const eventInputRef = useRef(null);
-    const profileInputRef = useRef(null);
     const [eventImage, setEventImage] = useState(null);
-    const [profileImage, setProfileImage] = useState(null);
+    const [eventFile, setEventFile] = useState(null)
     const [category, setCategory] = useState("0");
     const [ticketType, setTicketType] = useState("0");
+    const idaccount = localStorage.getItem("UserID");
+    const [name, setName] = useState("")
+    const categories = ["Charity", "Meeting", "Team Building", "Music", "Festival"]
+    useEffect(() => {
+        const getImg = async () => {
+          const response = await renderProfile({ idaccount });
+          if (response.success) {
+            localStorage.setItem("ProfileID", response.data._id);
+            setUrl(`data:${response.data.avatar.contentType};base64,${response.data.avatar.imageBase64}`);
+            setName(response.data.fullname)
+          }
+        };
+        getImg();
+      }, [idaccount]);
     // const [isChecked, setIsChecked] = useState(false);
     const handleEventImageClick = () => {
         eventInputRef.current.click();
       };
     
-    const handleProfileImageClick = () => {
-        profileInputRef.current.click();
-    };
 
     const handleEventImageChange = (event) => {
         const file = event.target.files[0];
         if (file) {
           const imageUrl = URL.createObjectURL(file);
+          setEventFile(file);
           setEventImage(imageUrl);
           const imgContainer = document.getElementById('create-event__img-container');
           imgContainer.style.backgroundColor = 'transparent'; // Set to transparent or any desired color
         }
     };
     
-    const handleProfileImageChange = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-          const imageUrl = URL.createObjectURL(file);
-          setProfileImage(imageUrl);
-        }
-    };
     
    
     useEffect(() => {
@@ -122,38 +125,45 @@ function CreateEvent(){
         };
     }, [eventImage]);
 
-    const handleForm = (event) => {
+
+
+    const handleForm = async (event) => {
         event.preventDefault();
     
-        let form = event.target;
-        let formData = new FormData(form);
-        let formDataObj = Object.fromEntries(formData.entries());
+        const formData = new FormData();
     
-        if (eventImage) {
-            formData.append('eventImage', eventImage);
+        formData.append("logoevent", eventFile);
+        formData.append("profileId", localStorage.getItem("ProfileID"))
+        formData.append("eventname", event.target.elements["event-name"].value);
+        formData.append("eventtype", categories[category]);
+        formData.append("descriptionevent", event.target.elements["description"].value);
+        formData.append("rulesevent", event.target.elements["rules"].value || "");
+        formData.append("location", event.target.elements["location"].value);
+        formData.append("eventdate", event.target.elements["event-date"].value);
+        formData.append("eventtime", event.target.elements["event-time"].value);
+        formData.append(
+          "numberoftickets",
+          event.target.elements["ticket-quantity"].value || "0"
+        );
+        formData.append(
+          "ticketavailable",
+          event.target.elements["ticket-quantity"].value || "0"
+        );
+        formData.append(
+          "participants",
+          event.target.elements["participant"].value || "0"
+        );
+        formData.append("tickettype", ticketType);
+        formData.append("price", event.target.elements["ticket-price"].value || "0");
+    
+        // Log form data
+        const response = await createEvent(formData);
+        if (response.success){
+          navigate('/mainpage')
         }
+        // You can now send this formData to your API endpoint.
+      };
     
-        if (profileImage) {
-            formData.append('profileImage', profileImage);
-        }
-    
-        // Extract the selected text of the event-type (category)
-        const categorySelect = form.querySelector('select[name="event-type"]');
-        const selectedCategoryText = categorySelect.options[categorySelect.selectedIndex].text;
-    
-        // Append the category text value to the form data
-        formData.append('categoryText', selectedCategoryText);
-    
-        // Example form data logging
-        formData.forEach((value, key) => {
-            console.log(key, value);
-        });
-    
-        // Proceed with form submission (e.g., send formData via an API)
-    };
-    
-
-
     return(
         <>
         <div className = "create-event__container">
@@ -162,18 +172,11 @@ function CreateEvent(){
         <form className = "create-event__form" onSubmit = {handleForm}>
             <div className = "create-event__header-bar">
                 <div>
-                    <div className="create-event__profile-container" onClick = {handleProfileImageClick}>
-                        {profileImage ? (<img src = {profileImage} alt = "profile" />
+                    <div className="create-event__profile-container" >
+                        {url ? (<img src = {url} alt = "profile" />
                         ):(<p></p>)}
                     </div>
-                    <input
-                        type="file"
-                        ref={profileInputRef}
-                        style={{ display: "none" }}
-                        onChange={handleProfileImageChange}
-                        name = "event-profile"
-                    />
-                    <p>Create Under <span>UserName</span></p>
+                    <p>Create Under <span>{name}</span></p>
                 </div>
                 <div className = "create-event__logo-container">
                     <img src = {SukiWhite}/>
@@ -217,15 +220,15 @@ function CreateEvent(){
                             type = "time" 
                             id = "event-time" />
                 </div>
-            </div>
+            </div> 
             <div className = "create-event__category-container"> 
                 <label htmlFor = "category">Category</label>
                 <select name = "event-type" value={category} onChange={(e) => setCategory(e.target.value)}>
-                    <option value = "0">Charity</option>
-                    <option value = "1">Meeting</option>
-                    <option value = "2">Team Building</option>
-                    <option value = "3">Music</option>
-                    <option value = "4">Festival</option>
+                {categories.map((cat, index) => (
+      <option key={index} value={index.toString()}>
+        {cat}
+      </option>
+    ))}
                 </select>
             </div>
             <div className = "create-event__location-container"> 
@@ -240,10 +243,10 @@ function CreateEvent(){
             
             <div className = "create-event__participant-container"> 
                 <label htmlFor = "participant">Participants </label>
-                <input name = "participant" type = "number" id = "participant" className = "create-event__participant" placeholder='Capacity'min = {0}
+                <input  disabled={category === '3' || category === '4'} name = "participant" type = "number" id = "participant" className = "create-event__participant" placeholder='Capacity'min = {0}
                         readOnly = {category === '3' || category === '4'}
                         style={{ opacity: (category === '3' || category === '4') ? '0.5' : '' }}
-
+                        required={category === '0' || category === '1' || category === '2'}
                 />
             </div>
             <div className = "create-event__ticket-container">
@@ -253,6 +256,7 @@ function CreateEvent(){
                             readOnly={category === '0' || category === '1' || category === '2'} 
                             disabled = {category === '0' || category === '1' || category === '2'}
                             style={{ opacity: (category === '0' || category === '1' || category === '2') ? '0.5' : '' }}
+                            required={category === '3' || category === '4'}
                     />
                     <select 
                         name = "ticket-type" 
@@ -268,6 +272,7 @@ function CreateEvent(){
                     </select>
                     <input  type="number" name="ticket-price" id="ticket-price" placeholder="Price" min={0} 
                             readOnly={category === '0' || category === '1' || category === '2' || ticketType === '1'} 
+                            required={category === '3' || category === '4'}
                             style={{ opacity: (category === '0' || category === '1' || category === '2' || ticketType === '1') ? '0.5' : '' }}/>
                 </div>
             </div>

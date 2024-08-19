@@ -1,5 +1,6 @@
 import ProfileModel from "../Models/ProfileModel.js"
 import mongoose from 'mongoose';
+import fs from 'fs';
 
 const conn = mongoose.connection;
 let gfs;
@@ -12,61 +13,43 @@ conn.once('open', () => {
 
 const UpdateProfile = async (req, res) => {
   try {
-    
-    console.log(req.body)
-    const idaccount = req.body['idaccount'];
-    const fullname = req.body['fullname'];
-    const sex = req.body['sex'];
-    const university = req.body['university'];
-    const phone = req.body['phone'];
-    const idcard = req.body['idcard'];
-    const dob = req.body['dob'];
-    const hometown = req.body['hometown'];
-    // Xử lý ảnh đại diện nếu có
-    const avatar = req.file ? {
-      filename: req.file.filename,
-      contentType: req.file.mimetype,
-      size: req.file.size,
-      uploadDate: new Date(),
-      imageBase64: fs.readFileSync(req.file.path, 'base64')
-    } : null;
+    // Log the entire request body to verify its content
 
-    // Tìm hồ sơ dựa trên account ID
-    const profile = await ProfileModel.findOne({ idaccount: idaccount }).exec();
+    // Correctly access fields from the request body
+    const idaccount = req.body.idaccount._id;
+    const fullname = req.body.fullname;
+    const phone = req.body.phone; // Fixed typo here
+    const dob = req.body.dob;
+    const hometown = req.body.address;
+
+    // Find the profile and update or create as needed
+    const profile = await ProfileModel.findOne({ idaccount }).exec();
 
     if (profile) {
       profile.fullname = fullname || profile.fullname;
-      profile.sex = sex || profile.sex;
-      profile.university = university || profile.university;
       profile.phone = phone || profile.phone;
-      profile.idcard = idcard || profile.idcard;
       profile.dob = dob ? new Date(dob) : profile.dob;
       profile.hometown = hometown || profile.hometown;
-      if (avatar) profile.avatar = avatar;
 
-      await profile.save(); // Lưu hồ sơ đã cập nhật
-      res.status(200).json({success: true,message: 'Profile updated successfully'});
+      await profile.save();
+      res.status(200).json({ success: true, message: 'Profile updated successfully' });
       console.log('Profile updated successfully');
     } else {
-      // Tạo mới hồ sơ nếu không tồn tại
       const newProfile = new ProfileModel({
         idaccount,
         fullname,
-        sex,
-        university,
         phone,
-        idcard,
         dob: new Date(dob),
-        hometown,
-        avatar
+        hometown
       });
 
-      await newProfile.save(); // Lưu hồ sơ mới
+      await newProfile.save();
+      res.status(201).json({ success: true, message: 'Profile created successfully' });
       console.log('Profile created successfully');
     }
   } catch (error) {
     console.error('Error updating profile:', error);
-    return res.status(500).json({success: false,message: "Internal Server Error"});
+    res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
 
@@ -79,7 +62,7 @@ const RenderProfile = async (req, res) => {
       .populate('idaccount', 'username email') 
       .exec();
     if (!profile) {
-      return res.status(404).json({ success: false, message: 'Profile not found' });
+      return res.status(200).json({ success: false, message: 'Profile not found' });
     } else {
       const profileData = {
         ...profile.toObject(),
@@ -94,11 +77,48 @@ const RenderProfile = async (req, res) => {
   }
 };
 
+const ChangeAvatar = async (req, res) => {
+  try {
+    const idaccount = req.body.idaccount;
+    const newImageFile = req.file; // Assuming you're using middleware like multer to handle file uploads
+
+    const profile = await ProfileModel.findOne({ idaccount: idaccount })
+      .exec();
+
+    if (!profile) {
+      return res.status(404).json({ success: false, message: 'Profile not found' });
+    }
+
+    // Create avatar object if newImageFile exists
+    const avatar = newImageFile
+      ? {
+          filename: newImageFile.filename,
+          contentType: newImageFile.mimetype,
+          size: newImageFile.size,
+          uploadDate: new Date(),
+          imageBase64: fs.readFileSync(newImageFile.path, 'base64'),
+        }
+      : null;
+
+    // Update profile's avatar
+    profile.avatar = avatar;
+
+    // Save the updated profile
+    await profile.save();
+
+    return res.status(200).json({ success: true, message: 'Avatar updated successfully', avatar: profile.avatar });
+  } catch (error) {
+    console.error('Error updating avatar:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
 
 
 const ProfileController = {
   UpdateProfile: UpdateProfile,
-  RenderProfile: RenderProfile
+  RenderProfile: RenderProfile,
+  ChangeAvatar: ChangeAvatar
 };
+
 
 export default ProfileController;

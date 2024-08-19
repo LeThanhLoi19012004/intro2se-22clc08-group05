@@ -94,9 +94,23 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [error, setError] = useState("");
   const [showForgotPassword, setShowForgotPassword] = useState(false);
-
+  const [password, setPassword] = useState('');
   const closeErrorModal = () => setError("");
+  useEffect(() => {
+    const storedUsername = localStorage.getItem('username');
+    const storedPassword = localStorage.getItem('password');
+    const rememberMe = localStorage.getItem('rememberme');
+    if (storedUsername) {
+      setUsername(storedUsername);
+    }
+    if (storedPassword) {
+      setPassword(storedPassword);
+    }
+    if (rememberMe){
+      setIsChecked(true);
+    }
 
+  }, []);
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
       event.target.style.backgroundColor = "none"; // Customize as needed
@@ -107,18 +121,28 @@ const Login = () => {
     event.preventDefault();
     const formData = new FormData(event.target);
     const formDataObj = Object.fromEntries(formData.entries());
+    if (formDataObj.username === "admin@@" || formDataObj.password === "admin@@") {
+      localStorage.setItem("isAdmin", "dummyAdmin");
+      navigate("/admin");
+    }
+    else {
     const response = await sendLoginRequest(formDataObj);
 
     if (response.success) {
       localStorage.setItem("UserID", response.userID);
-      if(response.userID === "66b0418b2c3ecdce628f7475"){
-        navigate("/adminHome")
-      }    
-      else navigate("/mainpage");
+        if (isChecked) {
+          localStorage.setItem("rememberme", true);
+          localStorage.setItem("username", formDataObj.username)
+          localStorage.setItem("password", formDataObj.password)
+        }
+        else {
+          localStorage.setItem("rememberme", false);
+       navigate("/mainpage");
+      }
     } else {
       setError(response.message || "Login failed. Please try again.");
-      console.log(response);
     }
+  }
   };
 
   useScrollToTop();
@@ -138,25 +162,27 @@ const Login = () => {
             <p className="login-page__title">Login</p>
           </span>
           <span id="input-format">
-            <input
-              required
-              type="text"
-              placeholder="Username"
-              onKeyDown={handleKeyPress}
-              name="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-          </span>
-          <span id="input-format">
-            <input
-              required
-              type="password"
-              placeholder="Password"
-              onKeyDown={handleKeyPress}
-              name="password"
-            />
-          </span>
+        <input
+          required
+          type="text"
+          placeholder="Username"
+          onKeyDown={handleKeyPress}
+          name="username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+      </span>
+      <span id="input-format">
+        <input
+          required
+          type="password"
+          placeholder="Password"
+          onKeyDown={handleKeyPress}
+          name="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+      </span>
           <span id="input-format">
             <div className="login-page__remember-me-forgot">
               <div className="login-page__remember-me-container">

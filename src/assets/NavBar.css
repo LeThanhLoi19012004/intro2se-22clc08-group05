@@ -17,7 +17,7 @@
 }
 
 .navbar-left {
-    width: 26%;
+    width: 25%;
     color: white;
     display: flex;
     flex-direction: row;
@@ -43,7 +43,7 @@
     display: flex;
     align-items: center;
     justify-content: right;
-    width: 25.4%;
+    width: 25.75%;
 }
 
 .navbar-right ul {
@@ -94,7 +94,7 @@
     backdrop-filter: blur(10px);
     border-width: 1px;
     border-color: rgba(255, 255, 255, 0.3);
-    border-radius: 20px;
+    border-radius: 30px;
 }
 
 .navbar-center .search-box input {
@@ -112,17 +112,19 @@
 .navbar-right .profile_img {
     position: relative;
 }
+
 /*Notification and Ticket dropdown*/
 /*Notification dropdown*/
+
 .navbar-right .notification-dropdown {
     display: none;
     position: absolute;
     top: 80px;
-    right: 250px;
-    background:linear-gradient(150deg,hsl(252, 74%, 32%,0.8),hsl(252, 74%, 32%, 0.8));
-
+    right: 170px;
+    background-color: rgba(45, 21, 143, 0.8);
     color:white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
     padding: 10px;
     z-index: 1000;
 }
@@ -132,19 +134,15 @@
     position: absolute;
     
 }
+
 .navbar-right .notification-card {
     padding: 10px;
-    border-bottom: 1px solid #eee;
-    width:400px;
-    height: 250px;
-    position:relative;
-    max-height: 250px;
+    width: 500px;
+    max-height: 400px;
+    position: relative;
     overflow-y: auto;
 }
   
-.navbar-right .notification-card p {
-    margin: 0;
-}
 .navbar-right .notification-card::-webkit-scrollbar {
     width: 5px; /* Width of the scrollbar */
 }
@@ -161,17 +159,83 @@
     background: #f1f1f1; /* Background of the scrollbar track */
     border-radius: 4px; /* Rounded corners for the scrollbar track */
 }
+
+.nav-bar__card-title {
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.nav-bar__card-list {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: left;
+    gap: 20px;
+}
+
+.nav-bar__card-list-part {
+    display: flex;
+    align-items: center;
+}
+
+.nav-bar__card-list-part-purple {
+    width: 15px;
+    height: 15px;
+    background-color: #2d158f;
+    border-radius: 20px;
+    margin-right: 20px;
+}
+
+.nav-bar__card-list-part-pink {
+    width: 15px;
+    height: 15px;
+    background-color: #ff7383;
+    border-radius: 20px;
+    margin-right: 20px;
+}
+
+.nav-bar__card-list-part-white {
+    width: 15px;
+    height: 15px;
+    background-color: white;
+    border-radius: 20px;
+    margin-right: 20px;
+}
+
+.nav-bar__card-list-part-info {
+    flex: 1;
+}
+
+.nav-bar__card-list-part-info-main {
+    font-size: 18px;
+}
+
+.nav-bar__card-list-part-info-events {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.nav-bar__card-list-part-info-time {
+    font-size: 15px;
+}
+
+.nav-bar__card-list-part-info-participation {
+    font-size: 15px;
+}
+
 /*================*/
 /*Ticket dropdown*/
+
 .navbar-right .ticket-dropdown {
     display: none;
     position: absolute;
     top: 80px;
-    right: 190px;
-    background:linear-gradient(150deg,hsl(252, 74%, 32%,0.8),hsl(252, 74%, 32%, 0.8));
-
-    color:white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    right: 110px;
+    background-color: rgba(45, 21, 143, 0.8);
+    color: white;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
     padding: 10px;
     z-index: 1000;
 }
@@ -181,13 +245,12 @@
     position: absolute;
     
 }
+
 .navbar-right .ticket-card {
     padding: 10px;
-    border-bottom: 1px solid #eee;
-    width:400px;
-    height: 250px;
+    width: 500px;
+    max-height: 400px;
     position:relative;
-    max-height: 250px;
     overflow-y: auto;
 }
   

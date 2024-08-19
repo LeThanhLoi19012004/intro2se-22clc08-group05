@@ -97,12 +97,7 @@
     cursor: pointer;
 }
 
-.create-event__form .create-event__profile-container img{
-    width: 90%;
 
-    object-fit: contain;
-    background-size: cover;
-}
 
 .create-event__form .create-event__logo-container{
     --logoSize: 100px;

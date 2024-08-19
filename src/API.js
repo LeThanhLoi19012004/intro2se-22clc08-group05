@@ -90,7 +90,10 @@ export async function updateProfile(data){
     try {
         const response = await fetch("http://localhost:3000/update_profile", {
             method: "POST",
-            body: data
+            headers: {
+                'Content-Type': 'application/json' // Make sure this header is set
+            },
+            body: JSON.stringify(data)
         })
         return await response.json();
     }
@@ -215,6 +218,171 @@ export async function searchEvent(){
                 "Content-Type": "application/json"
             },
         });
+        return await response.json();
+    } catch (error) {
+        console.error("Error:", error);
+        return {success: false, message: "An error occurred"};
+    }
+}
+
+export async function ChangeAvatar(data){
+    try {
+        const response = await fetch("http://localhost:3000/change_avatar", {
+            method: "POST",
+            body: data 
+        });
+        return await response.json();
+    } catch (error) {
+        console.error("Error:", error);
+        return { success: false, message: "An error occurred" };
+    }
+}
+
+export async function followEvent(data){
+    try {
+        const response = await fetch("http://localhost:3000/follow", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+        return await response.json();
+    } catch (error) {
+        console.error("Error:", error);
+        return {success: false, message: "An error occurred"};
+    }
+}
+
+export async function OrderTicket(data) {
+    try {
+        const response = await fetch("http://localhost:3000/order_ticket", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+        return await response.json();
+    } catch (error) {
+        console.error("Error:", error);
+        return {success: false, message: "An error occurred"};
+    }
+}
+
+export async function CancelTicket(data) {
+    try {
+        const response = await fetch("http://localhost:3000/cancel_ticket", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+        return await response.json();
+    } catch (error) {
+        console.error("Error:", error);
+        return {success: false, message: "An error occurred"};
+    }
+}
+
+export async function StatusOrder(data) {
+    try {
+        const response = await fetch("http://localhost:3000/status_order", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+        return await response.json();
+    } catch (error) {
+        console.error("Error:", error);
+        return {success: false, message: "An error occurred"};
+    }
+}
+
+export async function JoinEvent(data){
+    try {
+        const response = await fetch("http://localhost:3000/join", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+        return await response.json();
+    } catch (error) {
+        console.error("Error:", error);
+        return {success: false, message: "An error occurred"};
+    }
+}
+
+export async function RenderEventMP(data){
+    try {
+        const response = await fetch("http://localhost:3000/render_event_mp", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+        return await response.json();
+    } catch (error) {
+        console.error("Error:", error);
+        return {success: false, message: "An error occurred"};
+    }
+}
+
+export async function AdminRenderEvent(){
+    try {
+        const response = await fetch("http://localhost:3000/admin_renderevent", {
+            method: "GET",
+        })
+        return await response.json();
+    } catch (error) {
+        console.error("Error:", error);
+        return {success: false, message: "An error occurred"};
+    }
+}
+
+export async function AdminApproveEvent(data){
+    try {
+        const response = await fetch("http://localhost:3000/admin_approveevent", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+        return await response.json();
+    } catch (error) {
+        console.error("Error:", error);
+        return {success: false, message: "An error occurred"};
+    }
+}
+
+export async function RenderDataEvent(data){
+    try {
+        const response = await fetch("http://localhost:3000/renderdata", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+        return await response.json();
+    } catch (error) {
+        console.error("Error:", error);
+        return {success: false, message: "An error occurred"};
+    }
+}
+
+export async function AdminListComment(){
+    try {
+        const response = await fetch("http://localhost:3000/admin-list-comment", {
+            method: "GET",
+        })
         return await response.json();
     } catch (error) {
         console.error("Error:", error);

@@ -34,13 +34,23 @@ function AbstractFigures() {
   );
 }
 
+const ErrorModal = ({ message, onClose }) => (
+  <div className="sign-up__modal-overlay">
+    <div className="sign-up__modal-content">
+      <p>{message}</p>
+      <button onClick={onClose}>Close</button>
+    </div>
+  </div>
+);
+
 function SignUpForm() {
   const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordMatch, setPasswordMatch] = useState(true);
   const [isChecked, setIsChecked] = useState(false);
-
+  const [error, setError] = useState("");
+  const closeErrorModal = () => setError("");
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -57,15 +67,13 @@ function SignUpForm() {
 
     const formData = new FormData(form);
     const formDataObj = Object.fromEntries(formData.entries());
-    console.log(formDataObj);
     
     const response = await sendSignupRequest(formDataObj);
-    console.log(response);
 
     if (response.success) {
       navigate("/login");
     } else {
-      console.log(response);
+      setError(response.message || "Sign up failed. Please try again.");
     }
   };
 
@@ -98,19 +106,6 @@ function SignUpForm() {
           name="username"
           required
         />
-        {/* <input
-          type="text"
-          className="sign-up__name"
-          placeholder="Name"
-          name="name"
-          required
-        /> */}
-        {/* <input
-          type="date"
-          className="sign-up__dob"
-          placeholder="Date of Birth"
-          name="dob"
-        /> */}
         <input
           type="email"
           className="sign-up__email"
@@ -180,6 +175,7 @@ function SignUpForm() {
           </Link>
         </div>
       </form>
+      {error && <ErrorModal message={error} onClose={closeErrorModal} />}
     </div>
   );
 }

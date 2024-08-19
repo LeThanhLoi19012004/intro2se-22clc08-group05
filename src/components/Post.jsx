@@ -13,11 +13,16 @@ function Comment(props) {
   return (
     <div className="post__comment">
       <div className="post__comment-author-img">
-        <img src={`data:${props.profileImg.contentType};base64,${props.profileImg.imageBase64}`} alt="Profile img" />
+        <img src={
+  props.profileImg
+    ? `data:${props.profileImg.contentType};base64,${props.profileImg.imageBase64}`
+    : "https://cdn-icons-png.flaticon.com/512/3682/3682281.png"
+}
+ alt="Profile img" />
       </div>
       <div className="post__comment_content">
-        <h3>{props.authorName}</h3>
-        <p>{props.commentText}</p>
+        <div className="post__comment_content-user-name">{props.authorName == "" ? "Hidden User" : props.authorName}</div>
+        <div className="post__comment_content-user-idea">{props.commentText}</div>
       </div>
     </div>
   );
@@ -157,14 +162,23 @@ function Post(props) {
   });
   const [liked, setLiked] = useState(interaction.liked);
   const navigate = useNavigate();
-  const event_id = props.eventID;
-
+  const userIDExists = localStorage.getItem('UserID') !== null;
   const movetoEvent = () => {
-    localStorage.setItem("eventid", event_id);
+    if (!userIDExists) {
+      navigate('/login');
+    } else {
+    localStorage.setItem("eventid", props.eventID);
     window.scrollTo(0, 0); // Scroll to top
-    navigate(`/mainpage/event/${event_id}`);
+    navigate(`/event?id=${props.eventID}`);
+    }
   };
-
+  const handleCommentClick = () => {
+    if (!userIDExists) {
+      navigate('/login');
+    } else {
+      setShowOverlay(!showOverlay);
+    }
+  };
   const calculateTimeLeft = (date) => {
     const targetDate = new Date(date);
     const now = new Date();
@@ -183,6 +197,10 @@ function Post(props) {
   }, [props.date]);
 
   const toggleLike = async () => {
+    if (!userIDExists) {
+      navigate("/login");
+    }
+    else {
     const response = await likePost({ postid: props.postID, profileid: localStorage.getItem("ProfileID") }); // Gọi API likePost
 
     if (response.success) {
@@ -194,7 +212,7 @@ function Post(props) {
           ? prevInteraction.num_likes - 1
           : prevInteraction.num_likes + 1,
       }));
-    }
+    }}
   } 
 
   useEffect(() => {
@@ -248,9 +266,9 @@ function Post(props) {
         <div className="post__post-activity-link">
           <FaRegCommentDots
             size={17}
-            onClick={() => setShowOverlay(!showOverlay)}
+            onClick={handleCommentClick}
           />
-          <span onClick={() => setShowOverlay(!showOverlay)}> Comment</span>
+          <span onClick={handleCommentClick}> Comment</span>
         </div>
         <div className="post__post-activity-link">
           <FaRegShareSquare size={17} />
@@ -271,5 +289,6 @@ function Post(props) {
     </div>
   );
 }
+
 
 export default Post;

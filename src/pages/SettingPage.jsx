@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useCallback} from "react";
 import "../assets/SettingPage.css";
 import { useNavigate } from "react-router-dom";
-import { renderProfile, updateProfile } from '../API';
+import { renderProfile, updateProfile, ChangeAvatar } from '../API';
 import { FaCamera } from 'react-icons/fa';
 import { useDropzone } from 'react-dropzone';
+import DatePicker from 'react-datepicker';
 
 const ProfileImage = ({ initialUrl }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [imageUrl, setImageUrl] = useState(initialUrl != null ? `data:${initialUrl.contentType};base64,${initialUrl.imageBase64}` : "https://cdn-icons-png.flaticon.com/512/3682/3682281.png");
-  const idaccount = localStorage.getItem("UserID")
   const [newImageFile, setNewImageFile] = useState(null);
   const handleMouseEnter = () => {
     setIsHovered(true);
@@ -24,11 +24,11 @@ const ProfileImage = ({ initialUrl }) => {
   };
   const handleChangeAva = async () => {
     const formData = new FormData();
-    formData.append('idaccount', idaccount); // Thêm idaccount vào dữ liệu
+    formData.append('idaccount', localStorage.getItem("UserID")); // Thêm idaccount vào dữ liệu
     formData.append('avatar', newImageFile); // Thêm file vào dữ liệu
-    const response = await updateProfile({formData});
+    const response = await ChangeAvatar(formData);
     if (response.success)
-      setIsHovered(false);
+      setIsPopupOpen(false);
   }
   const handleClosePopup = async () => {
     setIsPopupOpen(false);
@@ -91,11 +91,10 @@ const ProfileImage = ({ initialUrl }) => {
 };
 
 function Account({ profile }) {
-  console.log(profile.idaccount.email)
   const [formData, setFormData] = useState({
     fullname: profile.fullname || '',
-    dob: '',
-    email: profile.idaccount.email || '',
+    dob: profile.dob ? new Date(profile.dob) : null,
+    sex: profile.sex || '',
     phone: profile.phone || '',
     address: profile.hometown || '',
   });
@@ -107,8 +106,8 @@ function Account({ profile }) {
     setFormData({
       idaccount: profile.idaccount,
       fullname: profile.fullname || '',
-      dob: '',
-      email: profile.idaccount.email || '',
+      dob: profile.dob ? new Date(profile.dob) : null,
+      sex: profile.sex || '',
       phone: profile.phone || '',
       address: profile.hometown || '',
     });
@@ -122,23 +121,30 @@ function Account({ profile }) {
     }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    // Collect changes
-    const updatedChanges = {};
-    for (const key in formData) {
-      if (formData[key] !== profile[key]) {
-        updatedChanges[key] = formData[key];
-      }
-    }
-
-    setChanges(updatedChanges);
-
-    // Here you can send the updatedChanges to your API
-    const response = await updateProfile(updatedChanges);
+  const handleDateChange = (date) => {
+    setFormData(prevState => ({
+      ...prevState,
+      dob: date
+    }));
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    // Prepare updatedChanges with the entire formData
+    const updatedChanges = { ...formData };
+  
+    // Update state with the current changes
+    setChanges(updatedChanges);
+    try {
+      // Send the updatedChanges to your API
+      const response = await updateProfile(updatedChanges);
+    } catch (error) {
+      console.error('Error updating profile:', error);
+    }
+  };
+  
+  
   return (
     <form className="settingpage-account" onSubmit={handleSubmit}>
       <div className="settingpage-account-header">
@@ -165,24 +171,25 @@ function Account({ profile }) {
         </div>
         <div className="settingpage-input-container">
           <label>DOB</label>
-          <input
-            type="text"
-            name="dob"
-            value={formData.dob}
-            onChange={handleInputChange}
-            placeholder="Date of Birth"
+          <DatePicker
+            selected={formData.dob}
+            onChange={handleDateChange}
+            dateFormat="yyyy-MM-dd"
+            placeholderText="Select a date" 
+            showYearDropdown
+            scrollableYearDropdown
           />
         </div>
       </div>
       <div className="settingpage-account-edit">
         <div className="settingpage-input-container">
-          <label>Email</label>
+          <label>Gender</label>
           <input
             type="text"
-            name="email"
-            value={formData.email}
+            name="sex"
+            value={formData.sex}
             onChange={handleInputChange}
-            placeholder="Email"
+            placeholder="Sex"
           />
         </div>
         <div className="settingpage-input-container">

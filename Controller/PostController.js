@@ -1,6 +1,6 @@
 import PostModel from "../Models/PostModel.js"
 import mongoose from 'mongoose';
-
+import fs from 'fs';
 const conn = mongoose.connection;
 let gfs;
 
@@ -12,11 +12,13 @@ conn.once('open', () => {
 
 const UpPost = async (req, res) => {
   try {
-    const eventID = req.body['eventid'];
-    const descriptionpost = req.body['descriptionpost'];   
+    const eventID = req.body['eventID'];
+    const descriptionpost = req.body['description'];   
     const files = req.files;
 
-
+    console.log(req.body)
+    console.log(descriptionpost)
+    console.log(files)
     const images = files.map(file => ({
       filename: file.filename,
       contentType: file.mimetype,
@@ -44,13 +46,11 @@ const UpPost = async (req, res) => {
 };
 
 const RenderPost = async (req, res) => {
-  const {event_id} = req.body;
+  const {eventID} = req.body;
 
   try {
-    const posts = await PostModel.find({ eventID: event_id })  
-    .populate('eventID', 'eventname')  // Sửa eventID_ thành eventID
-    .populate('images')
-    .exec();
+    const posts = await PostModel.find({ eventID: eventID })  
+    .populate('eventID', 'logoevent eventname eventtype').exec();
     if (posts.length === 0) {
       return res.status(400).json({success: true, data: [], message: 'No posts found for this event ID'});
     } else {
@@ -67,7 +67,7 @@ const RenderPost = async (req, res) => {
 
 const RenderMPPost = async (req, res) => {
   try {
-    const posts = await PostModel.find().populate('eventID', 'logoevent eventname').exec();
+    const posts = await PostModel.find().populate('eventID', 'logoevent eventname eventtype').exec();
     
     if (posts.length === 0) {
       return res.json({ success: true, data: [] });

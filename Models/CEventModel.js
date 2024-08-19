@@ -53,13 +53,17 @@ const CEventSchema = new mongoose.Schema({
   eventtime: { type: Start_Time, required: true },
   numberoftickets: { type: Number, required: true },
   ticketavailable : { type: Number, required: true },
+  participants : { type: Number, required: true },
   tickettype: { type: String, required: true },
   price: { type: Number, required: true},
   follows: [{ 
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'InfoProfile',
   }],
-
+  participants_id: [{ 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'InfoProfile',
+  }],
 
 });
 
