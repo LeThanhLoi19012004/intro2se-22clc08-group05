@@ -1,22 +1,20 @@
-
 import React, { useState, useEffect, useCallback} from "react";
 import "../assets/SettingPage.css";
 import { useNavigate } from "react-router-dom";
-import { renderProfile } from '../API';
+import { renderProfile, updateProfile, ChangeAvatar } from '../API';
 import { FaCamera } from 'react-icons/fa';
 import { useDropzone } from 'react-dropzone';
-import MainPage from "./MainPage";
-import { MdNavigateBefore } from "react-icons/md";
+import DatePicker from 'react-datepicker';
 import Navbar from "../components/NavBar";
 
 const ProfileImage = ({ initialUrl }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [imageUrl, setImageUrl] = useState(initialUrl);
-
+  const [imageUrl, setImageUrl] = useState(initialUrl != null ? `data:${initialUrl.contentType};base64,${initialUrl.imageBase64}` : "https://cdn-icons-png.flaticon.com/512/3682/3682281.png");
+  const [newImageFile, setNewImageFile] = useState(null);
   const handleMouseEnter = () => {
     setIsHovered(true);
-  };
+  };  
 
   const handleMouseLeave = () => {
     setIsHovered(false);
@@ -25,13 +23,22 @@ const ProfileImage = ({ initialUrl }) => {
   const handleImageClick = () => {
     setIsPopupOpen(true);
   };
-
-  const handleClosePopup = () => {
+  const handleChangeAva = async () => {
+    const formData = new FormData();
+    formData.append('idaccount', localStorage.getItem("UserID")); // Thêm idaccount vào dữ liệu
+    formData.append('avatar', newImageFile); // Thêm file vào dữ liệu
+    const response = await ChangeAvatar(formData);
+    if (response.success)
+      setIsPopupOpen(false);
+  }
+  const handleClosePopup = async () => {
     setIsPopupOpen(false);
+    setIsHovered(false);
   };
 
   const onDrop = useCallback((acceptedFiles) => {
     const file = acceptedFiles[0];
+    setNewImageFile(file);
     const reader = new FileReader();
     reader.onload = () => {
       setImageUrl(reader.result);
@@ -75,7 +82,7 @@ const ProfileImage = ({ initialUrl }) => {
               <input {...getInputProps()} />
               <img src={imageUrl} alt="Avatar Preview" className="settingpage-avatar-image" />
             </div>
-            <button className="settingpage-save-button" onClick={handleClosePopup}>Save</button>
+            <button className="settingpage-save-button" onClick={handleChangeAva}>Save</button>
             <button className="settingpage-cancel-button" onClick={handleClosePopup}>Cancel</button>
           </div>
         </div>
@@ -87,8 +94,8 @@ const ProfileImage = ({ initialUrl }) => {
 function Account({ profile }) {
   const [formData, setFormData] = useState({
     fullname: profile.fullname || '',
-    dob: '',
-    email: profile.idaccount.email || '',
+    dob: profile.dob ? new Date(profile.dob) : null,
+    sex: profile.sex || '',
     phone: profile.phone || '',
     address: profile.hometown || '',
   });
@@ -100,8 +107,8 @@ function Account({ profile }) {
     setFormData({
       idaccount: profile.idaccount,
       fullname: profile.fullname || '',
-      dob: '',
-      email: profile.idaccount.email || '',
+      dob: profile.dob ? new Date(profile.dob) : null,
+      sex: profile.sex || '',
       phone: profile.phone || '',
       address: profile.hometown || '',
     });
@@ -115,23 +122,30 @@ function Account({ profile }) {
     }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    // Collect changes
-    const updatedChanges = {};
-    for (const key in formData) {
-      if (formData[key] !== profile[key]) {
-        updatedChanges[key] = formData[key];
-      }
-    }
-
-    setChanges(updatedChanges);
-
-    // Here you can send the updatedChanges to your API
-    const response = await updateProfile(updatedChanges);
+  const handleDateChange = (date) => {
+    setFormData(prevState => ({
+      ...prevState,
+      dob: date
+    }));
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    // Prepare updatedChanges with the entire formData
+    const updatedChanges = { ...formData };
+  
+    // Update state with the current changes
+    setChanges(updatedChanges);
+    try {
+      // Send the updatedChanges to your API
+      const response = await updateProfile(updatedChanges);
+    } catch (error) {
+      console.error('Error updating profile:', error);
+    }
+  };
+  
+  
   return (
     <form className="settingpage-account" onSubmit={handleSubmit}>
       <div className="settingpage-account-header">
@@ -158,24 +172,25 @@ function Account({ profile }) {
         </div>
         <div className="settingpage-input-container">
           <label>DOB</label>
-          <input
-            type="text"
-            name="dob"
-            value={formData.dob}
-            onChange={handleInputChange}
-            placeholder="Date of Birth"
+          <DatePicker
+            selected={formData.dob}
+            onChange={handleDateChange}
+            dateFormat="yyyy-MM-dd"
+            placeholderText="Select a date" 
+            showYearDropdown
+            scrollableYearDropdown
           />
         </div>
       </div>
       <div className="settingpage-account-edit">
         <div className="settingpage-input-container">
-          <label>Email</label>
+          <label>Gender</label>
           <input
             type="text"
-            name="email"
-            value={formData.email}
+            name="sex"
+            value={formData.sex}
             onChange={handleInputChange}
-            placeholder="Email"
+            placeholder="Sex"
           />
         </div>
         <div className="settingpage-input-container">
@@ -225,6 +240,11 @@ function Notification() {
       [name]: checked
     }));
   };
+  const [isCheckedFollowedEvent, setIsCheckedFollowedEvent] = useState(false);
+  const [isCheckedJoinedEvent, setIsCheckedJoinedEvent] = useState(false);
+  const [isCheckedComingEvent, setIsCheckedComingEvent] = useState(false);
+  const [isCheckedNewFollowers, setIsCheckedNewFollowers] = useState(false);
+  const [isCheckedNewParticipants, setIsCheckedNewParticipants] = useState(false);
 
   return (
     <div className="settingpage-account">
@@ -234,67 +254,134 @@ function Notification() {
       <div className="settingpage-notification-content">
         <div className="settingpage-notification-section">
           <div className="settingpage-notification-item">
-            <label>Receive updates on followed events</label>
-            <input
-              type="checkbox"
-              name="importantAnnouncementsEmail"
-              checked={notifications.importantAnnouncementsEmail}
-              onChange={handleCheckboxChange}
-            />
-            <input
-              type="checkbox"
-              name="importantAnnouncementsSite"
-              checked={notifications.importantAnnouncementsSite}
-              onChange={handleCheckboxChange}
-            />
+            <label htmlFor = "received-update-followed-event">
+              <svg
+                className={`settingpage__checkbox ${
+                  isCheckedFollowedEvent ? "settingpage__checked--active" : ""
+                }`}
+                aria-hidden="true"
+                viewBox="0 0 15 11"
+                fill="none"
+              >
+                <path
+                  d="M1 4.5L5 9L14 1"
+                  strokeWidth="2"
+                  stroke={isCheckedFollowedEvent ? "#fff" : "none"}
+                />
+              </svg>
+              <input
+                type="checkbox"
+                id="received-update-followed-event"
+                name="received-update-followed-event"
+                checked={isCheckedFollowedEvent}
+                onChange={() => setIsCheckedFollowedEvent(!isCheckedFollowedEvent)}
+              />
+            </label>
+            <p>Receive updates on followed events</p>
           </div>
           <div className="settingpage-notification-item">
-            <label>Receive updates on joined events</label>
-            <input
-              type="checkbox"
-              name="featureAnnouncementsEmail"
-              checked={notifications.featureAnnouncementsEmail}
-              onChange={handleCheckboxChange}
-            />
-            <input
-              type="checkbox"
-              name="featureAnnouncementsSite"
-              checked={notifications.featureAnnouncementsSite}
-              onChange={handleCheckboxChange}
-            />
+            <label htmlFor = "received-update-joined-event">
+                <svg
+                  className={`settingpage__checkbox ${
+                    isCheckedJoinedEvent ? "settingpage__checked--active" : ""
+                  }`}
+                  aria-hidden="true"
+                  viewBox="0 0 15 11"
+                  fill="none"
+                >
+                  <path
+                    d="M1 4.5L5 9L14 1"
+                    strokeWidth="2"
+                    stroke={isCheckedJoinedEvent ? "#fff" : "none"}
+                  />
+                </svg>
+                <input
+                  type="checkbox"
+                  id="received-update-joined-event"
+                  name="received-update-joined-event"
+                  checked={isCheckedJoinedEvent}
+                  onChange={() => setIsCheckedJoinedEvent(!isCheckedJoinedEvent)}
+                />
+              </label>
+              <p>Receive updates on joined events</p>
           </div>
           <div className="settingpage-notification-item">
-            <label>Receive reminders about coming events</label>
-            <input
-              type="checkbox"
-              name="awardNotificationEmail"
-              checked={notifications.awardNotificationEmail}
-              onChange={handleCheckboxChange}
-            />
-            <input
-              type="checkbox"
-              name="awardNotificationSite"
-              checked={notifications.awardNotificationSite}
-              onChange={handleCheckboxChange}
-            />
+            <label htmlFor = "received-update-coming-event">
+                  <svg
+                    className={`settingpage__checkbox ${
+                      isCheckedComingEvent ? "settingpage__checked--active" : ""
+                    }`}
+                    aria-hidden="true"
+                    viewBox="0 0 15 11"
+                    fill="none"
+                  >
+                    <path
+                      d="M1 4.5L5 9L14 1"
+                      strokeWidth="2"
+                      stroke={isCheckedComingEvent ? "#fff" : "none"}
+                    />
+                  </svg>
+                  <input
+                    type="checkbox"
+                    id="received-update-coming-event"
+                    name="received-update-coming-event"
+                    checked={isCheckedComingEvent}
+                    onChange={() => setIsCheckedComingEvent(!isCheckedComingEvent)}
+                  />
+            </label>
+            <p>Receive reminders about coming events</p>
           </div>
           <div className="settingpage-notification-item">
-            <label>Receive updates on new followers</label>
-            <input
-              type="checkbox"
-              name="newFollowersEmail"
-              checked={notifications.newFollowersEmail}
-              onChange={handleCheckboxChange}
-            />
-            <input
-              type="checkbox"
-              name="newFollowersSite"
-              checked={notifications.newFollowersSite}
-              onChange={handleCheckboxChange}
-            />
+            <label htmlFor = "received-update-new-followers">
+                    <svg
+                      className={`settingpage__checkbox ${
+                        isCheckedNewFollowers ? "settingpage__checked--active" : ""
+                      }`}
+                      aria-hidden="true"
+                      viewBox="0 0 15 11"
+                      fill="none"
+                    >
+                      <path
+                        d="M1 4.5L5 9L14 1"
+                        strokeWidth="2"
+                        stroke={isCheckedNewFollowers ? "#fff" : "none"}
+                      />
+                    </svg>
+                    <input
+                      type="checkbox"
+                      id="received-update-new-followers"
+                      name="received-update-new-followers"
+                      checked={isCheckedNewFollowers}
+                      onChange={() => setIsCheckedNewFollowers(!isCheckedNewFollowers)}
+                    />
+              </label>
+              <p>Receive updates on new followers</p>
           </div>
           <div className="settingpage-notification-item">
-            <label>Receive updates on new participants</label>
+          <label htmlFor = "received-update-new-participants">
+                    <svg
+                      className={`settingpage__checkbox ${
+                        isCheckedNewParticipants ? "settingpage__checked--active" : ""
+                      }`}
+                      aria-hidden="true"
+                      viewBox="0 0 15 11"
+                      fill="none"
+                    >
+                      <path
+                        d="M1 4.5L5 9L14 1"
+                        strokeWidth="2"
+                        stroke={isCheckedNewParticipants ? "#fff" : "none"}
+                      />
+                    </svg>
+                    <input
+                      type="checkbox"
+                      id="received-update-new-participants"
+                      name="received-update-new-participants"
+                      checked={isCheckedNewParticipants}
+                      onChange={() => setIsCheckedNewParticipants(!isCheckedNewParticipants)}
+                    />
+              </label>
+            <p>Receive updates on new participants</p>
             <input
               type="checkbox"
               name="newParticipantsEmail"
@@ -423,7 +510,7 @@ function Logout() {
   return (
     <div className="settingpage-account">
       <div className="settingpage-account-header">
-        <h1 className="settingpage-account-title">Log Out</h1>
+        <h1 className="settingpage-account-title">Log out</h1>
       </div>
       <div className="settingpage-logout-content">
         <h2 className="settingpage-account-question">Do you want to log out?</h2>
@@ -432,6 +519,7 @@ function Logout() {
     </div>
   );
 }
+
 function Main(){
   const navigate = useNavigate();
 
@@ -443,15 +531,16 @@ function Main(){
     null // This component does not render anything
   );
 }
+
 function ProfileSetting() {
   const [activeSection, setActiveSection] = useState("Account");
   const [url, setUrl] = useState( "https://cdn-icons-png.flaticon.com/512/3682/3682281.png")
   const [profile, setProfile] = useState({idaccount: {username: "user", email: "email"}});
   const [loading, setLoading] = useState(false);
-  const user_id = localStorage.getItem("UserID");
+  const idaccount = localStorage.getItem("UserID");
   useEffect(() => {
     const getPrf = async () => {
-      const response = await renderProfile({user_id});
+      const response = await renderProfile({idaccount});
       if (response.success){
         setUrl(response.data.avatar);
         setProfile(response.data);
@@ -506,7 +595,7 @@ function ProfileSetting() {
             onClick={() => setActiveSection("Notification")}
           >
             <i className="fa-solid fa-bell settingpage-menu-icon"></i>
-            Notifications
+            Notification
           </a>
           <a
             className={`settingpage-menu-link ${
