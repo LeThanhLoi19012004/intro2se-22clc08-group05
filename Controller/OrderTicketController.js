@@ -1,10 +1,6 @@
-import { fileURLToPath } from "url";
-import { dirname } from "path";
-import path from "path";
 import OrderTicketModel from "../Models/OrderTicketModel.js"
 import CEventModel from "../Models/CEventModel.js";
 import mongoose from "mongoose";
-const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const OrderTicket = async (req, res) => {
   try {

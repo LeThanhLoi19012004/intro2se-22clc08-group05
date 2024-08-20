@@ -1,4 +1,5 @@
 import ProfileModel from "../Models/ProfileModel.js"
+import NotificationModel from "../Models/NotificationModel.js";
 import mongoose from 'mongoose';
 import fs from 'fs';
 
@@ -21,7 +22,7 @@ const UpdateProfile = async (req, res) => {
     const phone = req.body.phone; // Fixed typo here
     const dob = req.body.dob;
     const hometown = req.body.address;
-
+    const sex = req.body.sex
     // Find the profile and update or create as needed
     const profile = await ProfileModel.findOne({ idaccount }).exec();
 
@@ -30,7 +31,12 @@ const UpdateProfile = async (req, res) => {
       profile.phone = phone || profile.phone;
       profile.dob = dob ? new Date(dob) : profile.dob;
       profile.hometown = hometown || profile.hometown;
-
+      profile.sex = sex || profile.sex
+      const notification = await NotificationModel.findOne({ profileID: profile._id });
+      notification.Noti.push({
+        content: `Your profile has been updated.`,
+        Date_Noti: new Date()
+      });
       await profile.save();
       res.status(200).json({ success: true, message: 'Profile updated successfully' });
       console.log('Profile updated successfully');
@@ -42,8 +48,9 @@ const UpdateProfile = async (req, res) => {
         dob: new Date(dob),
         hometown
       });
-
+      
       await newProfile.save();
+
       res.status(201).json({ success: true, message: 'Profile created successfully' });
       console.log('Profile created successfully');
     }

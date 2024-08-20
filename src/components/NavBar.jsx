@@ -7,11 +7,12 @@ import { IoSearchOutline } from "react-icons/io5";
 import { FaCog } from "react-icons/fa";
 import { LuLogOut, LuLogIn } from "react-icons/lu";
 import Suki from "../assets/Logo/SukiWhite.svg";
-import { renderProfile } from "../API";
+import { renderProfile, GetNotification} from "../API";
 
 function Navbar() {
   const navigate = useNavigate();
   const idaccount = localStorage.getItem("UserID");
+  const profile = localStorage.getItem("ProfileID");
   const [url, setUrl] = useState(
     "https://cdn-icons-png.flaticon.com/512/3682/3682281.png"
   );
@@ -21,7 +22,7 @@ function Navbar() {
   const [notificationDropdownActive, setNotificationDropdownActive] =
     useState(false);
   const [ticketDropdownActive, setTicketDropdownActive] = useState(false);
-
+  const [notification, setNotification] = useState([]);
   const handleLogout = () => {
     localStorage.clear();
     navigate("/");
@@ -54,15 +55,19 @@ function Navbar() {
     };
     getImg();
   }, [idaccount]);
-
   const toggleDropdown = () => {
     setDropdownActive(!dropdownActive);
     setTicketDropdownActive(false);
     setNotificationDropdownActive(false);
   };
 
-  const toggleNotificationDropdown = () => {
+  const toggleNotificationDropdown = async () => {
     setNotificationDropdownActive(!notificationDropdownActive);
+    if ( notification.length == 0) {
+    const response = await GetNotification({profile });
+    if (response.success) {
+      setNotification(response.data);
+    }}
     setTicketDropdownActive(false);
     setDropdownActive(false);
   };
@@ -72,7 +77,25 @@ function Navbar() {
     setNotificationDropdownActive(false);
     setDropdownActive(false);
   };
+  const timeAgo = (dateString) => {
+    const eventDate = new Date(dateString);
+    const now = new Date();
 
+    const seconds = Math.floor((now - eventDate) / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+
+    if (days > 0) {
+      return days === 1 ? "1 day ago" : `${days} days ago`;
+    } else if (hours > 0) {
+      return hours === 1 ? "1 hour ago" : `${hours} hours ago`;
+    } else if (minutes > 0) {
+      return minutes === 1 ? "1 minute ago" : `${minutes} minutes ago`;
+    } else {
+      return seconds === 1 ? "1 second ago" : `${seconds} seconds ago`;
+    }
+  };
   return (
     <nav className="navbar">
       <div className="navbar-left">
@@ -120,52 +143,23 @@ function Navbar() {
               <div className="notification-card">
                 <div className="nav-bar__card-title">Notifications</div>
                 <div className="nav-bar__card-list">
-                  <div className="nav-bar__card-list-part">
-                    <div className="nav-bar__card-list-part-pink"></div>
-                    <div className="nav-bar__card-list-part-info">
-                      <div className="nav-bar__card-list-part-info-main">
-                        <strong>EventOrganizer</strong> just replied to your
-                        comment.
-                      </div>
-                      <div className="nav-bar__card-list-part-info-time">
-                        20 minutes ago
-                      </div>
-                    </div>
-                  </div>
-                  <div className="nav-bar__card-list-part">
-                    <div className="nav-bar__card-list-part-pink"></div>
-                    <div className="nav-bar__card-list-part-info">
-                      <div className="nav-bar__card-list-part-info-main">
-                        New update of <strong>FutureEvent</strong>.
-                      </div>
-                      <div className="nav-bar__card-list-part-info-time">
-                        3 hours ago
+                  {notification.slice().reverse().map((item, index) => (
+                    <div className="nav-bar__card-list-part" key={index}>
+                      <div
+                        className={`nav-bar__card-list-part-${
+                        "pink"
+                        }`}
+                      ></div>
+                      <div className="nav-bar__card-list-part-info">
+                        <div className="nav-bar__card-list-part-info-main">
+                          {item.content}
+                        </div>
+                        <div className="nav-bar__card-list-part-info-time">
+                          {timeAgo(item.Date_Noti)}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="nav-bar__card-list-part">
-                    <div className="nav-bar__card-list-part-white"></div>
-                    <div className="nav-bar__card-list-part-info">
-                      <div className="nav-bar__card-list-part-info-main">
-                        <strong>NewEvent</strong> starts in 2 days.
-                      </div>
-                      <div className="nav-bar__card-list-part-info-time">
-                        2 days ago
-                      </div>
-                    </div>
-                  </div>
-                  <div className="nav-bar__card-list-part">
-                    <div className="nav-bar__card-list-part-white"></div>
-                    <div className="nav-bar__card-list-part-info">
-                      <div className="nav-bar__card-list-part-info-main">
-                        <strong>UserFriend</strong> just replied to your
-                        comment.
-                      </div>
-                      <div className="nav-bar__card-list-part-info-time">
-                        10 minutes ago
-                      </div>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             </div>

@@ -137,9 +137,10 @@ const Login = () => {
         }
         else {
           localStorage.setItem("rememberme", false);
+        }
        navigate("/mainpage");
       }
-    } else {
+     else {
       setError(response.message || "Login failed. Please try again.");
     }
   }

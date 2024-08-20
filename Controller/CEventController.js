@@ -1,4 +1,5 @@
 import CEventModel from "../Models/CEventModel.js"
+import NotificationModel from "../Models/NotificationModel.js";
 import mongoose from 'mongoose';
 import fs from 'fs';
 // Lấy kết nối Mongoose hiện tại
@@ -71,7 +72,6 @@ const CEvent = async (req, res) => {
     const price2 = parseInt(price, 10);
 
     if (!logoevent2) {
-      console.log("ngu l ")
       return res.status(400).json({success: false, message: 'No file uploaded'});
     }
 
@@ -102,7 +102,13 @@ const CEvent = async (req, res) => {
       participants_id: [],
       status: "Pending"
     });
-    
+    const notification = await NotificationModel.findOne({ profileID: ownerObjectId });
+    console.log(notification);
+    notification.Noti.push({
+      content: `Your event ${eventname} is now pending approval.`,
+      Date_Noti: new Date()
+    });
+    await notification.save();
     res.json({success: true, message: 'Create event sucessfully'});
   } catch (error) {
     console.error('Error creating event:', error);
@@ -177,9 +183,6 @@ const SearchEvent = async (req, res ) => {
       eventdate: 1,
       descriptionevent: 1,
       eventtime: 1
-    });
-    events.forEach(event => {
-      console.log(`ID: ${event._id}, Event Type: ${event.eventtype}`);
     });
     res.json({success: true, data: events});
   } catch (error) {
@@ -280,6 +283,21 @@ const AdminApproveEvent = async (req, res) => {
       findEvent.status = status;
       await findEvent.save();
     }
+    if (status == "Approved") {
+      const notification = await NotificationModel.findOne({ profileID: findEvent.profile });
+      notification.Noti.push({
+        content: `Your event ${findEvent.eventname} has been approved.`,
+        Date_Noti: new Date()
+      });
+      await notification.save();
+    }
+    else {
+      const notification = await NotificationModel.findOne({ profileID: findEvent.profile });
+      notification.Noti.push({
+        content: `Your event ${findEvent.eventname} has been rejected.`,
+        Date_Noti: new Date()
+      })};
+      await notification.save();
     res.status(200).json({success: true});
   } catch (error) {
     console.error(error);

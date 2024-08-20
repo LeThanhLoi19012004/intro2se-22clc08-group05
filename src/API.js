@@ -389,3 +389,19 @@ export async function AdminListComment(){
         return {success: false, message: "An error occurred"};
     }
 }
+
+export async function GetNotification(data){
+    try {
+        const response = await fetch("http://localhost:3000/get_notification", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+        return await response.json();
+    } catch (error) {
+        console.error("Error:", error);
+        return {success: false, message: "An error occurred"};
+    }
+}

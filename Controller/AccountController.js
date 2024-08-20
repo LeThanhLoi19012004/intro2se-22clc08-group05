@@ -1,5 +1,6 @@
 import AccountModel from "../Models/AccountModel.js"
 import ProfileModel from '../Models/ProfileModel.js';
+import NotificationModel from "../Models/NotificationModel.js";
 import OrderTicketModel from "../Models/OrderTicketModel.js"; //release2
 import InteractionModel from "../Models/InteractionModel.js"; //release2
 import CEventModel from "../Models/CEventModel.js"; //release2
@@ -35,13 +36,13 @@ async function PostSignup(req, res) {
     // Kiểm tra xem email đã tồn tại chưa
     const existingEmail = await AccountModel.findOne({ email: email }).exec();
     if (existingEmail) {
-      return res.status(400).json({ success: false, message: 'Email already in use' });
+      return res.status(200).json({ success: false, message: 'Email already in use' });
     }
 
     // Kiểm tra xem username đã tồn tại chưa
     const existingUsername = await AccountModel.findOne({ username: username }).exec();
     if (existingUsername) {
-      return res.status(400).json({ success: false, message: 'Username already in use' });
+      return res.status(200).json({ success: false, message: 'Username already in use' });
     }
 
     // Nếu không có tài liệu trùng lặp, tạo tài liệu mới
@@ -61,6 +62,16 @@ async function PostSignup(req, res) {
       idcard: "",
       dob: null,
       hometown: "",
+    });
+    const profileId = newProfile._id; 
+
+    const notificationContent = `Please complete your profile information.`;
+    await NotificationModel.create({
+      profileID: profileId,
+      Noti: [{
+        content: notificationContent,
+        Date_Noti: new Date()
+      }]
     });
     res.json({ success: true, message: 'Sign up successfully' });
     console.log('Sign up Successfully!!!');
