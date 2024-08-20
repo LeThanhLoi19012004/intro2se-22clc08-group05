@@ -305,18 +305,21 @@
   position: relative;
   z-index: 2; /* Ensure the text is above the overlay */
 }
+
 .settingpage-account-edit {
     display: flex;
     justify-content: space-between;
-    margin: 15px 0;
+    margin: 15px 0 15px 0;
+    align-items: center;
+    box-sizing: border-box;
 }
 
 .settingpage-input-container {
     width: 100%;
     display: flex;
     flex-direction: column;
-    margin: 0 20px;
-    
+    margin-right: 30px;
+    margin-left: 15px;
 }
 
 .settingpage-input-container label {
@@ -330,6 +333,7 @@
     border-radius: 5px;
     padding: 5px;
     color: #768499;
+    width: 100%
 }
 
 .settingpage-input-container input:focus{
@@ -353,6 +357,10 @@
 .settingpage-input-container textarea:focus {
     outline: none;
     border: 1.5px solid #2d158f;
+}
+
+.react-datepicker__input-container {
+  flex: 1;
 }
 
 @media screen and (max-width: 768px) {
@@ -565,29 +573,29 @@
   
   .settingpage-notification-item {
     display: flex;
-    justify-content: space-between;
+    justify-content: left;
     align-items: center;
     margin-bottom: 10px;
     padding: 10px 0;
     border-bottom: 1px solid #e2e8f0;
   }
   
-  .settingpage-notification-item label {
+  .settingpage-notification-item p {
     font-size: 16px;
     color: #475569;
-    flex: 1;
   }
   
-  .settingpage-notification-item input[type="checkbox"] {
+  /* .settingpage-notification-item input[type="checkbox"] {
     margin-left: 10px;
   }
   input[type="checkbox"] {
     width: 20px;
     height: 20px;
-  }
-
-  
-  .ticket-event-page__dropdown-agreement input[type = "checkbox"]{
+  } */
+/* .settingpage-notification-item label{
+  width: 0px;
+} */
+.settingpage-notification-item input[type = "checkbox"]{
     clip:rect(0 0 0 0);
     clip-path: inset(50%);
     height: 1px;
@@ -596,27 +604,27 @@
     position: absolute;
     white-space: nowrap;
   } 
-  .ticket-event-page__dropdown-agreement .ticket-event-page__checkbox{
+.settingpage-notification-item .settingpage__checkbox{
     display: inline-block;
     height:20px;
     width: 20px;
+    border:1px solid grey;
     background-color: rgba(255, 255, 255, 0.2);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
   
-    margin-right:10px;
+    margin-right:10px;;
     margin-top:5px;
     cursor: pointer;
   
   
   }
-  .ticket-event-page__dropdown-agreement .ticket-event-page__checked--active{
+.settingpage-notification-item .settingpage__checked--active{
     background-color: rgb(199, 33, 199);
   
   }
   
-  
-  .ticket-event-page__dropdown-agreement input[type="checkbox"] {
+.settingpage-notification-item input[type="checkbox"] {
     margin-right: 20px; /* Thêm khoảng cách giữa checkbox và label */
   }
