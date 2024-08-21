@@ -166,34 +166,37 @@ function GuestSearchPage() {
             <div className="guest-searchpage__container">
                 <div className="guest-searchpage__centerbar">
                 
-                <div className="guest-searchpage-center">
-                    <form className="search-box" onSubmit={handleSearch}>
-                        <IoSearchOutline style={{ color: 'white', cursor: 'pointer' }} onClick={handleSearch}/>
-                        <input
-                        type="text"
-                        placeholder="Search for events"
-                        value={searchQueryGuest}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        />
-                        <button type="submit" style={{ display: 'none' }}>Search</button>
-                    </form>
+                    <div className="guest-searchpage-center">
+                        <form className="search-box" onSubmit={handleSearch}>
+                            <IoSearchOutline style={{ color: 'white', cursor: 'pointer' }} onClick={handleSearch}/>
+                            <input
+                            type="text"
+                            placeholder="Search for events"
+                            value={searchQueryGuest}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            />
+                            <button type="submit" style={{ display: 'none' }}>Search</button>
+                        </form>
+                    </div>
+
+                    <div className="guest-searchpage-searches">
+                        {loading ? (
+                            <Loading />
+                        ) : filteredEvents.length === 0 ? (
+                                <NoResults />
+                        ) : (
+                            filteredEvents.map((event) => (
+                                <Result
+                                    key={event._id} // Add a unique key for each result
+                                    profileImg={event.logoevent}
+                                    authorName={event.eventname}
+                                    content={event.descriptionevent}
+                                />
+                            ))
+                        )}
+                    </div>
                 </div>
 
-                    {loading ? (
-                        <Loading />
-                    ) : filteredEvents.length === 0 ? (
-                            <NoResults />
-                    ) : (
-                        filteredEvents.map((event) => (
-                            <Result
-                                key={event._id} // Add a unique key for each result
-                                profileImg={event.logoevent}
-                                authorName={event.eventname}
-                                content={event.descriptionevent}
-                            />
-                        ))
-                    )}
-                </div>
                 <div className="guest-searchpage__rightbar">
                     <div className="guest-searchpage__sidebar">
                         <div className="guest-searchpage__filter-section">
