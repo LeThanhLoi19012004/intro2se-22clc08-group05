@@ -144,6 +144,13 @@
   color:white;
 }
 
+.guest-searchpage-searches {
+  max-height: 520px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: white transparent;
+}
+
 .guest-searchpage__rightbar {
   align-self: flex-start;
   /* width: 25%;
