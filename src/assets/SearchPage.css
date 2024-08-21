@@ -109,7 +109,7 @@
 }
 
 .searchpage__checkbox + .searchpage__label::before {
-  content: '';
+  content: "";
   display: inline-block;
   width: 15px;
   height: 15px;

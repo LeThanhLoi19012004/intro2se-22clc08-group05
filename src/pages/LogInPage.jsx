@@ -3,16 +3,16 @@ import { sendLoginRequest, forgotPassword } from "../API"; // Adjust the path as
 import "../assets/LogInPage.css";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
-import Ring1 from '../assets/Abstract Objects/Ellipse 9-1.svg';
-import Ellipse1 from '../assets/Abstract Objects/Ellipse 8-4.svg';
-import Polyline1 from '../assets/Abstract Objects/Vector 8-3.svg';
-import Polygon1 from '../assets/Abstract Objects/Polygon 1-2.svg';
+import Ring1 from "../assets/Abstract Objects/Ellipse 9-1.svg";
+import Ellipse1 from "../assets/Abstract Objects/Ellipse 8-4.svg";
+import Polyline1 from "../assets/Abstract Objects/Vector 8-3.svg";
+import Polygon1 from "../assets/Abstract Objects/Polygon 1-2.svg";
 
 function useScrollToTop() {
   const { pathname } = useLocation();
 
   useEffect(() => {
-      window.scrollTo(0, 0);
+    window.scrollTo(0, 0);
   }, [pathname]);
 }
 
@@ -21,7 +21,8 @@ const useBodyOverflowHiddenOnRoute = (route) => {
   const location = useLocation();
 
   useEffect(() => {
-    document.body.style.overflow = location.pathname === route ? "hidden" : "auto";
+    document.body.style.overflow =
+      location.pathname === route ? "hidden" : "auto";
 
     // Cleanup: Revert overflow when the component unmounts or route changes
     return () => {
@@ -50,7 +51,6 @@ const AbstractFigures = () => (
     <img src={Polyline1} className="login-page__polyline-1"></img>
     <img src={Polygon1} className="login-page__polygon-1"></img>
     <img src={Ellipse1} className="login-page__ellipse-2"></img>
-
   </div>
 );
 
@@ -62,9 +62,11 @@ const ForgotPassword = ({ onBack }) => {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     const response = await forgotPassword({ email });
-    setMessage(response.success
-      ? "Password reset link has been sent to your email."
-      : "Failed to send reset link. Please try again.");
+    setMessage(
+      response.success
+        ? "Password reset link has been sent to your email."
+        : "Failed to send reset link. Please try again."
+    );
   };
 
   return (
@@ -78,9 +80,17 @@ const ForgotPassword = ({ onBack }) => {
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-        <button type="submit" className="forgot-password__blue-button">Send Reset Link</button>
+        <button type="submit" className="forgot-password__blue-button">
+          Send Reset Link
+        </button>
         {message && <p className="forgot-password__message">{message}</p>}
-        <button type="button" className="forgot-password__pink-button" onClick={onBack}>Back to Login</button>
+        <button
+          type="button"
+          className="forgot-password__pink-button"
+          onClick={onBack}
+        >
+          Back to Login
+        </button>
       </form>
     </div>
   );
@@ -94,22 +104,21 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [error, setError] = useState("");
   const [showForgotPassword, setShowForgotPassword] = useState(false);
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useState("");
   const closeErrorModal = () => setError("");
   useEffect(() => {
-    const storedUsername = localStorage.getItem('username');
-    const storedPassword = localStorage.getItem('password');
-    const rememberMe = localStorage.getItem('rememberme');
+    const storedUsername = localStorage.getItem("username");
+    const storedPassword = localStorage.getItem("password");
+    const rememberMe = localStorage.getItem("rememberme");
     if (storedUsername) {
       setUsername(storedUsername);
     }
     if (storedPassword) {
       setPassword(storedPassword);
     }
-    if (rememberMe){
+    if (rememberMe) {
       setIsChecked(true);
     }
-
   }, []);
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
@@ -121,29 +130,29 @@ const Login = () => {
     event.preventDefault();
     const formData = new FormData(event.target);
     const formDataObj = Object.fromEntries(formData.entries());
-    if (formDataObj.username === "admin@@" || formDataObj.password === "admin@@") {
+    if (
+      formDataObj.username === "admin@@" ||
+      formDataObj.password === "admin@@"
+    ) {
       localStorage.setItem("isAdmin", "dummyAdmin");
       navigate("/admin");
-    }
-    else {
-    const response = await sendLoginRequest(formDataObj);
+    } else {
+      const response = await sendLoginRequest(formDataObj);
 
-    if (response.success) {
-      localStorage.setItem("UserID", response.userID);
+      if (response.success) {
+        localStorage.setItem("UserID", response.userID);
         if (isChecked) {
           localStorage.setItem("rememberme", true);
-          localStorage.setItem("username", formDataObj.username)
-          localStorage.setItem("password", formDataObj.password)
-        }
-        else {
+          localStorage.setItem("username", formDataObj.username);
+          localStorage.setItem("password", formDataObj.password);
+        } else {
           localStorage.setItem("rememberme", false);
         }
-       navigate("/mainpage");
+        navigate("/mainpage");
+      } else {
+        setError(response.message || "Login failed. Please try again.");
       }
-     else {
-      setError(response.message || "Login failed. Please try again.");
     }
-  }
   };
 
   useScrollToTop();
@@ -151,6 +160,9 @@ const Login = () => {
   return (
     <div className="login-page__login__container">
       <AbstractFigures />
+      <Link to="/" className="login-signup__back-to-guest">
+        <span>&#8249;</span>&#8194; BACK
+      </Link>
       {showForgotPassword ? (
         <ForgotPassword onBack={() => setShowForgotPassword(false)} />
       ) : (
@@ -163,27 +175,27 @@ const Login = () => {
             <p className="login-page__title">Login</p>
           </span>
           <span id="input-format">
-        <input
-          required
-          type="text"
-          placeholder="Username"
-          onKeyDown={handleKeyPress}
-          name="username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-      </span>
-      <span id="input-format">
-        <input
-          required
-          type="password"
-          placeholder="Password"
-          onKeyDown={handleKeyPress}
-          name="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </span>
+            <input
+              required
+              type="text"
+              placeholder="Username"
+              onKeyDown={handleKeyPress}
+              name="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </span>
+          <span id="input-format">
+            <input
+              required
+              type="password"
+              placeholder="Password"
+              onKeyDown={handleKeyPress}
+              name="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </span>
           <span id="input-format">
             <div className="login-page__remember-me-forgot">
               <div className="login-page__remember-me-container">
@@ -232,7 +244,7 @@ const Login = () => {
             </button>
           </span>
           <div className="login-page__dont-have-account">
-            Don't have an account? 
+            Don't have an account?
             <Link className="login-page__account" to="/signup">
               <strong>Sign Up Now!</strong>
             </Link>

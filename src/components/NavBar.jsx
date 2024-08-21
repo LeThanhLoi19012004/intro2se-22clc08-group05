@@ -5,16 +5,16 @@ import { IoMdNotificationsOutline } from "react-icons/io";
 import { LuTicket } from "react-icons/lu";
 import { IoSearchOutline } from "react-icons/io5";
 import { FaCog } from "react-icons/fa";
-import { LuLogOut, LuLogIn } from "react-icons/lu";
+import { LuLogOut } from "react-icons/lu";
 import Suki from "../assets/Logo/SukiWhite.svg";
-import { renderProfile, GetNotification} from "../API";
+import { renderProfile, GetNotification } from "../API";
 
 function Navbar() {
   const navigate = useNavigate();
   const idaccount = localStorage.getItem("UserID");
   const profile = localStorage.getItem("ProfileID");
   const [url, setUrl] = useState(
-    "https://cdn-icons-png.flaticon.com/512/3682/3682281.png"
+    "https://cellphones.com.vn/sforum/wp-content/uploads/2023/10/avatar-trang-4.jpg"
   );
   const [name, setName] = useState("Guest");
   const [searchQuery, setSearchQuery] = useState(""); // State for search query
@@ -63,11 +63,12 @@ function Navbar() {
 
   const toggleNotificationDropdown = async () => {
     setNotificationDropdownActive(!notificationDropdownActive);
-    if ( notification.length == 0) {
-    const response = await GetNotification({profile });
-    if (response.success) {
-      setNotification(response.data);
-    }}
+    if (notification.length == 0) {
+      const response = await GetNotification({ profile });
+      if (response.success) {
+        setNotification(response.data);
+      }
+    }
     setTicketDropdownActive(false);
     setDropdownActive(false);
   };
@@ -143,23 +144,24 @@ function Navbar() {
               <div className="notification-card">
                 <div className="nav-bar__card-title">Notifications</div>
                 <div className="nav-bar__card-list">
-                  {notification.slice().reverse().map((item, index) => (
-                    <div className="nav-bar__card-list-part" key={index}>
-                      <div
-                        className={`nav-bar__card-list-part-${
-                        "pink"
-                        }`}
-                      ></div>
-                      <div className="nav-bar__card-list-part-info">
-                        <div className="nav-bar__card-list-part-info-main">
-                          {item.content}
-                        </div>
-                        <div className="nav-bar__card-list-part-info-time">
-                          {timeAgo(item.Date_Noti)}
+                  {notification
+                    .slice()
+                    .reverse()
+                    .map((item, index) => (
+                      <div className="nav-bar__card-list-part" key={index}>
+                        <div
+                          className={`nav-bar__card-list-part-${"pink"}`}
+                        ></div>
+                        <div className="nav-bar__card-list-part-info">
+                          <div className="nav-bar__card-list-part-info-main">
+                            {item.content}
+                          </div>
+                          <div className="nav-bar__card-list-part-info-time">
+                            {timeAgo(item.Date_Noti)}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               </div>
             </div>
@@ -240,12 +242,7 @@ function Navbar() {
                 <p>{name}</p>
               </div>
             </div>
-            {name === "Guest" ? (
-              <div className="menu-item" onClick={handleLogin}>
-                <LuLogIn  className="icon" />
-                <span>Login</span>
-              </div>
-            ) : (
+            {
               <>
                 <div className="menu-item" onClick={handleSetting}>
                   <FaCog className="icon" />
@@ -256,7 +253,7 @@ function Navbar() {
                   <span>Log out</span>
                 </div>
               </>
-            )}
+            }
           </div>
         </div>
       </div>

@@ -39,7 +39,7 @@ const commentPost = async (req, res) => {
     console.error(error);
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
-}
+};
 
 const getPostInteraction = async (req, res) => {
   try {
@@ -48,8 +48,9 @@ const getPostInteraction = async (req, res) => {
     const userObjectId = new mongoose.Types.ObjectId(userid);
 
     // Find the interaction for the given post ID
-    const interaction = await InteractionModel.findOne({ postID: postObjectId })
-    .exec();
+    const interaction = await InteractionModel.findOne({
+      postID: postObjectId,
+    }).exec();
     if (!interaction) {
       return res.json({
         num_likes: 0,
@@ -64,20 +65,31 @@ const getPostInteraction = async (req, res) => {
       let avatars = [];
       let comments = [];
       for (let commentObj of interaction.comments) {
-        const profile = await ProfileModel.findOne({idaccount: commentObj.profileID}).exec();
-        
+        const profile = await ProfileModel.findOne({
+          idaccount: commentObj.profileID,
+        }).exec();
+
         if (profile) {
           // Thêm fullname và avatar vào các mảng
           fullnames.push(profile.fullname);
           avatars.push(profile.avatar);
         }
-  
+
         // Thêm comment text vào mảng
         comments.push(commentObj.comment);
       }
-      const num_likes = interaction.profileIDs.length
-      console.log("send data success")
-      res.json({success: true, data: {num_likes: num_likes, liked: liked, comments: comments, fullnames: fullnames, avatars: avatars }});
+      const num_likes = interaction.profileIDs.length;
+      console.log("send data success");
+      res.json({
+        success: true,
+        data: {
+          num_likes: num_likes,
+          liked: liked,
+          comments: comments,
+          fullnames: fullnames,
+          avatars: avatars,
+        },
+      });
     }
   } catch (error) {
     console.error(error);
@@ -107,15 +119,15 @@ const likePost = async (req, res) => {
         profileIDs: [],
         comments: [],
       });
-      interaction.profileIDs.push(profileObjectId)
-    }
-    else{
-      let liked = interaction.profileIDs.includes(profileObjectId)
-      if (liked){
-        interaction.profileIDs = interaction.profileIDs.filter(item => !item.equals(profileObjectId));
-      }
-      else {
-        interaction.profileIDs.push(profileObjectId)
+      interaction.profileIDs.push(profileObjectId);
+    } else {
+      let liked = interaction.profileIDs.includes(profileObjectId);
+      if (liked) {
+        interaction.profileIDs = interaction.profileIDs.filter(
+          (item) => !item.equals(profileObjectId)
+        );
+      } else {
+        interaction.profileIDs.push(profileObjectId);
       }
     }
 
@@ -126,7 +138,7 @@ const likePost = async (req, res) => {
     console.error(error);
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
-}
+};
 
 const AdminDeleteComment = async (req, res) => {
   try {
@@ -135,8 +147,9 @@ const AdminDeleteComment = async (req, res) => {
     const userObjectId = new mongoose.Types.ObjectId(userid);
 
     // Find the interaction for the given post ID
-    const interaction = await InteractionModel.findOne({ postID: postObjectId })
-    .exec();
+    const interaction = await InteractionModel.findOne({
+      postID: postObjectId,
+    }).exec();
     if (!interaction) {
       return res.json({
         num_likes: 0,
@@ -151,20 +164,31 @@ const AdminDeleteComment = async (req, res) => {
       let avatars = [];
       let comments = [];
       for (let commentObj of interaction.comments) {
-        const profile = await ProfileModel.findOne({idaccount: commentObj.profileID}).exec();
-        
+        const profile = await ProfileModel.findOne({
+          idaccount: commentObj.profileID,
+        }).exec();
+
         if (profile) {
           // Thêm fullname và avatar vào các mảng
           fullnames.push(profile.fullname);
           avatars.push(profile.avatar);
         }
-  
+
         // Thêm comment text vào mảng
         comments.push(commentObj.comment);
       }
-      const num_likes = interaction.profileIDs.length
-      console.log("send data success")
-      res.json({success: true, data: {num_likes: num_likes, liked: liked, comments: comments, fullnames: fullnames, avatars: avatars }});
+      const num_likes = interaction.profileIDs.length;
+      console.log("send data success");
+      res.json({
+        success: true,
+        data: {
+          num_likes: num_likes,
+          liked: liked,
+          comments: comments,
+          fullnames: fullnames,
+          avatars: avatars,
+        },
+      });
     }
   } catch (error) {
     console.error(error);
@@ -177,27 +201,42 @@ const AdminListComment = async (req, res) => {
     // Find the interaction for the given post ID
     const interactions = await InteractionModel.find({}).exec();
     if (!interactions) {
-      return res.json({success: true, comments: [], fullnames: [], avatars: [], postids: [] });
+      return res.json({
+        success: true,
+        comments: [],
+        fullnames: [],
+        avatars: [],
+        postids: [],
+      });
     } else {
       let fullnames = [];
       let avatars = [];
       let comments = [];
       let postids = [];
       for (let interaction of interactions) {
-      for (let commentObj of interaction.comments) {
-        const profile = await ProfileModel.findOne({idaccount: commentObj.profileID}).exec();
-        
-        if (profile) {
-          // Thêm fullname và avatar vào các mảng
-          fullnames.push(profile.fullname);
-          avatars.push(profile.avatar);
+        for (let commentObj of interaction.comments) {
+          const profile = await ProfileModel.findOne({
+            idaccount: commentObj.profileID,
+          }).exec();
+
+          if (profile) {
+            // Thêm fullname và avatar vào các mảng
+            fullnames.push(profile.fullname);
+            avatars.push(profile.avatar);
+          }
+          postids.push(interaction.postID);
+          // Thêm comment text vào mảng
+          comments.push(commentObj.comment);
         }
-        postids.push(interaction.postID);
-        // Thêm comment text vào mảng
-        comments.push(commentObj.comment);
-      }}
-      console.log("send data success")
-      res.json({success: true, comments: comments, fullnames: fullnames, avatars: avatars, postids: postids });
+      }
+      console.log("send data success");
+      res.json({
+        success: true,
+        comments: comments,
+        fullnames: fullnames,
+        avatars: avatars,
+        postids: postids,
+      });
     }
   } catch (error) {
     console.error(error);

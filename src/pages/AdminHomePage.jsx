@@ -294,11 +294,12 @@ const AdminComments = () => {
             <p className="user-comment">{comment}</p>
           </div>
           <div className="event-details">
-            <button className="event-status delete-comment">Delete Comment</button>
+            <button className="event-status delete-comment">
+              Delete Comment
+            </button>
           </div>
         </div>
       ))}
-
     </div>
   );
 };

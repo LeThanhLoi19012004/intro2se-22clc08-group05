@@ -87,13 +87,11 @@
   color: #ff7383;
 }
 
-
 /*=========Menu link*/
 .settingpage-menu-link {
   display: block;
   text-decoration: none;
   color: #768499;
-  font-family: "Poppins", sans-serif;
   padding: 10px;
   margin: 10px;
   border-radius: 10px;
@@ -104,7 +102,7 @@
 }
 
 .settingpage-menu-link::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
@@ -120,15 +118,14 @@
 
 .settingpage-menu-link:hover:not(.settingpage-active) {
   color: #1e293b;
-  
+
   cursor: pointer;
 }
 
-
 .settingpage-menu-link.settingpage-active {
-    color: #fff;
-    cursor: pointer;
-    background: linear-gradient(150deg, #2d158f, #ff7383);
+  color: #fff;
+  cursor: pointer;
+  background: linear-gradient(150deg, #2d158f, #ff7383);
 }
 
 /*======================*/
@@ -274,7 +271,6 @@
   background-color: #4d4d4d;
 }
 
-
 /* Accounts List */
 
 .admin-homepage__account-list {
@@ -369,7 +365,6 @@
   font-size: 14px;
   line-height: 1.4;
 }
-
 
 /* Comment List */
 

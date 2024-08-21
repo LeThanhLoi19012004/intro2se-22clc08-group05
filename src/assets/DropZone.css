@@ -34,7 +34,7 @@
 }
 
 .dropzone__description-input:focus {
-  outline:0;
+  outline: 0;
 }
 .dropzone__image-section {
   margin-top: 20px;

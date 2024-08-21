@@ -1,14 +1,14 @@
-import ProfileModel from "../Models/ProfileModel.js"
+import ProfileModel from "../Models/ProfileModel.js";
 import NotificationModel from "../Models/NotificationModel.js";
-import mongoose from 'mongoose';
-import fs from 'fs';
+import mongoose from "mongoose";
+import fs from "fs";
 
 const conn = mongoose.connection;
 let gfs;
 
-conn.once('open', () => {
+conn.once("open", () => {
   gfs = new mongoose.mongo.GridFSBucket(conn.db, {
-    bucketName: 'uploads'
+    bucketName: "uploads",
   });
 });
 
@@ -22,7 +22,7 @@ const UpdateProfile = async (req, res) => {
     const phone = req.body.phone; // Fixed typo here
     const dob = req.body.dob;
     const hometown = req.body.address;
-    const sex = req.body.sex
+    const sex = req.body.sex;
     // Find the profile and update or create as needed
     const profile = await ProfileModel.findOne({ idaccount }).exec();
 
@@ -31,56 +31,65 @@ const UpdateProfile = async (req, res) => {
       profile.phone = phone || profile.phone;
       profile.dob = dob ? new Date(dob) : profile.dob;
       profile.hometown = hometown || profile.hometown;
-      profile.sex = sex || profile.sex
-      const notification = await NotificationModel.findOne({ profileID: profile._id });
+      profile.sex = sex || profile.sex;
+      const notification = await NotificationModel.findOne({
+        profileID: profile._id,
+      });
       notification.Noti.push({
         content: `Your profile has been updated.`,
-        Date_Noti: new Date()
+        Date_Noti: new Date(),
       });
       await profile.save();
-      res.status(200).json({ success: true, message: 'Profile updated successfully' });
-      console.log('Profile updated successfully');
+      res
+        .status(200)
+        .json({ success: true, message: "Profile updated successfully" });
+      console.log("Profile updated successfully");
     } else {
       const newProfile = new ProfileModel({
         idaccount,
         fullname,
         phone,
         dob: new Date(dob),
-        hometown
+        hometown,
       });
-      
+
       await newProfile.save();
 
-      res.status(201).json({ success: true, message: 'Profile created successfully' });
-      console.log('Profile created successfully');
+      res
+        .status(201)
+        .json({ success: true, message: "Profile created successfully" });
+      console.log("Profile created successfully");
     }
   } catch (error) {
-    console.error('Error updating profile:', error);
+    console.error("Error updating profile:", error);
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
 
-
 const RenderProfile = async (req, res) => {
-  const { idaccount  } = req.body;
+  const { idaccount } = req.body;
   try {
     // Tìm hồ sơ dựa trên ID tài khoản
     const profile = await ProfileModel.findOne({ idaccount: idaccount })
-      .populate('idaccount', 'username email') 
+      .populate("idaccount", "username email")
       .exec();
     if (!profile) {
-      return res.status(200).json({ success: false, message: 'Profile not found' });
+      return res
+        .status(200)
+        .json({ success: false, message: "Profile not found" });
     } else {
       const profileData = {
         ...profile.toObject(),
-        dobFormatted: profile.dob ? new Date(profile.dob).toDateString() : 'No date available'
+        dobFormatted: profile.dob
+          ? new Date(profile.dob).toDateString()
+          : "No date available",
       };
 
       res.json({ success: true, data: profileData });
     }
   } catch (error) {
-    console.error('Error finding profile:', error);
-    res.status(500).json({message: 'Server error'});
+    console.error("Error finding profile:", error);
+    res.status(500).json({ message: "Server error" });
   }
 };
 
@@ -89,11 +98,12 @@ const ChangeAvatar = async (req, res) => {
     const idaccount = req.body.idaccount;
     const newImageFile = req.file; // Assuming you're using middleware like multer to handle file uploads
 
-    const profile = await ProfileModel.findOne({ idaccount: idaccount })
-      .exec();
+    const profile = await ProfileModel.findOne({ idaccount: idaccount }).exec();
 
     if (!profile) {
-      return res.status(404).json({ success: false, message: 'Profile not found' });
+      return res
+        .status(404)
+        .json({ success: false, message: "Profile not found" });
     }
 
     // Create avatar object if newImageFile exists
@@ -103,7 +113,7 @@ const ChangeAvatar = async (req, res) => {
           contentType: newImageFile.mimetype,
           size: newImageFile.size,
           uploadDate: new Date(),
-          imageBase64: fs.readFileSync(newImageFile.path, 'base64'),
+          imageBase64: fs.readFileSync(newImageFile.path, "base64"),
         }
       : null;
 
@@ -113,19 +123,23 @@ const ChangeAvatar = async (req, res) => {
     // Save the updated profile
     await profile.save();
 
-    return res.status(200).json({ success: true, message: 'Avatar updated successfully', avatar: profile.avatar });
+    return res
+      .status(200)
+      .json({
+        success: true,
+        message: "Avatar updated successfully",
+        avatar: profile.avatar,
+      });
   } catch (error) {
-    console.error('Error updating avatar:', error);
-    res.status(500).json({ message: 'Server error' });
+    console.error("Error updating avatar:", error);
+    res.status(500).json({ message: "Server error" });
   }
 };
-
 
 const ProfileController = {
   UpdateProfile: UpdateProfile,
   RenderProfile: RenderProfile,
-  ChangeAvatar: ChangeAvatar
+  ChangeAvatar: ChangeAvatar,
 };
-
 
 export default ProfileController;

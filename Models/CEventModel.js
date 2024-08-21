@@ -6,7 +6,7 @@ const logoeventSchema = new mongoose.Schema({
   contentType: String,
   size: Number,
   uploadDate: Date,
-  imageBase64: String
+  imageBase64: String,
 });
 
 // Định nghĩa Schema cho thời gian sự kiện
@@ -26,25 +26,25 @@ const Start_Time = new mongoose.Schema({
   amPm: {
     type: String,
     required: true,
-    enum: ['AM', 'PM'],
+    enum: ["AM", "PM"],
   },
 });
 
 // Định nghĩa Schema cho sự kiện
 const CEventSchema = new mongoose.Schema({
-  eventID: { 
-    type: mongoose.Schema.Types.ObjectId, 
-    ref: 'InfoCEvent',
+  eventID: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "InfoCEvent",
   },
-  profile: { 
-    type: mongoose.Schema.Types.ObjectId, 
-    ref: 'InfoProfile',
-    required: true 
+  profile: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "InfoProfile",
+    required: true,
   },
-  logoevent: { type: logoeventSchema }, 
+  logoevent: { type: logoeventSchema },
   eventname: { type: String, required: true },
   eventtype: { type: String, required: true },
-  status: {type: String, required: true}, //add
+  status: { type: String, required: true }, //add
   descriptionevent: { type: String },
   rulesevent: { type: String, required: true },
   location: { type: String, required: true },
@@ -52,23 +52,26 @@ const CEventSchema = new mongoose.Schema({
   eventdate: { type: Date, required: true, index: true },
   eventtime: { type: Start_Time, required: true },
   numberoftickets: { type: Number, required: true },
-  ticketavailable : { type: Number, required: true },
-  participants : { type: Number, required: true },
+  ticketavailable: { type: Number, required: true },
+  participants: { type: Number, required: true },
   tickettype: { type: String, required: true },
-  price: { type: Number, required: true},
-  follows: [{ 
-    type: mongoose.Schema.Types.ObjectId, 
-    ref: 'InfoProfile',
-  }],
-  participants_id: [{ 
-    type: mongoose.Schema.Types.ObjectId, 
-    ref: 'InfoProfile',
-  }],
-
+  price: { type: Number, required: true },
+  follows: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "InfoProfile",
+    },
+  ],
+  participants_id: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "InfoProfile",
+    },
+  ],
 });
 
 // Middleware trước khi lưu
-CEventSchema.pre('save', function(next) {
+CEventSchema.pre("save", function (next) {
   if (!this.eventcreationdate) {
     this.eventcreationdate = new Date();
   }
@@ -76,6 +79,6 @@ CEventSchema.pre('save', function(next) {
 });
 
 // Tạo và xuất khẩu model
-const CEventModel = mongoose.model('InfoCEvent', CEventSchema);
+const CEventModel = mongoose.model("InfoCEvent", CEventSchema);
 
 export default CEventModel;

@@ -475,3 +475,25 @@ input[type="checkbox"] {
   font-weight: 600;
   font-size: 18px;
 }
+.login-signup__back-to-guest {
+  font-size: 20px;
+  color: white;
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  font-weight: 700;
+  transition: 0.3s color;
+  z-index: 999;
+}
+
+.login-signup__back-to-guest span {
+  font-size: 25px;
+}
+
+.login-signup__back-to-guest:hover {
+  color: #de4e5f;
+}
+
+.login-signup__back-to-guest:active {
+  color: #ffffff;
+}

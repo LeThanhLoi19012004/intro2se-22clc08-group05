@@ -1,60 +1,67 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import SignUpPage from "./pages/SignUpPage";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+  Outlet,
+} from "react-router-dom";
+
 import GuestPage from "./pages/GuestPage";
-import ProfileSetting from "./pages/SettingPage";
-import MainPage from "./pages/MainPage";
+import SignUpPage from "./pages/SignUpPage";
 import LogInPage from "./pages/LogInPage";
-import CreateEvent from "./pages/CreateEventPage";
-import SearchPage from "./pages/SearchPage";
-import "./assets/App.css";
-import { Navigate, Outlet } from "react-router-dom";
+import MainPage from "./pages/MainPage";
 import AboutUsPage from "./pages/AboutUsPage";
-import TicketEventPage from "./pages/TicketEventPage"
+import SearchPage from "./pages/SearchPage";
+import GuestSearchPage from "./pages/GuestSearchPage";
+import ProfileSetting from "./pages/SettingPage";
+import TicketEventPage from "./pages/TicketEventPage";
+import CreateEvent from "./pages/CreateEventPage";
 import AdminHomePage from "./pages/AdminHomePage";
 import AdminReview from "./pages/AdminReview";
-const PrivateRoute = () => {
-  const isAuthenticated = !!localStorage.getItem("UserID"); // Kiểm tra xem userid có trong localStorage hay không
 
+import "./assets/App.css";
+
+// PrivateRoute component to protect private routes
+const PrivateRoute = () => {
+  const isAuthenticated = !!localStorage.getItem("UserID");
   return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
 };
 
+// AdminRoute component to protect admin routes
 const AdminRoute = () => {
   const isAdmin = !!localStorage.getItem("isAdmin");
   return isAdmin ? <Outlet /> : <Navigate to="/login" />;
-}
+};
 
 function App() {
-  // const rememberMe = localStorage.getItem("rememberme");
-  // if (!rememberMe || rememberMe === "false") {
-  //   localStorage.clear();
-  // }
   return (
     <Router>
       <Routes>
-      <Route element={<AdminRoute />}>
-      <Route path="/admin" element={<AdminHomePage />} />
-        </Route>
-        <Route element={<AdminRoute />}>
-        <Route path="/admin/review" element={<AdminReview />} />
-        </Route>
-        <Route path="/aboutus" element={<AboutUsPage />} />
+        {/* Public Routes */}
         <Route path="/" element={<GuestPage />} />
-        <Route path="/search" element={<SearchPage />} />
-        <Route element={<PrivateRoute />}>
-          <Route path="/setting" element={<ProfileSetting />} />
-        </Route>
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/login" element={<LogInPage />} />
-        <Route path="/mainpage" element={<MainPage />} />
+        <Route path="/aboutus" element={<AboutUsPage />} />
+        <Route path="/guestsearch" element={<GuestSearchPage />} />
+
+        {/* Private Routes */}
         <Route element={<PrivateRoute />}>
+          <Route path="/setting" element={<ProfileSetting />} />
           <Route path="/event" element={<TicketEventPage />} />
-        </Route>
-        <Route element={<PrivateRoute />}>
           <Route path="/createvent" element={<CreateEvent />} />
+          <Route path="/search" element={<SearchPage />} />
+          <Route path="/mainpage" element={<MainPage />} />
+        </Route>
+
+        {/* Admin Routes */}
+        <Route element={<AdminRoute />}>
+          <Route path="/admin" element={<AdminHomePage />} />
+          <Route path="/admin/review" element={<AdminReview />} />
         </Route>
       </Routes>
     </Router>
   );
 }
+
 export default App;

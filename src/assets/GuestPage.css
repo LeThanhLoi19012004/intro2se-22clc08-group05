@@ -98,13 +98,16 @@
   width: 200px;
   height: 100px;
   margin-left: 80px;
-  background: radial-gradient(circle at center, rgba(255, 115, 131, 0.6), rgba(120, 91, 237, 0.1));
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 115, 131, 0.6),
+    rgba(120, 91, 237, 0.1)
+  );
   border-radius: 80%;
   filter: blur(15px);
   position: absolute;
   z-index: -10;
 }
-
 
 /*--------------------- PART 2: FULL LAYOUT ---------------------*/
 
@@ -115,9 +118,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  
 }
-
 
 /*--------------------- PART 3: MAIN FRONT ---------------------*/
 
@@ -153,7 +154,7 @@
   font-weight: 700;
   line-height: 1;
   margin-bottom: 20px;
-  width: 100%
+  width: 100%;
 }
 
 .new-guest-page__first-section-main-text-description {
@@ -188,7 +189,7 @@
   border-color: rgba(255, 255, 255, 0.5);
   transition: background-color 0.3s;
   width: 240px;
-  
+
   background: rgba(45, 21, 142, 0.7);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(5px);
@@ -212,7 +213,6 @@
   font-size: 27px;
   line-height: 1.5;
 }
-
 
 /*--------------------- PART 4: SECOND PART ---------------------*/
 
@@ -275,7 +275,7 @@
   flex: 1;
 }
 
-.new-guest-page__second-section-main-advertisements-image img{
+.new-guest-page__second-section-main-advertisements-image img {
   width: 400px;
 }
 
@@ -296,7 +296,6 @@
   font-size: 25px;
   line-height: 1.5;
 }
-
 
 /*--------------------- PART 5: THIRD PART ---------------------*/
 
@@ -420,7 +419,7 @@
   margin-bottom: 30px;
 }
 
-.new-guest-page__fourth-section-category-image img{
+.new-guest-page__fourth-section-category-image img {
   height: 100px;
 }
 
@@ -430,7 +429,6 @@
   text-align: center;
   width: 100%;
 }
-
 
 /*--------------------- PART 7: FIFTH PART ---------------------*/
 
@@ -489,14 +487,11 @@
   font-weight: 700;
   line-height: 1.5;
   margin-bottom: 40px;
-  
+
   background: linear-gradient(150deg, #2d158f, #ff7383);
   -webkit-background-clip: text; /* Clip background to text */
   -webkit-text-fill-color: transparent; /* Make text color transparent to show gradient */
 }
-
-
-
 
 .new-guest-page__fifth-section-main-text-link-button {
   color: white;
@@ -508,11 +503,10 @@
   border-color: rgba(255, 255, 255, 0.3);
   width: 200px;
   background: linear-gradient(150deg, #2d158f, #ff7383);
--webkit-transition: background 0.5s ease;
+  -webkit-transition: background 0.5s ease;
 
-/* Standard transition property */
-transition: background 0.5s ease;
-
+  /* Standard transition property */
+  transition: background 0.5s ease;
 }
 
 .new-guest-page__fifth-section-main-text-link-button:hover {
@@ -527,7 +521,6 @@ transition: background 0.5s ease;
 .new-guest-page__fifth-section-main-text-link-button:focus {
   outline: none;
 }
-
 
 /*--------------------- PART 8: FOOTER ---------------------*/
 
@@ -673,13 +666,16 @@ transition: background 0.5s ease;
   text-align: right;
 }
 
-
 /*--------------------- PART 9: GRADIENTS ---------------------*/
 
 .new-guest-page__first-section-top-right-gradient {
   width: 900px;
   height: 900px;
-  background: radial-gradient(circle at center, rgba(255, 115, 131, 0.8), rgba(120, 91, 237, 0.5));
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 115, 131, 0.8),
+    rgba(120, 91, 237, 0.5)
+  );
   border-radius: 80%;
   filter: blur(100px);
   position: absolute;
@@ -691,7 +687,11 @@ transition: background 0.5s ease;
 .new-guest-page__second-section-top-left-gradient {
   width: 850px;
   height: 850px;
-  background: radial-gradient(circle at center, rgba(255, 115, 131, 0.8), rgba(120, 91, 237, 0.5));
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 115, 131, 0.8),
+    rgba(120, 91, 237, 0.5)
+  );
   border-radius: 80%;
   filter: blur(100px);
   position: absolute;
@@ -703,7 +703,11 @@ transition: background 0.5s ease;
 .new-guest-page__second-section-middle-gradient {
   width: 850px;
   height: 850px;
-  background: radial-gradient(circle at center, rgba(255, 115, 131, 0.8), rgba(120, 91, 237, 0.5));
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 115, 131, 0.8),
+    rgba(120, 91, 237, 0.5)
+  );
   border-radius: 80%;
   filter: blur(100px);
   position: absolute;
@@ -715,7 +719,11 @@ transition: background 0.5s ease;
 .new-guest-page__second-section-bottom-left-gradient {
   width: 850px;
   height: 850px;
-  background: radial-gradient(circle at center, rgba(255, 115, 131, 0.8), rgba(120, 91, 237, 0.5));
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 115, 131, 0.8),
+    rgba(120, 91, 237, 0.5)
+  );
   border-radius: 80%;
   filter: blur(100px);
   position: absolute;
@@ -723,7 +731,6 @@ transition: background 0.5s ease;
   left: -300px;
   bottom: -300px;
 }
-
 
 /*--------------------- PART 10: ABSTRACT OBJECTS ---------------------*/
 
@@ -760,7 +767,8 @@ transition: background 0.5s ease;
 }
 
 @keyframes horizontal-bounce {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateX(0);
   }
   50% {
@@ -791,7 +799,6 @@ transition: background 0.5s ease;
     transform: rotate(360deg) scale(1);
   }
 }
-
 
 .new-guest-page__first-section-polygon-1 {
   position: absolute;

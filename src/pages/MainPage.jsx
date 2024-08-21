@@ -7,23 +7,29 @@ import SukiGreen from "../assets/Logo/SukiColor.svg";
 import { FaSort } from "react-icons/fa";
 import { FaSortDown } from "react-icons/fa";
 import { FaSortUp } from "react-icons/fa";
-import { FaHome, FaCompass, FaHeart, FaCog,FaRegCalendarAlt  } from "react-icons/fa";
-import { GiHeartPlus} from 'react-icons/gi';
-import {FaStar, FaUsers } from 'react-icons/fa';
-import {Link, useNavigate} from "react-router-dom";
-import Post from '../components/Post.jsx'
+import {
+  FaHome,
+  FaCompass,
+  FaHeart,
+  FaCog,
+  FaRegCalendarAlt,
+} from "react-icons/fa";
+import { GiHeartPlus } from "react-icons/gi";
+import { FaStar, FaUsers } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
+import Post from "../components/Post.jsx";
 import { renderMainPage, RenderEventMP } from "../API.js";
 
 function Loading() {
   return (
-<div className="loading__typing-indicator">
-    <div className="loading__typing-circle"></div>
-    <div className="loading__typing-circle"></div>
-    <div className="loading__typing-circle"></div>
-    <div className="loading__typing-shadow"></div>
-    <div className="loading__typing-shadow"></div>
-    <div className="loading__typing-shadow"></div>
-</div>
+    <div className="loading__typing-indicator">
+      <div className="loading__typing-circle"></div>
+      <div className="loading__typing-circle"></div>
+      <div className="loading__typing-circle"></div>
+      <div className="loading__typing-shadow"></div>
+      <div className="loading__typing-shadow"></div>
+      <div className="loading__typing-shadow"></div>
+    </div>
   );
 }
 
@@ -32,26 +38,22 @@ function LeftSideBar() {
   const [isExploreClicked, setIsExploreClicked] = useState(false);
   const [isFavoritesClicked, setIsFavoritesClicked] = useState(false);
   const [isSettingsClicked, setIsSettingsClicked] = useState(false);
-  const [isCreateEventClicked, setIsCreateEventClicked] = useState(false);
-  const userIDExists = localStorage.getItem('UserID') !== null;
+  const userIDExists = localStorage.getItem("UserID") !== null;
 
   const handleClickMain = () => {
     setIsHomeClicked(true);
     window.scrollTo(0, 0); // Cuộn về đầu trang
     window.location.reload();
   };
-  const handleClickExplore = () =>{
+  const handleClickExplore = () => {
     setIsExploreClicked(true);
-  }
-  const handleClickFavorites = () =>{
+  };
+  const handleClickFavorites = () => {
     setIsFavoritesClicked(true);
-  }
-  const handleClickSettings = () =>{
+  };
+  const handleClickSettings = () => {
     setIsSettingsClicked(true);
-  }
-  const handleClickCreateEvent = () =>{
-    setIsCreateEventClicked(true);
-  }
+  };
   return (
     <div className="main-page__left-side">
       <div
@@ -59,52 +61,100 @@ function LeftSideBar() {
         onClick={handleClickMain}
         style={{ cursor: "pointer" }}
       >
-        <span className="main-page__icon"><FaHome className = "icon" style = {{color: isHomeClicked ? '#ff7383' :'#ff7383'}}/></span>
-        <span className="main-page__text" style = {{color: isHomeClicked ? '#ff7383' :'#ff7383'}}>Home</span>
+        <span className="main-page__icon">
+          <FaHome
+            className="icon"
+            style={{ color: isHomeClicked ? "#ff7383" : "#ff7383" }}
+          />
+        </span>
+        <span
+          className="main-page__text"
+          style={{ color: isHomeClicked ? "#ff7383" : "#ff7383" }}
+        >
+          Home
+        </span>
       </div>
-      <Link to="/search"
+      <Link
+        to="/search"
         className="main-page__menu-item"
         onClick={handleClickExplore}
         style={{ cursor: "pointer" }}
       >
-        <span className="main-page__icon"><FaCompass className = "icon" style = {{color: isExploreClicked ? '#ff7383' :'#2d158f'}}/></span>
-        <span className="main-page__text" style = {{color: isExploreClicked ? '#ff7383' :'#2d158f'}}>Explore</span>
+        <span className="main-page__icon">
+          <FaCompass
+            className="icon"
+            style={{ color: isExploreClicked ? "#ff7383" : "#2d158f" }}
+          />
+        </span>
+        <span
+          className="main-page__text"
+          style={{ color: isExploreClicked ? "#ff7383" : "#2d158f" }}
+        >
+          Explore
+        </span>
       </Link>
-      <div 
+      <div
         className="main-page__menu-item"
         onClick={handleClickFavorites}
-        style={{ cursor: "pointer" }}>
-        <span className="main-page__icon"><FaHeart className = "icon" style = {{color: isFavoritesClicked ? '#ff7383' :'#2d158f'}}/></span>
-        <span className="main-page__text" style = {{color: isFavoritesClicked ? '#ff7383' :'#2d158f'}}>Favorites</span>
-      </div>
-      { userIDExists && <>
-      <Link to="/setting" 
-        className="main-page__menu-item"
-        onClick={handleClickSettings}
         style={{ cursor: "pointer" }}
       >
-        
-        <span className="main-page__icon"><FaCog className = "icon" style = {{color: isSettingsClicked ? '#ff7383' :'#2d158f'}}/></span>
-        <span className="main-page__text" style = {{color: isSettingsClicked ? '#ff7383' :'#2d158f'}}>Settings</span>
-      </Link>
-      <div className="main-page__menu-gap"></div>
-        <Link to="/createvent" className="main-page__menu-item-create"
-          onClick={handleClickCreateEvent}
-          style={{ cursor: "pointer" }}
+        <span className="main-page__icon">
+          <FaHeart
+            className="icon"
+            style={{ color: isFavoritesClicked ? "#ff7383" : "#2d158f" }}
+          />
+        </span>
+        <span
+          className="main-page__text"
+          style={{ color: isFavoritesClicked ? "#ff7383" : "#2d158f" }}
         >
-          <span className="main-page__icon"><FaRegCalendarAlt className ="icon"/></span>
-          <span className="main-page__text">Create Event</span>
-        </Link> </>}
+          Favorites
+        </span>
       </div>
+      {userIDExists && (
+        <>
+          <Link
+            to="/setting"
+            className="main-page__menu-item"
+            onClick={handleClickSettings}
+            style={{ cursor: "pointer" }}
+          >
+            <span className="main-page__icon">
+              <FaCog
+                className="icon"
+                style={{ color: isSettingsClicked ? "#ff7383" : "#2d158f" }}
+              />
+            </span>
+            <span
+              className="main-page__text"
+              style={{ color: isSettingsClicked ? "#ff7383" : "#2d158f" }}
+            >
+              Settings
+            </span>
+          </Link>
+          <div className="main-page__menu-gap"></div>
+          <Link
+            to="/createvent"
+            className="main-page__menu-item-create"
+            style={{ cursor: "pointer" }}
+          >
+            <span className="main-page__icon">
+              <FaRegCalendarAlt className="icon" />
+            </span>
+            <span className="main-page__text">Create Event</span>
+          </Link>{" "}
+        </>
+      )}
+    </div>
   );
 }
 
-function RightSidebar(){
+function RightSidebar() {
   const navigate = useNavigate();
   const [eventFollow, setEventFollow] = useState([]);
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
   const [eventOwner, setEventOwner] = useState([]);
-  const profile = localStorage.getItem('ProfileID');
+  const profile = localStorage.getItem("ProfileID");
   const movetoEvent = (eventID) => {
     localStorage.setItem("eventid", eventID);
     window.scrollTo(0, 0); // Scroll to top
@@ -114,7 +164,7 @@ function RightSidebar(){
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await RenderEventMP({profile}); // Assuming RenderEventMP is defined elsewhere
+        const response = await RenderEventMP({ profile }); // Assuming RenderEventMP is defined elsewhere
         setEventFollow(response.event_follow);
         setEventOwner(response.event_orga);
         setLoading(false); // Kết thúc loading
@@ -128,7 +178,7 @@ function RightSidebar(){
   return (
     <div className="main-page__right-side">
       {loading ? (
-        <div/>
+        <div />
       ) : (
         <>
           <div className="main-page__sidebar-news-scroll">
@@ -136,7 +186,10 @@ function RightSidebar(){
             <div className="main-page__event_list-right">
               {eventFollow.length !== 0 ? (
                 eventFollow.map((event, index) => (
-                  <div key={event._id || index} className="main-page__event-info">
+                  <div
+                    key={event._id || index}
+                    className="main-page__event-info"
+                  >
                     <div className="main-page__event-avatar">
                       <img
                         className="main-page__event-avatar"
@@ -146,12 +199,14 @@ function RightSidebar(){
                     </div>
                     <div className="main-page__event-details">
                       <p className="main-page__event-name">{event.eventname}</p>
-                      <p className="main-page__event-category">{event.eventtype}</p>
+                      <p className="main-page__event-category">
+                        {event.eventtype}
+                      </p>
                     </div>
                   </div>
                 ))
               ) : (
-                <p>No event followed</p>
+                <p>No events followed</p>
               )}
             </div>
           </div>
@@ -160,7 +215,10 @@ function RightSidebar(){
             <div className="main-page__event_list-right">
               {eventOwner.length !== 0 ? (
                 eventOwner.map((event, index) => (
-                  <div key={event._id || index} className="main-page__event-info">
+                  <div
+                    key={event._id || index}
+                    className="main-page__event-info"
+                  >
                     <div className="main-page__event-avatar">
                       <img
                         className="main-page__event-avatar"
@@ -170,12 +228,14 @@ function RightSidebar(){
                     </div>
                     <div className="main-page__event-details">
                       <p className="main-page__event-name">{event.eventname}</p>
-                      <p className="main-page__event-category">{event.eventtype}</p>
+                      <p className="main-page__event-category">
+                        {event.eventtype}
+                      </p>
                     </div>
                   </div>
                 ))
               ) : (
-                <p>No event organize</p>
+                <p>No events organized</p>
               )}
             </div>
           </div>
@@ -193,7 +253,7 @@ function RightSidebar(){
 
 const CenterSide = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
-  const [sortType, setSortType] = useState('none');
+  const [sortType, setSortType] = useState("none");
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -214,41 +274,42 @@ const CenterSide = () => {
   }, []);
 
   const events = [
-    { name: 'Music', icon: <FaMusic style={{ color: 'white' }}/> },
-    { name: 'Charity', icon: <GiHeartPlus style={{ color: 'white' }}/> },
-    { name: 'Team Building', icon: <FaUsers style={{ color: 'white' }}/> },
-    { name: 'Meeting', icon: <GiVideoConference style={{ color: 'white' }}/> },
-    { name: 'Festival', icon: <FaStar style={{ color: 'white' }}/> },
+    { name: "Music", icon: <FaMusic style={{ color: "white" }} /> },
+    { name: "Charity", icon: <GiHeartPlus style={{ color: "white" }} /> },
+    { name: "Team Building", icon: <FaUsers style={{ color: "white" }} /> },
+    { name: "Meeting", icon: <GiVideoConference style={{ color: "white" }} /> },
+    { name: "Festival", icon: <FaStar style={{ color: "white" }} /> },
   ];
 
   const handleEventClick = (index) => {
-    if (selectedEvent == index)
-      setSelectedEvent(null);
-    else
-      setSelectedEvent(index);
+    if (selectedEvent == index) setSelectedEvent(null);
+    else setSelectedEvent(index);
   };
-
 
   const handleClickSort = () => {
-    if (sortType === 'none') {
-      setSortType('top');
-    } else if (sortType === 'top') {
-      setSortType('down');
+    if (sortType === "none") {
+      setSortType("top");
+    } else if (sortType === "top") {
+      setSortType("down");
     } else {
-      setSortType('none');
+      setSortType("none");
     }
-    
   };
 
-  const filteredPosts = selectedEvent === null ? posts : posts.filter(post => post.eventID.eventtype === events[selectedEvent].name);
+  const filteredPosts =
+    selectedEvent === null
+      ? posts
+      : posts.filter(
+          (post) => post.eventID.eventtype === events[selectedEvent].name
+        );
 
   const sortedPosts = [...filteredPosts].sort((a, b) => {
     const dateA = new Date(a.postcreationdate);
     const dateB = new Date(b.postcreationdate);
 
-    if (sortType === 'top') {
+    if (sortType === "top") {
       return dateB - dateA; // Descending order
-    } else if (sortType === 'down') {
+    } else if (sortType === "down") {
       return dateA - dateB; // Ascending order
     }
     return 0; // No sorting
@@ -259,7 +320,9 @@ const CenterSide = () => {
       <div className="main-page__event-nav-bar">
         {events.map((event, index) => (
           <div
-            className={`main-page__event-item ${selectedEvent === index ? 'main-page__selected' : ''}`}
+            className={`main-page__event-item ${
+              selectedEvent === index ? "main-page__selected" : ""
+            }`}
             key={index}
             onClick={() => handleEventClick(index)}
           >
@@ -272,11 +335,21 @@ const CenterSide = () => {
       <div
         className="main-page__sort-by"
         onClick={handleClickSort}
-        style={{ cursor: 'pointer' }}
+        style={{ cursor: "pointer" }}
       >
         <hr />
         <p>
-          Sort by: <span>{sortType} {sortType === 'none' ? <FaSort /> : sortType === 'top' ? <FaSortUp /> : <FaSortDown />}</span>
+          Sort by:{" "}
+          <span>
+            {sortType}{" "}
+            {sortType === "none" ? (
+              <FaSort />
+            ) : sortType === "top" ? (
+              <FaSortUp />
+            ) : (
+              <FaSortDown />
+            )}
+          </span>
         </p>
       </div>
 
@@ -297,8 +370,8 @@ const CenterSide = () => {
             content={post.descriptionpost}
             postImg={post.images}
             authorImg={post.eventID.logoevent}
-            eventID = {post.eventID._id}
-            postID = {post._id}
+            eventID={post.eventID._id}
+            postID={post._id}
           />
         ))
       )}
@@ -323,4 +396,3 @@ function MainPage() {
 }
 
 export default MainPage;
-

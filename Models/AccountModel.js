@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 // Định nghĩa Schema cho User
 const AccountSchema = new mongoose.Schema({
@@ -8,7 +8,7 @@ const AccountSchema = new mongoose.Schema({
 });
 
 // Tạo Model từ Schema
-const AccountModel = mongoose.model('InfoAccount', AccountSchema);
+const AccountModel = mongoose.model("InfoAccount", AccountSchema);
 
 // Xuất khẩu Model
 export default AccountModel;

@@ -1,28 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import { FaRegCommentDots } from 'react-icons/fa';
-import { FaRegShareSquare } from 'react-icons/fa';
-import '../assets/Post.css';
+import React, { useState, useEffect } from "react";
+import { FaRegCommentDots } from "react-icons/fa";
+import { FaRegShareSquare } from "react-icons/fa";
+import "../assets/Post.css";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import { BiHeart } from 'react-icons/bi';
-import { AiFillHeart } from 'react-icons/ai';
-import { FaPaperPlane } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
-import { getPostInteraction, commentPost, likePost } from '../API';
+import { BiHeart } from "react-icons/bi";
+import { AiFillHeart } from "react-icons/ai";
+import { FaPaperPlane } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { getPostInteraction, commentPost, likePost } from "../API";
 
 function Comment(props) {
   return (
     <div className="post__comment">
       <div className="post__comment-author-img">
-        <img src={
-  props.profileImg
-    ? `data:${props.profileImg.contentType};base64,${props.profileImg.imageBase64}`
-    : "https://cdn-icons-png.flaticon.com/512/3682/3682281.png"
-}
- alt="Profile img" />
+        <img
+          src={
+            props.profileImg
+              ? `data:${props.profileImg.contentType};base64,${props.profileImg.imageBase64}`
+              : "https://cdn-icons-png.flaticon.com/512/3682/3682281.png"
+          }
+          alt="Profile img"
+        />
       </div>
       <div className="post__comment_content">
-        <div className="post__comment_content-user-name">{props.authorName == "" ? "Hidden User" : props.authorName}</div>
-        <div className="post__comment_content-user-idea">{props.commentText}</div>
+        <div className="post__comment_content-user-name">
+          {props.authorName == "" ? "Hidden User" : props.authorName}
+        </div>
+        <div className="post__comment_content-user-idea">
+          {props.commentText}
+        </div>
       </div>
     </div>
   );
@@ -48,15 +54,21 @@ function Overlay(props) {
 
   const handleSendComment = async () => {
     if (commentText.trim()) {
-      const userID = localStorage.getItem("UserID")
-      const response = await commentPost({ postid: props.postID, profileid: userID, comment: commentText });
-      if (response.success)
-        setCommentText(""); // Clear the input field after sending the comment
+      const userID = localStorage.getItem("UserID");
+      const response = await commentPost({
+        postid: props.postID,
+        profileid: userID,
+        comment: commentText,
+      });
+      if (response.success) setCommentText(""); // Clear the input field after sending the comment
 
       // Reload interactions to get updated comments
-      const updatedResponse = await getPostInteraction({ postid: props.postID, userid: localStorage.getItem("ProfileID") });
+      const updatedResponse = await getPostInteraction({
+        postid: props.postID,
+        userid: localStorage.getItem("ProfileID"),
+      });
       if (updatedResponse.success) {
-        props.updateComment(updatedResponse.data)
+        props.updateComment(updatedResponse.data);
       }
     }
   };
@@ -132,18 +144,34 @@ const PostCarousel = ({ images, setLiked, liked }) => {
       <div className="post__post-img" onDoubleClick={handleDoubleClick}>
         {images.length > 0 && (
           <>
-            <img src={`data:${images[currentIndex].contentType};base64,${images[currentIndex].imageBase64}`} alt="Post" />
+            <img
+              src={`data:${images[currentIndex].contentType};base64,${images[currentIndex].imageBase64}`}
+              alt="Post"
+            />
             {images.length > 1 && (
               <div className="carousel-controls">
-                <button onClick={handlePrev} disabled={currentIndex === 0} className="control-button prev">
+                <button
+                  onClick={handlePrev}
+                  disabled={currentIndex === 0}
+                  className="control-button prev"
+                >
                   <FaChevronLeft />
                 </button>
-                <button onClick={handleNext} disabled={currentIndex === images.length - 1} className="control-button next">
+                <button
+                  onClick={handleNext}
+                  disabled={currentIndex === images.length - 1}
+                  className="control-button next"
+                >
                   <FaChevronRight />
                 </button>
               </div>
             )}
-            {showHeart && <AiFillHeart size={100} className={`heart-icon ${showHeart ? 'show' : ''}`} />}
+            {showHeart && (
+              <AiFillHeart
+                size={100}
+                className={`heart-icon ${showHeart ? "show" : ""}`}
+              />
+            )}
           </>
         )}
       </div>
@@ -162,19 +190,19 @@ function Post(props) {
   });
   const [liked, setLiked] = useState(interaction.liked);
   const navigate = useNavigate();
-  const userIDExists = localStorage.getItem('UserID') !== null;
+  const userIDExists = localStorage.getItem("UserID") !== null;
   const movetoEvent = () => {
     if (!userIDExists) {
-      navigate('/login');
+      navigate("/login");
     } else {
-    localStorage.setItem("eventid", props.eventID);
-    window.scrollTo(0, 0); // Scroll to top
-    navigate(`/event?id=${props.eventID}`);
+      localStorage.setItem("eventid", props.eventID);
+      window.scrollTo(0, 0); // Scroll to top
+      navigate(`/event?id=${props.eventID}`);
     }
   };
   const handleCommentClick = () => {
     if (!userIDExists) {
-      navigate('/login');
+      navigate("/login");
     } else {
       setShowOverlay(!showOverlay);
     }
@@ -199,26 +227,32 @@ function Post(props) {
   const toggleLike = async () => {
     if (!userIDExists) {
       navigate("/login");
-    }
-    else {
-    const response = await likePost({ postid: props.postID, profileid: localStorage.getItem("ProfileID") }); // Gọi API likePost
+    } else {
+      const response = await likePost({
+        postid: props.postID,
+        profileid: localStorage.getItem("ProfileID"),
+      }); // Gọi API likePost
 
-    if (response.success) {
-      setLiked(!liked); // Thay đổi trạng thái liked
-      setInteraction((prevInteraction) => ({
-        ...prevInteraction,
-        liked: !prevInteraction.liked,
-        num_likes: prevInteraction.liked
-          ? prevInteraction.num_likes - 1
-          : prevInteraction.num_likes + 1,
-      }));
-    }}
-  } 
+      if (response.success) {
+        setLiked(!liked); // Thay đổi trạng thái liked
+        setInteraction((prevInteraction) => ({
+          ...prevInteraction,
+          liked: !prevInteraction.liked,
+          num_likes: prevInteraction.liked
+            ? prevInteraction.num_likes - 1
+            : prevInteraction.num_likes + 1,
+        }));
+      }
+    }
+  };
 
   useEffect(() => {
     const fetchInteraction = async () => {
       try {
-        const response = await getPostInteraction({ postid: props.postID, userid: localStorage.getItem("ProfileID") });
+        const response = await getPostInteraction({
+          postid: props.postID,
+          userid: localStorage.getItem("ProfileID"),
+        });
         if (response.success) {
           setInteraction(response.data);
           setLiked(response.data.liked); // Initialize the liked state based on the fetched data
@@ -234,7 +268,11 @@ function Post(props) {
     <div className="post__post">
       <div className="post__post-author">
         <div className="post__post-author-img">
-          <img onClick={movetoEvent} src={`data:${props.authorImg.contentType};base64,${props.authorImg.imageBase64}`} alt="Author" />
+          <img
+            onClick={movetoEvent}
+            src={`data:${props.authorImg.contentType};base64,${props.authorImg.imageBase64}`}
+            alt="Author"
+          />
         </div>
         <div>
           <h1 onClick={movetoEvent}>{props.userName}</h1>
@@ -248,7 +286,11 @@ function Post(props) {
         </div>
       </div>
       <p>{props.content}</p>
-      <PostCarousel images={props.postImg} setLiked={toggleLike} liked={liked} />
+      <PostCarousel
+        images={props.postImg}
+        setLiked={toggleLike}
+        liked={liked}
+      />
       <div className="post__post-stats">
         <span>
           {interaction.num_likes} likes · {interaction.comments.length} comments
@@ -260,14 +302,15 @@ function Post(props) {
           onClick={toggleLike}
           style={{ cursor: "pointer" }}
         >
-          {liked ? <AiFillHeart size={27} style={{ fill: "red" }} className="beat" /> : <BiHeart size={27} style={{ color: "black" }} />}
+          {liked ? (
+            <AiFillHeart size={27} style={{ fill: "red" }} className="beat" />
+          ) : (
+            <BiHeart size={27} style={{ color: "black" }} />
+          )}
           <span> Like</span>
         </div>
         <div className="post__post-activity-link">
-          <FaRegCommentDots
-            size={17}
-            onClick={handleCommentClick}
-          />
+          <FaRegCommentDots size={17} onClick={handleCommentClick} />
           <span onClick={handleCommentClick}> Comment</span>
         </div>
         <div className="post__post-activity-link">
@@ -289,6 +332,5 @@ function Post(props) {
     </div>
   );
 }
-
 
 export default Post;

@@ -1,7 +1,6 @@
 body .post__no-scroll {
   overflow: hidden;
   display: flex;
-
 }
 .post__post {
   background: #fff;
@@ -10,7 +9,6 @@ body .post__no-scroll {
   border-radius: 10px;
   width: 100%;
   box-sizing: border-box;
-  
 }
 .post__post-author {
   display: flex;
@@ -70,24 +68,22 @@ body .post__no-scroll {
   height: 100%;
   object-fit: contain;
   background-color: whitesmoke;
-
 }
-.post__post-img  .heart-icon {
+.post__post-img .heart-icon {
   position: absolute;
   /* top: 50%;
   left: 50%;
   transform: translate(-50%, -50%); */
   align-self: center;
   font-size: 50px;
-  color:red;
-  
+  color: red;
+
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
   animation: beat 2s;
-
 }
 
-.post__post-img  .heart-icon.show {
+.post__post-img .heart-icon.show {
   opacity: 1;
 }
 .carousel-controls {
@@ -136,8 +132,6 @@ body .post__no-scroll {
   right: 10px; /* Adjust as needed */
   transform: translateY(-50%); /* Center vertically */
 }
-
-
 
 .post__post-stats {
   display: flex;
@@ -195,7 +189,6 @@ body .post__no-scroll {
   20% {
     transform: scale(1);
   }
-  
 }
 
 .post__post-activity-link .beat {
@@ -334,7 +327,7 @@ body .post__no-scroll {
   margin-right: auto;
 }
 
-.post__user-comment input[type='text'] {
+.post__user-comment input[type="text"] {
   flex-grow: 1;
   padding: 10px 15px 10px 15px;
   border: 1px solid #ccc;
