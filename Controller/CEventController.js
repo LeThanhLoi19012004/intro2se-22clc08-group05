@@ -1,5 +1,7 @@
 import CEventModel from "../Models/CEventModel.js";
+import ProfileModel from "../Models/ProfileModel.js";
 import NotificationModel from "../Models/NotificationModel.js";
+import OrderTicketModel from "../Models/OrderTicketModel.js";
 import mongoose from "mongoose";
 import fs from "fs";
 // Lấy kết nối Mongoose hiện tại
@@ -34,30 +36,7 @@ const CEvent = async (req, res) => {
       price,
     } = req.body;
     const eventDate = new Date(eventdate);
-    const [hourStr, minuteStr] = eventtime.split(":");
-    let hour = parseInt(hourStr, 10);
-    const minute = parseInt(minuteStr, 10);
     const logoevent = req.file; // Access the uploaded file
-
-    // Handle AM/PM conversion if necessary
-    let amPm = "";
-    if (hour >= 12) {
-      amPm = "PM";
-      if (hour > 12) {
-        hour -= 12;
-      }
-    } else {
-      amPm = "AM";
-      if (hour === 0) {
-        hour = 12;
-      }
-    }
-
-    const eventTime = {
-      hour: hour,
-      minute: minute,
-      amPm: amPm,
-    };
 
     const logoevent2 = logoevent
       ? {
@@ -95,7 +74,7 @@ const CEvent = async (req, res) => {
       rulesevent: rulesevent,
       location: location,
       eventdate: eventDate,
-      eventtime: eventTime,
+      eventtime: eventtime,
       numberoftickets: numberoftickets,
       ticketavailable: numberoftickets2,
       tickettype: tickettype,
@@ -107,7 +86,6 @@ const CEvent = async (req, res) => {
     const notification = await NotificationModel.findOne({
       profileID: ownerObjectId,
     });
-    console.log(notification);
     notification.Noti.push({
       content: `Your event ${eventname} is now pending approval.`,
       Date_Noti: new Date(),
@@ -135,8 +113,7 @@ const Renderdata = async (req, res) => {
     } else {
       // Format the event data
       const eventsData = {
-        ...findEvent.toObject(),
-        eventtimeFormatted: formatEventTime(findEvent.eventtime),
+        ...findEvent.toObject()
       };
 
       // Send the formatted event data in the response
@@ -147,18 +124,6 @@ const Renderdata = async (req, res) => {
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
-
-// Hàm định dạng thời gian sự kiện
-function formatEventTime(eventtime) {
-  const hour = eventtime.hour;
-  const minute = eventtime.minute;
-  const amPm = eventtime.amPm;
-
-  let formattedHour = hour < 10 ? `0${hour}` : hour;
-  let formattedMinute = minute < 10 ? `0${minute}` : minute;
-
-  return `${formattedHour}:${formattedMinute} ${amPm}`;
-}
 
 const RenderEvent = async (req, res) => {
   const { eventID, profile } = req.body;
@@ -320,7 +285,6 @@ const AdminApproveEvent = async (req, res) => {
       await findEvent.save();
     }
     if (status == "Approved") {
-      console.log;
       const notification = await NotificationModel.findOne({
         profileID: findEvent.profile,
       });
@@ -345,6 +309,101 @@ const AdminApproveEvent = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+const Followers = async (req, res) => {
+  try {
+    const {eventID} = req.body;
+    const event = await CEventModel.findOne({_id: eventID}).exec();
+    const followers = await Promise.all(event.follows.map(async (profileID) => {
+      const profile = await ProfileModel.findOne({ _id: profileID }).populate('idaccount', 'email').exec();
+      return {
+        fullname: profile.fullname,
+        avatar: profile.avatar,
+        email: profile.idaccount.email,
+      };
+    }));
+    if (event.eventtype === "Music" || event.eventtype === "Festival") {
+      const tickets = await OrderTicketModel.find({ eventID: eventID }).populate('profileID').exec();
+      const tickets2 = await Promise.all(
+        tickets.map(async (ticket) => {
+          const profile = await ProfileModel.findOne({ _id: ticket.profileID })
+            .populate('idaccount', 'email')
+            .exec();
+          return {
+            fullname: profile.fullname,
+            email: profile.idaccount.email,
+            ticketorder: ticket.ticketorder,
+          };
+        })
+      );
+      
+      res.json({ success: true, followers: followers, data: tickets2 });
+    }
+    else {
+      const participants = await Promise.all(event.participants_id.map(async (profileID) => {
+        const profile = await ProfileModel.findOne({ _id: profileID }).populate('idaccount', 'email').exec();
+        return {
+          fullname: profile.fullname,
+          avatar: profile.avatar,
+          email: profile.idaccount.email,
+        };
+      }));
+      res.json({ success: true, followers: followers, data: participants });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+
+const CancelEvent = async (req, res) => {
+  try {
+    const { eventID } = req.body;
+    const event = await CEventModel.findOne({ _id: eventID }).exec();
+    if (!event) {
+      return res.status(400).json({ success: false, message: "Invalid event id!" });
+    }
+    event.status = "Cancelled";
+    await event.save();
+    res.status(200).json({ success: true });
+  }
+  catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+}
+
+const EditEvent = async (req, res) => {
+  try {
+    const {description, date, rule, time, location, eventID, profileID} = req.body;
+    const event = await CEventModel.findOne({ _id: eventID}).exec();
+    if (!event) {
+      return res.status(400).json({ success: false, message: "Invalid event id!" });
+    }
+    event.descriptionevent = description;
+    event.eventdate = date;
+    event.rulesevent = rule;
+    event.eventtime = time;
+    event.location = location;
+    event.status = "Pending";
+
+    await event.save();
+    const notification = await NotificationModel.findOne({
+      profileID: profileID,
+    });
+    notification.Noti.push({
+      content: `Your event ${event.eventname} has been successfully updated and is now pending approval.`,
+      Date_Noti: new Date(),
+    });
+    await notification.save();
+    res.status(200).json({ success: true });
+  }  catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+}
+
 const CEventController = {
   CEvent: CEvent,
   Renderdata: Renderdata,
@@ -355,6 +414,9 @@ const CEventController = {
   RenderEventMP: RenderEventMP,
   AdminRenderEvent: AdminRenderEvent,
   AdminApproveEvent: AdminApproveEvent,
+  Followers: Followers,
+  CancelEvent: CancelEvent,
+  EditEvent: EditEvent,
 };
 
 export default CEventController;

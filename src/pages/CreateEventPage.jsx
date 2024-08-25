@@ -41,15 +41,27 @@ function CreateEvent() {
     "Music",
     "Festival",
   ];
+  function isOver18(dob) {
+    if (!dob) return false;
+    const today = new Date();
+    const birthDate = new Date(dob);
+    const age = today.getFullYear() - birthDate.getFullYear() - (today < new Date(today.getFullYear(), birthDate.getMonth(), birthDate.getDate()));
+    return age >= 18;
+  }
   useEffect(() => {
     const getImg = async () => {
       const response = await renderProfile({ idaccount });
       if (response.success) {
+        if (!isOver18(response.data.dob)) {
+          alert("You are under 18 years old or have not updated your account information. Please update your details to proceed.");
+          navigate("/mainpage");
+        }
         localStorage.setItem("ProfileID", response.data._id);
         setUrl(
           `data:${response.data.avatar.contentType};base64,${response.data.avatar.imageBase64}`
         );
         setName(response.data.fullname);
+        
       }
     };
     getImg();
@@ -89,9 +101,6 @@ function CreateEvent() {
 
     const handleInputEvent = (input) => {
       validateInput(input);
-    };
-    const handleTicketTypeChange = (event) => {
-      setTicketType(event.target.value);
     };
     inputs.forEach((input) => {
       input.addEventListener("input", () => handleInputEvent(input));

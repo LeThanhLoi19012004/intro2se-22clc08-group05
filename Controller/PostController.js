@@ -15,10 +15,7 @@ const UpPost = async (req, res) => {
     const eventID = req.body["eventID"];
     const descriptionpost = req.body["description"];
     const files = req.files;
-
-    console.log(req.body);
-    console.log(descriptionpost);
-    console.log(files);
+    
     const images = files.map((file) => ({
       filename: file.filename,
       contentType: file.mimetype,
@@ -54,7 +51,7 @@ const RenderPost = async (req, res) => {
       .exec();
     if (posts.length === 0) {
       return res
-        .status(400)
+        .status(200)
         .json({
           success: true,
           data: [],

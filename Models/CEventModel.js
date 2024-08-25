@@ -9,27 +9,6 @@ const logoeventSchema = new mongoose.Schema({
   imageBase64: String,
 });
 
-// Định nghĩa Schema cho thời gian sự kiện
-const Start_Time = new mongoose.Schema({
-  hour: {
-    type: Number,
-    required: true,
-    min: 1,
-    max: 12,
-  },
-  minute: {
-    type: Number,
-    required: true,
-    min: 0,
-    max: 59,
-  },
-  amPm: {
-    type: String,
-    required: true,
-    enum: ["AM", "PM"],
-  },
-});
-
 // Định nghĩa Schema cho sự kiện
 const CEventSchema = new mongoose.Schema({
   eventID: {
@@ -50,7 +29,7 @@ const CEventSchema = new mongoose.Schema({
   location: { type: String, required: true },
   eventcreationdate: { type: Date, default: Date.now },
   eventdate: { type: Date, required: true, index: true },
-  eventtime: { type: Start_Time, required: true },
+  eventtime: { type: String, required: true },
   numberoftickets: { type: Number, required: true },
   ticketavailable: { type: Number, required: true },
   participants: { type: Number, required: true },

@@ -401,3 +401,51 @@ export async function GetNotification(data) {
     return { success: false, message: "An error occurred" };
   }
 }
+
+export async function Followers(data) {
+  try {
+    const response = await fetch("http://localhost:3000/followers", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    return await response.json();
+  } catch (error) {
+    console.error("Error:", error);
+    return { success: false, message: "An error occurred" };
+  }
+}
+
+export async function CancelEvent(data) {
+  try {
+    const response = await fetch("http://localhost:3000/cancelevent", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    return await response.json();
+  } catch (error) {
+    console.error("Error:", error);
+    return { success: false, message: "An error occurred" };
+  }
+}
+
+export async function EditEvent(data) {
+  try {
+    const response = await fetch("http://localhost:3000/editevent", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    return await response.json();
+  } catch (error) {
+    console.error("Error:", error);
+    return { success: false, message: "An error occurred" };
+  }
+}

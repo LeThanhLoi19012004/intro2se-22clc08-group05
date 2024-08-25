@@ -32,4 +32,10 @@ router_.post('/render_event_mp', CEventController.RenderEventMP)
 router_.get('/admin_renderevent', CEventController.AdminRenderEvent)
 
 router_.post('/admin_approveevent', CEventController.AdminApproveEvent)
+
+router_.post('/followers', CEventController.Followers)
+
+router_.post('/cancelevent', CEventController.CancelEvent)
+
+router_.post('/editevent', CEventController.EditEvent)
 export default router_;

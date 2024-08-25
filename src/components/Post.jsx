@@ -190,22 +190,13 @@ function Post(props) {
   });
   const [liked, setLiked] = useState(interaction.liked);
   const navigate = useNavigate();
-  const userIDExists = localStorage.getItem("UserID") !== null;
   const movetoEvent = () => {
-    if (!userIDExists) {
-      navigate("/login");
-    } else {
       localStorage.setItem("eventid", props.eventID);
       window.scrollTo(0, 0); // Scroll to top
       navigate(`/event?id=${props.eventID}`);
-    }
   };
   const handleCommentClick = () => {
-    if (!userIDExists) {
-      navigate("/login");
-    } else {
       setShowOverlay(!showOverlay);
-    }
   };
   const calculateTimeLeft = (date) => {
     const targetDate = new Date(date);
@@ -225,9 +216,6 @@ function Post(props) {
   }, [props.date]);
 
   const toggleLike = async () => {
-    if (!userIDExists) {
-      navigate("/login");
-    } else {
       const response = await likePost({
         postid: props.postID,
         profileid: localStorage.getItem("ProfileID"),
@@ -243,7 +231,6 @@ function Post(props) {
             : prevInteraction.num_likes + 1,
         }));
       }
-    }
   };
 
   useEffect(() => {

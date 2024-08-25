@@ -15,10 +15,12 @@ import AboutUsPage from "./pages/AboutUsPage";
 import SearchPage from "./pages/SearchPage";
 import GuestSearchPage from "./pages/GuestSearchPage";
 import ProfileSetting from "./pages/SettingPage";
-import TicketEventPage from "./pages/TicketEventPage";
+import EventPage from "./pages/EventPage";
 import CreateEvent from "./pages/CreateEventPage";
 import AdminHomePage from "./pages/AdminHomePage";
 import AdminReview from "./pages/AdminReview";
+import ManageEvent from "./pages/ManageEvent";
+import ErrorPage from "./pages/ErrorPage";  
 
 import "./assets/App.css";
 
@@ -48,10 +50,11 @@ function App() {
         {/* Private Routes */}
         <Route element={<PrivateRoute />}>
           <Route path="/setting" element={<ProfileSetting />} />
-          <Route path="/event" element={<TicketEventPage />} />
+          <Route path="/event" element={<EventPage />} />
           <Route path="/createvent" element={<CreateEvent />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/mainpage" element={<MainPage />} />
+          <Route path="/event/manage" element={<ManageEvent />} />
         </Route>
 
         {/* Admin Routes */}
@@ -59,6 +62,9 @@ function App() {
           <Route path="/admin" element={<AdminHomePage />} />
           <Route path="/admin/review" element={<AdminReview />} />
         </Route>
+
+        {/* Fallback route for unknown paths */}
+        <Route path="*" element={<ErrorPage />} />
       </Routes>
     </Router>
   );
