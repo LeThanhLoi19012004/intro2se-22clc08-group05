@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import whiteLogo from "../assets/SukiWhite.svg";
+import whiteLogo from "../assets/Logo/SukiWhite.svg";
 import "../assets/SignUpPage.css";
 import { sendSignupRequest } from "../API";
 
-import Ring1 from '../assets/Abstract Objects/Ellipse 9-3.svg';
-import Ellipse1 from '../assets/Abstract Objects/Ellipse 8-4.svg';
-import Ellipse2 from '../assets/Abstract Objects/Ellipse 8-2.svg';
-import Polyline1 from '../assets/Abstract Objects/Vector 8-3.svg';
-import Polyline2 from '../assets/Abstract Objects/Vector 8-1.svg';
+import Ring1 from "../assets/Abstract Objects/Ellipse 9-3.svg";
+import Ellipse1 from "../assets/Abstract Objects/Ellipse 8-4.svg";
+import Ellipse2 from "../assets/Abstract Objects/Ellipse 8-2.svg";
+import Polyline1 from "../assets/Abstract Objects/Vector 8-3.svg";
+import Polyline2 from "../assets/Abstract Objects/Vector 8-1.svg";
 
 function AbstractFigures() {
   return (
@@ -28,11 +28,19 @@ function AbstractFigures() {
         <img src={Ellipse1} className="sign-up__ellipse-1"></img>
         <img src={Polyline2} className="sign-up__polyline-2"></img>
         <img src={Ellipse2} className="sign-up__ellipse-2"></img>
-
       </div>
     </>
   );
 }
+
+const ErrorModal = ({ message, onClose }) => (
+  <div className="sign-up__modal-overlay">
+    <div className="sign-up__modal-content">
+      <p>{message}</p>
+      <button onClick={onClose}>Close</button>
+    </div>
+  </div>
+);
 
 function SignUpForm() {
   const navigate = useNavigate();
@@ -40,10 +48,11 @@ function SignUpForm() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordMatch, setPasswordMatch] = useState(true);
   const [isChecked, setIsChecked] = useState(false);
-
+  const [error, setError] = useState("");
+  const closeErrorModal = () => setError("");
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     const form = e.currentTarget;
     if (!(form instanceof HTMLFormElement)) {
       console.error("Form is not an instance of HTMLFormElement");
@@ -57,15 +66,13 @@ function SignUpForm() {
 
     const formData = new FormData(form);
     const formDataObj = Object.fromEntries(formData.entries());
-    console.log(formDataObj);
-    
+
     const response = await sendSignupRequest(formDataObj);
-    console.log(response);
 
     if (response.success) {
       navigate("/login");
     } else {
-      console.log(response);
+      setError(response.message || "Sign up failed. Please try again.");
     }
   };
 
@@ -101,19 +108,6 @@ function SignUpForm() {
           name="username"
           required
         />
-        {/* <input
-          type="text"
-          className="sign-up__name"
-          placeholder="Name"
-          name="name"
-          required
-        /> */}
-        {/* <input
-          type="date"
-          className="sign-up__dob"
-          placeholder="Date of Birth"
-          name="dob"
-        /> */}
         <input
           type="email"
           className="sign-up__email"
@@ -146,7 +140,8 @@ function SignUpForm() {
           <label htmlFor="signup-page__remember-me-part">
             <svg
               className={`signup-page__checkbox ${
-              isChecked ? "signup-page__checked--active" : ""}`}
+                isChecked ? "signup-page__checked--active" : ""
+              }`}
               aria-hidden="true"
               viewBox="0 0 15 11"
               fill="none"
@@ -165,15 +160,12 @@ function SignUpForm() {
               checked={isChecked}
             />
           </label>
-          <p>I agree with the Terms and Conditions of the Suki Event Management Platform
-                  and responsible for the information provided in this form.
+          <p>
+            I agree with the Terms and Conditions of the Suki Event Management
+            Platform and responsible for the information provided in this form.
           </p>
         </div>
-        <button
-          className="sign-up__button"
-          type="submit"
-          name="submit"
-        >
+        <button className="sign-up__button" type="submit" name="submit">
           Sign Up
         </button>
         <div className="sign-up__already-have-account-container">
@@ -183,6 +175,7 @@ function SignUpForm() {
           </Link>
         </div>
       </form>
+      {error && <ErrorModal message={error} onClose={closeErrorModal} />}
     </div>
   );
 }
