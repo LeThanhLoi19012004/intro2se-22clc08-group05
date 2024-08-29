@@ -164,83 +164,86 @@ function RightSidebar() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await RenderEventMP({ profile }); // Assuming RenderEventMP is defined elsewhere
+        const response = await RenderEventMP({ profile });
         setEventFollow(response.event_follow);
         setEventOwner(response.event_orga);
-        setLoading(false); // Kết thúc loading
       } catch (err) {
         console.error(err);
+      } finally {
+        setLoading(false); // Đảm bảo loading được tắt sau khi fetch hoàn thành
       }
     };
-
+  
     fetchEvents();
-  }, []);
+  }, [profile]);
+  
   return (
     <div className="main-page__right-side">
-      {loading ? (
-        <div />
-      ) : (
-        <>
-          <div className="main-page__sidebar-news-scroll">
-            <h1>Followed</h1>
-            <div className="main-page__event_list-right">
-              {eventFollow.length !== 0 ? (
-                eventFollow.map((event, index) => (
-                  <div
-                    key={event._id || index}
-                    className="main-page__event-info"
-                  >
-                    <div className="main-page__event-avatar">
-                      <img
-                        className="main-page__event-avatar"
-                        onClick={() => movetoEvent(event._id)}
-                        src={`data:${event.logoevent.contentType};base64,${event.logoevent.imageBase64}`}
-                      />
-                    </div>
-                    <div className="main-page__event-details">
-                      <p className="main-page__event-name">{event.eventname}</p>
-                      <p className="main-page__event-category">
-                        {event.eventtype}
-                      </p>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <p>No events followed</p>
-              )}
-            </div>
-          </div>
-          <div className="main-page__sidebar-news">
-            <h1>Organize</h1>
-            <div className="main-page__event_list-right">
-              {eventOwner.length !== 0 ? (
-                eventOwner.map((event, index) => (
-                  <div
-                    key={event._id || index}
-                    className="main-page__event-info"
-                  >
-                    <div className="main-page__event-avatar">
-                      <img
-                        className="main-page__event-avatar"
-                        onClick={() => movetoEvent(event._id)}
-                        src={`data:${event.logoevent.contentType};base64,${event.logoevent.imageBase64}`}
-                      />
-                    </div>
-                    <div className="main-page__event-details">
-                      <p className="main-page__event-name">{event.eventname}</p>
-                      <p className="main-page__event-category">
-                        {event.eventtype}
-                      </p>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <p>No events organized</p>
-              )}
-            </div>
-          </div>
-        </>
-      )}
+      <div className="main-page__sidebar-news-scroll">
+        <h1>Followed</h1>
+        <div className="main-page__event_list-right">
+          {loading ? (
+            <p>Loading followed events...</p>
+          ) : eventFollow.length > 0 ? (
+            eventFollow.map((event, index) => (
+              <div
+                key={event._id || index}
+                className="main-page__event-info"
+              >
+                <div className="main-page__event-avatar">
+                  <img
+                    className="main-page__event-avatar"
+                    onClick={() => movetoEvent(event._id)}
+                    src={`data:${event.logoevent.contentType};base64,${event.logoevent.imageBase64}`}
+                  />
+                </div>
+                <div className="main-page__event-details">
+                  <p className="main-page__event-name">{event.eventname}</p>
+                  <p className="main-page__event-category">
+                    {event.eventtype}
+                  </p>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p>No events followed</p>
+          )}
+        </div>
+      </div>
+      
+      <div className="main-page__sidebar-news">
+        <h1>Organize</h1>
+        <div className="main-page__event_list-right">
+          {loading ? (
+            <p>Loading organized events...</p>
+          ) : eventOwner.length > 0 ? (
+            eventOwner.map((event, index) => (
+              <div
+                key={event._id || index}
+                onClick={() => movetoEvent(event._id)}
+                className="main-page__event-info"
+              >
+                <div className="main-page__event-avatar">
+                  <img
+                    className="main-page__event-avatar"
+                  
+                    src={`data:${event.logoevent.contentType};base64,${event.logoevent.imageBase64}`}
+                  />
+                </div>
+                <div className="main-page__event-details">
+                  <p className="main-page__event-name">{event.eventname}</p>
+                  <p className="main-page__event-category">
+                    {event.eventtype}
+                  </p>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p>No events organized</p>
+          )}
+        </div>
+      </div>
+  
       <div className="main-page__sidebar-useful-link">
         <div className="main-page__copy-right-msg">
           <img src="#" alt="" />
@@ -249,6 +252,7 @@ function RightSidebar() {
       </div>
     </div>
   );
+  
 }
 
 const CenterSide = () => {

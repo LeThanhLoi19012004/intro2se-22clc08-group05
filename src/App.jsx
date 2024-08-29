@@ -20,7 +20,7 @@ import CreateEvent from "./pages/CreateEventPage";
 import AdminHomePage from "./pages/AdminHomePage";
 import AdminReview from "./pages/AdminReview";
 import ManageEvent from "./pages/ManageEvent";
-import ErrorPage from "./pages/ErrorPage";  
+import ErrorPage from "./pages/ErrorPage";
 
 import "./assets/App.css";
 

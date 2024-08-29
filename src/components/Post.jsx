@@ -191,12 +191,12 @@ function Post(props) {
   const [liked, setLiked] = useState(interaction.liked);
   const navigate = useNavigate();
   const movetoEvent = () => {
-      localStorage.setItem("eventid", props.eventID);
-      window.scrollTo(0, 0); // Scroll to top
-      navigate(`/event?id=${props.eventID}`);
+    localStorage.setItem("eventid", props.eventID);
+    window.scrollTo(0, 0); // Scroll to top
+    navigate(`/event?id=${props.eventID}`);
   };
   const handleCommentClick = () => {
-      setShowOverlay(!showOverlay);
+    setShowOverlay(!showOverlay);
   };
   const calculateTimeLeft = (date) => {
     const targetDate = new Date(date);
@@ -216,21 +216,21 @@ function Post(props) {
   }, [props.date]);
 
   const toggleLike = async () => {
-      const response = await likePost({
-        postid: props.postID,
-        profileid: localStorage.getItem("ProfileID"),
-      }); // Gọi API likePost
+    const response = await likePost({
+      postid: props.postID,
+      profileid: localStorage.getItem("ProfileID"),
+    }); // Gọi API likePost
 
-      if (response.success) {
-        setLiked(!liked); // Thay đổi trạng thái liked
-        setInteraction((prevInteraction) => ({
-          ...prevInteraction,
-          liked: !prevInteraction.liked,
-          num_likes: prevInteraction.liked
-            ? prevInteraction.num_likes - 1
-            : prevInteraction.num_likes + 1,
-        }));
-      }
+    if (response.success) {
+      setLiked(!liked); // Thay đổi trạng thái liked
+      setInteraction((prevInteraction) => ({
+        ...prevInteraction,
+        liked: !prevInteraction.liked,
+        num_likes: prevInteraction.liked
+          ? prevInteraction.num_likes - 1
+          : prevInteraction.num_likes + 1,
+      }));
+    }
   };
 
   useEffect(() => {
@@ -250,7 +250,60 @@ function Post(props) {
     };
     fetchInteraction();
   }, [props.postID]);
+  useEffect(() => {
+    window.fbAsyncInit = function () {
+      FB.init({
+        appId: "499167776032088", // Replace with your Facebook app ID
+        xfbml: true,
+        version: "v15.0",
+      });
+    };
 
+    (function (d, s, id) {
+      var js,
+        fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) {
+        return;
+      }
+      js = d.createElement(s);
+      js.id = id;
+      js.src = "https://connect.facebook.net/en_US/sdk.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    })(document, "script", "facebook-jssdk");
+  }, []);
+  const shareLinkOnFacebook = (linkToShare) => {
+    // Ensure the Facebook SDK is initialized
+    if (typeof FB === "undefined") {
+      console.error("Facebook SDK is not loaded.");
+      return;
+    }
+
+    // Share the link using Facebook's Feed Dialog
+    FB.ui(
+      {
+        method: "share",
+        hashtag: "#SukiEvent",
+        display: "popup",
+        href: linkToShare, // Link to be shared
+      },
+      function (response) {
+        // Handle the response here
+        if (response && !response.error_message) {
+          console.log("Link shared successfully.");
+        } else {
+          console.error(
+            "Error while sharing the link:",
+            response.error_message
+          );
+        }
+      }
+    );
+  };
+
+  const handleShareClick = () => {
+    const linkToShare = `http://192.168.10.105:5173/event?id=${props.eventID}`;
+    shareLinkOnFacebook(linkToShare);
+  };
   return (
     <div className="post__post">
       <div className="post__post-author">
@@ -300,7 +353,7 @@ function Post(props) {
           <FaRegCommentDots size={17} onClick={handleCommentClick} />
           <span onClick={handleCommentClick}> Comment</span>
         </div>
-        <div className="post__post-activity-link">
+        <div className="post__post-activity-link" onClick={handleShareClick}>
           <FaRegShareSquare size={17} />
           <span> Share</span>
         </div>

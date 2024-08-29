@@ -1,19 +1,24 @@
-import React, { useState, useEffect, useCallback} from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import "../assets/SettingPage.css";
 import { useNavigate } from "react-router-dom";
-import { renderProfile, updateProfile, ChangeAvatar } from '../API';
-import { FaCamera } from 'react-icons/fa';
-import { useDropzone } from 'react-dropzone';
-import DatePicker from 'react-datepicker';
+import { renderProfile, updateProfile, ChangeAvatar } from "../API";
+import { FaCamera } from "react-icons/fa";
+import { useDropzone } from "react-dropzone";
+import DatePicker from "react-datepicker";
+import Navbar from "../components/NavBar";
 
 const ProfileImage = ({ initialUrl }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [imageUrl, setImageUrl] = useState(initialUrl != null ? `data:${initialUrl.contentType};base64,${initialUrl.imageBase64}` : "https://cdn-icons-png.flaticon.com/512/3682/3682281.png");
+  const [imageUrl, setImageUrl] = useState(
+    initialUrl != null
+      ? `data:${initialUrl.contentType};base64,${initialUrl.imageBase64}`
+      : "https://cellphones.com.vn/sforum/wp-content/uploads/2023/10/avatar-trang-4.jpg"
+  );
   const [newImageFile, setNewImageFile] = useState(null);
   const handleMouseEnter = () => {
     setIsHovered(true);
-  };  
+  };
 
   const handleMouseLeave = () => {
     setIsHovered(false);
@@ -24,12 +29,11 @@ const ProfileImage = ({ initialUrl }) => {
   };
   const handleChangeAva = async () => {
     const formData = new FormData();
-    formData.append('idaccount', localStorage.getItem("UserID")); // Thêm idaccount vào dữ liệu
-    formData.append('avatar', newImageFile); // Thêm file vào dữ liệu
+    formData.append("idaccount", localStorage.getItem("UserID")); // Thêm idaccount vào dữ liệu
+    formData.append("avatar", newImageFile); // Thêm file vào dữ liệu
     const response = await ChangeAvatar(formData);
-    if (response.success)
-      setIsPopupOpen(false);
-  }
+    if (response.success) setIsPopupOpen(false);
+  };
   const handleClosePopup = async () => {
     setIsPopupOpen(false);
     setIsHovered(false);
@@ -48,14 +52,16 @@ const ProfileImage = ({ initialUrl }) => {
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     accept: {
-      'image/jpeg': ['.jpeg', '.png', '.jpg', '.svg', '.gif']
+      "image/jpeg": [".jpeg", ".png", ".jpg", ".svg", ".gif"],
     },
   });
 
   return (
     <div>
       <div
-        className={`settingpage-profile-image-container ${isHovered ? 'settingpage-hovered' : ''}`}
+        className={`settingpage-profile-image-container ${
+          isHovered ? "settingpage-hovered" : ""
+        }`}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onClick={handleImageClick}
@@ -75,14 +81,33 @@ const ProfileImage = ({ initialUrl }) => {
       {isPopupOpen && (
         <div className="settingpage-popup">
           <div className="settingpage-popup-content">
-            <button onClick={handleClosePopup} className="settingpage-close-button">×</button>
+            <button
+              onClick={handleClosePopup}
+              className="settingpage-close-button"
+            >
+              ×
+            </button>
             <h2>Upload a New Avatar</h2>
             <div className="settingpage-avatar-preview" {...getRootProps()}>
               <input {...getInputProps()} />
-              <img src={imageUrl} alt="Avatar Preview" className="settingpage-avatar-image" />
+              <img
+                src={imageUrl}
+                alt="Avatar Preview"
+                className="settingpage-avatar-image"
+              />
             </div>
-            <button className="settingpage-save-button" onClick={handleChangeAva}>Save</button>
-            <button className="settingpage-cancel-button" onClick={handleClosePopup}>Cancel</button>
+            <button
+              className="settingpage-save-button"
+              onClick={handleChangeAva}
+            >
+              Save
+            </button>
+            <button
+              className="settingpage-cancel-button"
+              onClick={handleClosePopup}
+            >
+              Cancel
+            </button>
           </div>
         </div>
       )}
@@ -92,11 +117,11 @@ const ProfileImage = ({ initialUrl }) => {
 
 function Account({ profile }) {
   const [formData, setFormData] = useState({
-    fullname: profile.fullname || '',
+    fullname: profile.fullname || "",
     dob: profile.dob ? new Date(profile.dob) : null,
-    sex: profile.sex || '',
-    phone: profile.phone || '',
-    address: profile.hometown || '',
+    sex: profile.sex || "",
+    phone: profile.phone || "",
+    address: profile.hometown || "",
   });
 
   const [changes, setChanges] = useState({});
@@ -105,46 +130,45 @@ function Account({ profile }) {
     // Initialize formData with profile data
     setFormData({
       idaccount: profile.idaccount,
-      fullname: profile.fullname || '',
+      fullname: profile.fullname || "",
       dob: profile.dob ? new Date(profile.dob) : null,
-      sex: profile.sex || '',
-      phone: profile.phone || '',
-      address: profile.hometown || '',
+      sex: profile.sex || "",
+      phone: profile.phone || "",
+      address: profile.hometown || "",
     });
   }, [profile]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({
+    setFormData((prevState) => ({
       ...prevState,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleDateChange = (date) => {
-    setFormData(prevState => ({
+    setFormData((prevState) => ({
       ...prevState,
-      dob: date
+      dob: date,
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     // Prepare updatedChanges with the entire formData
     const updatedChanges = { ...formData };
-  
+
     // Update state with the current changes
     setChanges(updatedChanges);
     try {
       // Send the updatedChanges to your API
       const response = await updateProfile(updatedChanges);
     } catch (error) {
-      console.error('Error updating profile:', error);
+      console.error("Error updating profile:", error);
     }
   };
-  
-  
+
   return (
     <form className="settingpage-account" onSubmit={handleSubmit}>
       <div className="settingpage-account-header">
@@ -175,7 +199,7 @@ function Account({ profile }) {
             selected={formData.dob}
             onChange={handleDateChange}
             dateFormat="yyyy-MM-dd"
-            placeholderText="Select a date" 
+            placeholderText="Select a date"
             showYearDropdown
             scrollableYearDropdown
           />
@@ -184,13 +208,12 @@ function Account({ profile }) {
       <div className="settingpage-account-edit">
         <div className="settingpage-input-container">
           <label>Gender</label>
-          <input
-            type="text"
-            name="sex"
-            value={formData.sex}
-            onChange={handleInputChange}
-            placeholder="Sex"
-          />
+          <select name="sex" value={formData.sex} onChange={handleInputChange}>
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Unspecified">Unspecified</option>
+          </select>
         </div>
         <div className="settingpage-input-container">
           <label>Phone number</label>
@@ -230,9 +253,9 @@ function Notification() {
 
   const handleCheckboxChange = (e) => {
     const { name, checked } = e.target;
-    setNotifications(prevState => ({
+    setNotifications((prevState) => ({
       ...prevState,
-      [name]: checked
+      [name]: checked,
     }));
   };
 
@@ -243,7 +266,9 @@ function Notification() {
       </div>
       <div className="settingpage-notification-content">
         <div className="settingpage-notification-section">
-          <h2 className="settingpage-notification-section-title">Announcements</h2>
+          <h2 className="settingpage-notification-section-title">
+            Announcements
+          </h2>
           <div className="settingpage-notification-item">
             <label>Important Announcements</label>
             <input
@@ -299,22 +324,16 @@ function Notification() {
 }
 
 function Setting() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const [language, setLanguage] = useState("en");
   const [showPasswordFields, setShowPasswordFields] = useState(false);
-  const [oldPassword, setOldPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
- 
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+
   const handleTogglePasswordFields = () => {
     setShowPasswordFields(!showPasswordFields);
-    setError('');
-  };
-
-  const handleDarkModeChange = () => {
-    setIsDarkMode(!isDarkMode);
-    document.body.classList.toggle('dark-mode', !isDarkMode);
+    setError("");
   };
 
   const handleLanguageChange = (e) => {
@@ -323,16 +342,16 @@ function Setting() {
 
   const handlePasswordChange = (e) => {
     const { name, value } = e.target;
-    if (name === 'oldPassword') setOldPassword(value);
-    if (name === 'newPassword') setNewPassword(value);
-    if (name === 'confirmPassword') setConfirmPassword(value);
+    if (name === "oldPassword") setOldPassword(value);
+    if (name === "newPassword") setNewPassword(value);
+    if (name === "confirmPassword") setConfirmPassword(value);
   };
 
   const changePassword = () => {
     if (newPassword !== confirmPassword) {
-      setError('New password and confirmation do not match.');
+      setError("New password and confirmation do not match.");
     } else {
-      setError('');
+      setError("");
       window.location.reload();
     }
   };
@@ -345,7 +364,10 @@ function Setting() {
       <div className="settingpage-setting-content">
         <div className="settingpage-setting-item">
           <label className="settingpage-setting-label">Change password:</label>
-          <button className="settingpage-button" onClick={handleTogglePasswordFields}>
+          <button
+            className="settingpage-button"
+            onClick={handleTogglePasswordFields}
+          >
             <span>Change</span>
           </button>
         </div>
@@ -376,33 +398,32 @@ function Setting() {
               className="settingpage-input"
             />
             {error && <p className="error-message">{error}</p>}
-            <button className="settingpage-button" onClick={changePassword}>Confirm</button>
+            <button className="settingpage-button" onClick={changePassword}>
+              Confirm
+            </button>
           </div>
         )}
         <div className="settingpage-setting-item">
-          <label className="settingpage-setting-label">Dark Mode:</label>
-          <input
-            type="checkbox"
-            checked={isDarkMode}
-            onChange={handleDarkModeChange}
-          />
-        </div>
-        <div className="settingpage-setting-item">
           <label className="settingpage-setting-label">Language:</label>
-          <select value={language} onChange={handleLanguageChange} className="settingpage-select">
+          <select
+            value={language}
+            onChange={handleLanguageChange}
+            className="settingpage-select"
+          >
             <option value="en">English</option>
             <option value="vi">Vietnamese</option>
           </select>
         </div>
         <div className="settingpage-setting-item">
           <label className="settingpage-setting-label">Delete account:</label>
-          <button className="settingpage-button delete"><span>Delete</span></button>
+          <button className="settingpage-button delete">
+            <span>Delete</span>
+          </button>
         </div>
       </div>
     </div>
   );
 }
-
 
 function Logout() {
   const navigate = useNavigate();
@@ -417,49 +438,55 @@ function Logout() {
         <h1 className="settingpage-account-title">Log out</h1>
       </div>
       <div className="settingpage-logout-content">
-        <h2 className="settingpage-account-question">Do you want to log out?</h2>
-        <button className="settingpage-account-button" onClick={handleLogout}><span>Log out</span></button>
+        <h2 className="settingpage-account-question">
+          Do you want to log out?
+        </h2>
+        <button className="settingpage-account-button" onClick={handleLogout}>
+          <span>Log out</span>
+        </button>
       </div>
     </div>
   );
 }
-function Main(){
+function Main() {
   const navigate = useNavigate();
 
   // Redirect to the main page when this component renders
   useEffect(() => {
-    navigate('/mainpage');
+    navigate("/mainpage");
   }, [navigate]);
-  return (
-    null // This component does not render anything
-  );
+  return null; // This component does not render anything
 }
 function ProfileSetting() {
   const [activeSection, setActiveSection] = useState("Account");
-  const [url, setUrl] = useState( "https://cdn-icons-png.flaticon.com/512/3682/3682281.png")
-  const [profile, setProfile] = useState({idaccount: {username: "user", email: "email"}});
+  const [url, setUrl] = useState(
+    "https://cdn-icons-png.flaticon.com/512/3682/3682281.png"
+  );
+  const [profile, setProfile] = useState({
+    idaccount: { username: "user", email: "email" },
+  });
   const [loading, setLoading] = useState(false);
   const idaccount = localStorage.getItem("UserID");
   useEffect(() => {
     const getPrf = async () => {
-      const response = await renderProfile({idaccount});
-      if (response.success){
+      const response = await renderProfile({ idaccount });
+      if (response.success) {
         setUrl(response.data.avatar);
         setProfile(response.data);
       }
-      setLoading(true)
-    }
+      setLoading(true);
+    };
     getPrf();
-  }, [])
+  }, []);
   const renderSection = () => {
     switch (activeSection) {
       case "Account":
-        return <Account profile={profile}/>;
+        return <Account profile={profile} />;
       case "Notification":
         return <Notification />;
       case "Setting":
         return <Setting />;
-      case "Logout":        
+      case "Logout":
         return <Logout />;
       case "Main":
         return <Main />;
@@ -468,66 +495,73 @@ function ProfileSetting() {
     }
   };
 
-  return loading && (
-    <div className="settingpage-container">
-      <div className="settingpage-profile">
-        <div className="settingpage-profile-header">
-        <ProfileImage initialUrl={url} />
-          <div className="settingpage-profile-text-container">
-            <h1 className="settingpage-profile-title">{profile.idaccount.username}</h1>
-            <p className="settingpage-profile-email">{profile.idaccount.email}</p>
+  return (
+    loading && (
+      <div className="settingpage-container">
+        <Navbar className="settingpage_navbar" />
+        <div className="settingpage-profile">
+          <div className="settingpage-profile-header">
+            <ProfileImage initialUrl={url} />
+            <div className="settingpage-profile-text-container">
+              <h1 className="settingpage-profile-title">
+                {profile.idaccount.username}
+              </h1>
+              <p className="settingpage-profile-email">
+                {profile.idaccount.email}
+              </p>
+            </div>
+          </div>
+          <div className="settingpage-menu">
+            <a
+              className={`settingpage-menu-link ${
+                activeSection === "Account" ? "settingpage-active" : ""
+              }`}
+              onClick={() => setActiveSection("Account")}
+            >
+              <i className="fa-solid fa-circle-user settingpage-menu-icon"></i>
+              Account
+            </a>
+            <a
+              className={`settingpage-menu-link ${
+                activeSection === "Notification" ? "settingpage-active" : ""
+              }`}
+              onClick={() => setActiveSection("Notification")}
+            >
+              <i className="fa-solid fa-bell settingpage-menu-icon"></i>
+              Notification
+            </a>
+            <a
+              className={`settingpage-menu-link ${
+                activeSection === "Setting" ? "settingpage-active" : ""
+              }`}
+              onClick={() => setActiveSection("Setting")}
+            >
+              <i className="fa-solid fa-gear settingpage-menu-icon"></i>
+              General
+            </a>
+            <a
+              className={`settingpage-menu-link ${
+                activeSection === "Logout" ? "settingpage-active" : ""
+              }`}
+              onClick={() => setActiveSection("Logout")}
+            >
+              <i className="fa-solid fa-right-from-bracket settingpage-menu-icon"></i>
+              Logout
+            </a>
+            <a
+              className={`settingpage-menu-link ${
+                activeSection === "Main" ? "settingpage-active" : ""
+              }`}
+              onClick={() => setActiveSection("Main")}
+            >
+              <i className="fa-solid fa-circle-user settingpage-menu-icon"></i>
+              Back to Home
+            </a>
           </div>
         </div>
-        <div className="settingpage-menu">
-          <a
-            className={`settingpage-menu-link ${
-              activeSection === "Account" ? "settingpage-active" : ""
-            }`}
-            onClick={() => setActiveSection("Account")}
-          >
-            <i className="fa-solid fa-circle-user settingpage-menu-icon"></i>
-            Account
-          </a>
-          <a
-            className={`settingpage-menu-link ${
-              activeSection === "Notification" ? "settingpage-active" : ""
-            }`}
-            onClick={() => setActiveSection("Notification")}
-          >
-            <i className="fa-solid fa-bell settingpage-menu-icon"></i>
-            Notification
-          </a>
-          <a
-            className={`settingpage-menu-link ${
-              activeSection === "Setting" ? "settingpage-active" : ""
-            }`}
-            onClick={() => setActiveSection("Setting")}
-          >
-            <i className="fa-solid fa-gear settingpage-menu-icon"></i>
-            General
-          </a>
-          <a
-            className={`settingpage-menu-link ${
-              activeSection === "Logout" ? "settingpage-active" : ""
-            }`}
-            onClick={() => setActiveSection("Logout")}
-          >
-            <i className="fa-solid fa-right-from-bracket settingpage-menu-icon"></i>
-            Logout
-          </a>
-          <a
-            className={`settingpage-menu-link ${
-              activeSection === "Main" ? "settingpage-active" : ""
-            }`}
-            onClick={() => setActiveSection("Main")}
-          >
-            <i className="fa-solid fa-circle-user settingpage-menu-icon"></i>
-            Back to Home
-          </a>
-        </div>
+        {renderSection()}
       </div>
-      {renderSection()}
-    </div>
+    )
   );
 }
 
