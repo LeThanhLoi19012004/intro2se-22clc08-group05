@@ -12,7 +12,6 @@ import {
   FaCompass,
   FaHeart,
   FaCog,
-  FaRegCalendarAlt,
 } from "react-icons/fa";
 import { GiHeartPlus } from "react-icons/gi";
 import { FaStar, FaUsers } from "react-icons/fa";
@@ -139,10 +138,9 @@ function LeftSideBar() {
             style={{ cursor: "pointer" }}
           >
             <span className="main-page__icon">
-              <FaRegCalendarAlt className="icon" />
             </span>
             <span className="main-page__text">Create Event</span>
-          </Link>{" "}
+          </Link>
         </>
       )}
     </div>
@@ -212,7 +210,7 @@ function RightSidebar() {
       </div>
       
       <div className="main-page__sidebar-news">
-        <h1>Organize</h1>
+        <h1>Organized</h1>
         <div className="main-page__event_list-right">
           {loading ? (
             <p>Loading organized events...</p>

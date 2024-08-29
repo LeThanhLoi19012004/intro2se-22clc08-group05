@@ -25,7 +25,7 @@ const PostSignin = async (req, res) => {
       }
     } else {
       console.log("wrong username or password");
-      res.json({ success: false, message: "Wrong email or password" });
+      res.json({ success: false, message: "Wrong username or password" });
     }
   } catch (err) {
     console.error("Error finding user:", err);
@@ -64,7 +64,7 @@ async function PostSignup(req, res) {
       password: hashedPassword,
       email,
     });
-    await ProfileModel.create({
+    const newProfile = await ProfileModel.create({
       idaccount: newAccount._id,
       avatar: null,
       fullname: "",

@@ -249,15 +249,24 @@ function Notification() {
     featureAnnouncementsSite: false,
     awardNotificationEmail: true,
     awardNotificationSite: true,
+    newFollowersEmail: false,
+    newFollowersSite: false,
+    newParticipantsEmail: false,
+    newParticipantsSite: false,
   });
 
   const handleCheckboxChange = (e) => {
     const { name, checked } = e.target;
-    setNotifications((prevState) => ({
+    setNotifications(prevState => ({
       ...prevState,
-      [name]: checked,
+      [name]: checked
     }));
   };
+  const [isCheckedFollowedEvent, setIsCheckedFollowedEvent] = useState(false);
+  const [isCheckedJoinedEvent, setIsCheckedJoinedEvent] = useState(false);
+  const [isCheckedComingEvent, setIsCheckedComingEvent] = useState(false);
+  const [isCheckedNewFollowers, setIsCheckedNewFollowers] = useState(false);
+  const [isCheckedNewParticipants, setIsCheckedNewParticipants] = useState(false);
 
   return (
     <div className="settingpage-account">
@@ -266,54 +275,145 @@ function Notification() {
       </div>
       <div className="settingpage-notification-content">
         <div className="settingpage-notification-section">
-          <h2 className="settingpage-notification-section-title">
-            Announcements
-          </h2>
           <div className="settingpage-notification-item">
-            <label>Important Announcements</label>
-            <input
-              type="checkbox"
-              name="importantAnnouncementsEmail"
-              checked={notifications.importantAnnouncementsEmail}
-              onChange={handleCheckboxChange}
-            />
-            <input
-              type="checkbox"
-              name="importantAnnouncementsSite"
-              checked={notifications.importantAnnouncementsSite}
-              onChange={handleCheckboxChange}
-            />
+            <label htmlFor = "received-update-followed-event">
+              <svg
+                className={`settingpage__checkbox ${
+                  isCheckedFollowedEvent ? "settingpage__checked--active" : ""
+                }`}
+                aria-hidden="true"
+                viewBox="0 0 15 11"
+                fill="none"
+              >
+                <path
+                  d="M1 4.5L5 9L14 1"
+                  strokeWidth="2"
+                  stroke={isCheckedFollowedEvent ? "#fff" : "none"}
+                />
+              </svg>
+              <input
+                type="checkbox"
+                id="received-update-followed-event"
+                name="received-update-followed-event"
+                checked={isCheckedFollowedEvent}
+                onChange={() => setIsCheckedFollowedEvent(!isCheckedFollowedEvent)}
+              />
+            </label>
+            <p>Receive updates on followed events</p>
           </div>
           <div className="settingpage-notification-item">
-            <label>Feature Announcements</label>
-            <input
-              type="checkbox"
-              name="featureAnnouncementsEmail"
-              checked={notifications.featureAnnouncementsEmail}
-              onChange={handleCheckboxChange}
-            />
-            <input
-              type="checkbox"
-              name="featureAnnouncementsSite"
-              checked={notifications.featureAnnouncementsSite}
-              onChange={handleCheckboxChange}
-            />
+            <label htmlFor = "received-update-joined-event">
+                <svg
+                  className={`settingpage__checkbox ${
+                    isCheckedJoinedEvent ? "settingpage__checked--active" : ""
+                  }`}
+                  aria-hidden="true"
+                  viewBox="0 0 15 11"
+                  fill="none"
+                >
+                  <path
+                    d="M1 4.5L5 9L14 1"
+                    strokeWidth="2"
+                    stroke={isCheckedJoinedEvent ? "#fff" : "none"}
+                  />
+                </svg>
+                <input
+                  type="checkbox"
+                  id="received-update-joined-event"
+                  name="received-update-joined-event"
+                  checked={isCheckedJoinedEvent}
+                  onChange={() => setIsCheckedJoinedEvent(!isCheckedJoinedEvent)}
+                />
+              </label>
+              <p>Receive updates on joined events</p>
           </div>
-        </div>
-        <div className="settingpage-notification-section">
-          <h2 className="settingpage-notification-section-title">Award</h2>
           <div className="settingpage-notification-item">
-            <label>Award Notification</label>
+            <label htmlFor = "received-update-coming-event">
+                  <svg
+                    className={`settingpage__checkbox ${
+                      isCheckedComingEvent ? "settingpage__checked--active" : ""
+                    }`}
+                    aria-hidden="true"
+                    viewBox="0 0 15 11"
+                    fill="none"
+                  >
+                    <path
+                      d="M1 4.5L5 9L14 1"
+                      strokeWidth="2"
+                      stroke={isCheckedComingEvent ? "#fff" : "none"}
+                    />
+                  </svg>
+                  <input
+                    type="checkbox"
+                    id="received-update-coming-event"
+                    name="received-update-coming-event"
+                    checked={isCheckedComingEvent}
+                    onChange={() => setIsCheckedComingEvent(!isCheckedComingEvent)}
+                  />
+            </label>
+            <p>Receive reminders about coming events</p>
+          </div>
+          <div className="settingpage-notification-item">
+            <label htmlFor = "received-update-new-followers">
+                    <svg
+                      className={`settingpage__checkbox ${
+                        isCheckedNewFollowers ? "settingpage__checked--active" : ""
+                      }`}
+                      aria-hidden="true"
+                      viewBox="0 0 15 11"
+                      fill="none"
+                    >
+                      <path
+                        d="M1 4.5L5 9L14 1"
+                        strokeWidth="2"
+                        stroke={isCheckedNewFollowers ? "#fff" : "none"}
+                      />
+                    </svg>
+                    <input
+                      type="checkbox"
+                      id="received-update-new-followers"
+                      name="received-update-new-followers"
+                      checked={isCheckedNewFollowers}
+                      onChange={() => setIsCheckedNewFollowers(!isCheckedNewFollowers)}
+                    />
+              </label>
+              <p>Receive updates on new followers</p>
+          </div>
+          <div className="settingpage-notification-item">
+          <label htmlFor = "received-update-new-participants">
+                    <svg
+                      className={`settingpage__checkbox ${
+                        isCheckedNewParticipants ? "settingpage__checked--active" : ""
+                      }`}
+                      aria-hidden="true"
+                      viewBox="0 0 15 11"
+                      fill="none"
+                    >
+                      <path
+                        d="M1 4.5L5 9L14 1"
+                        strokeWidth="2"
+                        stroke={isCheckedNewParticipants ? "#fff" : "none"}
+                      />
+                    </svg>
+                    <input
+                      type="checkbox"
+                      id="received-update-new-participants"
+                      name="received-update-new-participants"
+                      checked={isCheckedNewParticipants}
+                      onChange={() => setIsCheckedNewParticipants(!isCheckedNewParticipants)}
+                    />
+              </label>
+            <p>Receive updates on new participants</p>
             <input
               type="checkbox"
-              name="awardNotificationEmail"
-              checked={notifications.awardNotificationEmail}
+              name="newParticipantsEmail"
+              checked={notifications.newParticipantsEmail}
               onChange={handleCheckboxChange}
             />
             <input
               type="checkbox"
-              name="awardNotificationSite"
-              checked={notifications.awardNotificationSite}
+              name="newParticipantsSite"
+              checked={notifications.newParticipantsSite}
               onChange={handleCheckboxChange}
             />
           </div>
