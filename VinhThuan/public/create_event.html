@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style_page.css">
+    <title>Create Event</title>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-left">
+            <a href="index.html" class="logo"><img src="pic/Suki.svg" alt="Logo"/></a>
+        </div>
+        <div class="navbar-center">
+            <div class="search-box">
+                <input type="text" placeholder="Event">
+            </div>
+        </div>
+        <div class="navbar-right">
+            <ul>
+                <li><a href="ticket.html"><span>Ticket</span></a></li>
+                <li><a href="another-ticket.html"><span>Ticket</span></a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <h1>Create Event</h1>
+        <form action="/create_event" method="POST" enctype="multipart/form-data">
+            
+            <label for="owner">Owner:</label>
+            <input type="text" id="owner" name="owner" required placeholder="Enter User ID"><br><br>
+
+            <label for="logoevent">Event Logo:</label>
+            <input type="file" id="logoevent" name="logoevent" accept="image/*" required><br><br>
+
+            <label for="eventname">Event Name:</label>
+            <input type="text" id="eventname" name="eventname" required><br><br>
+
+            <label for="eventtype">Event Type:</label>
+            <input type="text" id="eventtype" name="eventtype" required><br><br>
+
+            <label for="descriptionevent">Description:</label><br>
+            <textarea id="descriptionevent" name="descriptionevent" rows="4" cols="50" required></textarea><br><br>
+
+            <label for="rulesevent">Rules:</label><br>
+            <textarea id="rulesevent" name="rulesevent" rows="4" cols="50" required></textarea><br><br>
+            
+            <label for="location">Location:</label><br>
+            <textarea id="location" name="location" required></textarea><br><br>
+                
+            <label for="eventdate">Event Date:</label>
+            <input type="date" id="eventdate" name="eventdate" required><br><br>
+
+            <label for="eventtime">Event Time:</label>
+            <input type="time" id="eventtime" name="eventtime" required><br><br>
+
+            <label for="numberoftickets">Number of Tickets:</label>
+            <input type="number" id="numberoftickets" name="numberoftickets" required><br><br>
+
+            <label for="tickettype">Ticket Type:</label>
+            <select id="tickettype" name="tickettype" required>
+                <option value="free">Free</option>
+                <option value="ticket">Ticket</option>
+                <option value="donation">Donation</option>
+            </select><br><br>
+            
+            <label for="price">Price:</label>
+            <input type="number" id="price" name="price" required><br><br>
+
+            <!--<label for="eventimage">Event Images:</label>
+            <input type="file" id="eventimage" name="eventimage" accept="image/*" multiple required><br><br>-->
+
+            <button type="submit" id="create-event">Create Event</button>
+        </form>
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const eventDateInput = document.getElementById('eventdate');
+            const today = new Date();
+            const minDate = new Date(today);
+            minDate.setDate(today.getDate() + 2);
+            const formattedMinDate = minDate.toISOString().split('T')[0];
+            eventDateInput.setAttribute('min', formattedMinDate);
+        
+            const eventTypeInput = document.getElementById('tickettype');
+            const priceInput = document.getElementById('price');
+
+            eventTypeInput.addEventListener('change', function() {
+                if (eventTypeInput.value === 'free' || eventTypeInput.value === 'donation') {
+                    priceInput.value = 0;
+                    priceInput.readOnly = true;
+                } else {
+                    priceInput.value = '';
+                    priceInput.readOnly = false;
+                }
+            });
+
+            if (eventTypeInput.value === 'free' || eventTypeInput.value === 'donation') {
+                priceInput.value = 0;
+                priceInput.readOnly = true;
+            }
+        });
+    </script>
+</body>
+</html>
